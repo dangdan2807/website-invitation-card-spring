@@ -14,7 +14,7 @@
 </head>
 
 <body>
-	<h1>Home page</h1>
+	<h1>Home page 1</h1>
 	<a href="./TestDbServlet">Test connect database</a>
 </body>
 
