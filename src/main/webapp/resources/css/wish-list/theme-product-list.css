@@ -1,0 +1,152 @@
+/*******************************************************
+Product list Styles
+********************************************************/
+.product-container {
+	text-align: center;
+	margin-bottom: 30px;
+}
+.product-container .left-block {
+	position: relative;
+	overflow: hidden;
+}
+.product-container .right-block {
+	position: relative;
+}
+.product-container .label {
+	position: absolute;
+	top: 15px;
+	font-size: 11px;
+	font-weight: 400;
+	text-transform: uppercase;
+	padding: 5px 6px;
+	color: white;
+	line-height: 10px;
+	min-width: 40px;
+	text-align: center;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	-ms-border-radius: 0;
+	-o-border-radius: 0;
+	border-radius: 0;
+}
+.product-container .label-new {
+	right: 15px;
+	background: #77c66d;
+}
+.rtl .product-container .label-new {
+	left: 15px;
+	right: auto;
+}
+.product-container .label-sale {
+	top: 39px;
+	right: 15px;
+	background-color: #f65b47;
+}
+.rtl .product-container .label-sale {
+	left: 15px;
+	right: auto;
+}
+.product-container .label-reduction {
+	left: 15px;
+	background-color: #f65b47;
+}
+.rtl .product-container .label-reduction {
+	right: 15px;
+	left: auto;
+}
+.product-container .label-reduction:before {
+	color: #fe6658;
+}
+.product-container .content_price {
+	margin: 0 0 5px;
+}
+.product-container .price {
+	color: black;
+	font-size: 15px;
+	font-weight: 700;
+}
+.product-container .price-old, .product-container .old-price {
+	color: #666666;
+	text-decoration: line-through;
+}
+.product-container .name {
+	height: 25px;
+	overflow: hidden;
+	margin: 0 0 5px;
+	font-size: 14px;
+	font-family: "Poppins", sans-serif;
+	text-transform: uppercase;
+}
+.product-container .name a {
+	color: #333333;
+	font-family: "Poppins", sans-serif;
+	font-weight: 400;
+	text-decoration: none;
+	line-height: 21px;
+	display: -moz-inline-stack;
+	display: inline-block;
+	vertical-align: middle;
+	*vertical-align: auto;
+	zoom: 1;
+	*display: inline;
+}
+.product-container .name a:hover {
+	color: #e6c302;
+}
+.product-container .product-image-container {
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 20px;
+	text-align: center;
+}
+.product-container .box-buttons {
+	position: absolute;
+	top: 25%;
+	width: 40px;
+	right: 15px;
+}
+.rtl .product-container .box-buttons {
+	left: 15px;
+	right: auto;
+}
+.product-container .box-buttons .btn {
+	margin: 2px 0;
+	padding: 0;
+	border: none;
+	text-align: center;
+	text-transform: uppercase;
+	background-color: white;
+	display: inline-block;
+	font-size: 16px;
+	color: #999;
+	line-height: 40px;
+	width: 40px;
+	height: 40px;
+}
+.product-container .box-buttons .btn:hover {
+	color: white;
+	background-color: #e6c302;
+}
+.product-container .box-buttons i {
+	line-height: 35px;
+}
+
+/*******************************************************
+Product list(Grid, list) Styles
+********************************************************/
+#tiva-grid .product-container {
+	margin-bottom: 45px;
+}
+
+#tiva-list .product-container {
+	text-align: left;
+}
+.rtl #tiva-list .product-container {
+	text-align: right;
+}
+#tiva-list .product-container .product-image-container {
+	margin-bottom: 0;
+}
+#tiva-list .product-des {
+	margin-bottom: 20px;
+}
