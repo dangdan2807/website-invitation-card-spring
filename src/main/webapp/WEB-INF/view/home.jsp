@@ -15,6 +15,13 @@
 
 <body>
 	<h1>Home page 1</h1>
+	<ul>
+		<c:forEach items="${chucVu}" var="cv">
+			<li>
+				${cv.tenChucVu}
+			</li>
+		</c:forEach>
+	</ul>
 	<a href="./TestDbServlet">Test connect database</a>
 </body>
 
