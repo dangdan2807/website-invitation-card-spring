@@ -17,10 +17,8 @@
                         <div class="header__top__right__social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
                             <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-linkedin"></i></a>
-                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
                         </div>
-                        <div class="header__top__right__language">
+                        <!-- <div class="header__top__right__language">
                             <img src="<c:url value = '/resources/img/language.png'/>" alt="">
                             <div>Tiếng Việt</div>
                             <span class="arrow_carrot-down"></span>
@@ -28,7 +26,7 @@
                                 <li><a href="#">Tiếng Việt</a></li>
                                 <li><a href="#">English</a></li>
                             </ul>
-                        </div>
+                        </div> -->
                         <div class="header__top__right__auth">
                             <a href="#"><i class="fa fa-user"></i> Đăng nhập</a>
                         </div>
@@ -56,7 +54,7 @@
                                 <li><a href="/shop/shop-details">Shop Details</a></li>
                             </ul>
                         </li> -->
-                        <li><a href="/shop/checkout">Thanh Toán</a></li>
+                        <!-- <li><a href="/shop/checkout">Thanh Toán</a></li> -->
                         <li><a href="/shop/shopping-cart">Giỏ Hàng</a></li>
                         <li><a href="/contact">Liên Hệ</a></li>
                     </ul>

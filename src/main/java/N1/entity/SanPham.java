@@ -22,9 +22,6 @@ public class SanPham implements Serializable {
     @Column(name = "tenSp", nullable = false, columnDefinition = "VARCHAR(255)")
     private String tenSp;
 
-    @Column(name = "loaiSp", nullable = false, columnDefinition = "VARCHAR(100)")
-    private String loaiSp;
-
     @Column(name = "hinhAnh", columnDefinition = "TEXT")
     private String hinhAnh;
 
@@ -32,9 +29,80 @@ public class SanPham implements Serializable {
     private double giaSP;
 
     @OneToMany(mappedBy = "sanPham")
-	private List<ChiTietHoaDon> dsCTHoaDon;
+    private List<ChiTietHoaDon> dsCTHoaDon;
+
+    @OneToMany(mappedBy = "sanPham")
+    private List<ChiTietLoaiSP> dsLoaiSP;
+
+    public SanPham(int maSp, String tenSp, String hinhAnh, double giaSP) {
+        this.maSp = maSp;
+        this.tenSp = tenSp;
+        this.hinhAnh = hinhAnh;
+        this.giaSP = giaSP;
+    }
+
+    public SanPham(String tenSp, String hinhAnh, double giaSP, List<ChiTietLoaiSP> dsLoaiSP) {
+        this.tenSp = tenSp;
+        this.hinhAnh = hinhAnh;
+        this.giaSP = giaSP;
+        this.dsLoaiSP = dsLoaiSP;
+    }
+
+    public SanPham(String tenSp, String hinhAnh, double giaSP) {
+        this.tenSp = tenSp;
+        this.hinhAnh = hinhAnh;
+        this.giaSP = giaSP;
+    }
 
     public SanPham() {
+    }
+
+    public int getMaSp() {
+        return maSp;
+    }
+
+    public void setMaSp(int maSp) {
+        this.maSp = maSp;
+    }
+
+    public String getTenSp() {
+        return tenSp;
+    }
+
+    public void setTenSp(String tenSp) {
+        this.tenSp = tenSp;
+    }
+
+    public String getHinhAnh() {
+        return hinhAnh;
+    }
+
+    public void setHinhAnh(String hinhAnh) {
+        this.hinhAnh = hinhAnh;
+    }
+
+    public double getGiaSP() {
+        return giaSP;
+    }
+
+    public void setGiaSP(double giaSP) {
+        this.giaSP = giaSP;
+    }
+
+    public List<ChiTietHoaDon> getDsCTHoaDon() {
+        return dsCTHoaDon;
+    }
+
+    public void setDsCTHoaDon(List<ChiTietHoaDon> dsCTHoaDon) {
+        this.dsCTHoaDon = dsCTHoaDon;
+    }
+
+    public List<ChiTietLoaiSP> getDsLoaiSP() {
+        return dsLoaiSP;
+    }
+
+    public void setDsLoaiSP(List<ChiTietLoaiSP> dsLoaiSP) {
+        this.dsLoaiSP = dsLoaiSP;
     }
 
 }

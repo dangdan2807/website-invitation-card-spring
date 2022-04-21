@@ -26,7 +26,8 @@
         <div class="header__cart__price">Tổng tiền: <span>150.000đ</span></div>
     </div>
     <div class="humberger__menu__widget">
-        <div class="header__top__right__language">
+        <!-- chọn ngôn ngữ -->
+        <!-- <div class="header__top__right__language">
             <img src="<c:url value = '/resources/img/language.png'/>" alt="">
             <div>Tiếng Việt</div>
             <span class="arrow_carrot-down"></span>
@@ -34,7 +35,7 @@
                 <li><a href="#">Tiếng Việt</a></li>
                 <li><a href="#">English</a></li>
             </ul>
-        </div>
+        </div> -->
         <div class="header__top__right__auth">
             <a href="#"><i class="fa fa-user"></i> Đăng nhập</a>
         </div>
@@ -42,14 +43,14 @@
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
             <li class="active"><a href="/trang-chu">Trang Chủ</a></li>
-            <li><a href="/shop/shop-grid">Shop</a></li>
-            <li><a href="#">Pages</a>
+            <li><a href="/shop/shop-grid">Cửa hàng</a></li>
+            <li><a href="/shop/shopping-cart">Giỏ Hàng</a></li>
+            <!-- <li><a href="#">Pages</a>
                 <ul class="header__menu__dropdown">
                     <li><a href="/shop/shop-details">Shop Details</a></li>
-                    <li><a href="/shop/shopping-cart">Giỏ Hàng</a></li>
                     <li><a href="/shop/checkout">Thanh Toán</a></li>
                 </ul>
-            </li>
+            </li> -->
             <li><a href="/contact">Liên Hệ</a></li>
         </ul>
     </nav>
@@ -57,8 +58,6 @@
     <div class="header__top__right__social">
         <a href="#"><i class="fa fa-facebook"></i></a>
         <a href="#"><i class="fa fa-twitter"></i></a>
-        <a href="#"><i class="fa fa-linkedin"></i></a>
-        <a href="#"><i class="fa fa-pinterest-p"></i></a>
     </div>
     <div class="humberger__menu__contact">
         <ul>

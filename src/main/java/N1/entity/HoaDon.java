@@ -2,6 +2,7 @@ package N1.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,6 +35,9 @@ public class HoaDon implements Serializable {
     @Column(name = "tongSoLuong", nullable = false, columnDefinition = "INT DEFAULT(0) CHECK(tongSoLuong >= 0)")
     private double tongSoLuong;
 
+    @OneToMany(mappedBy = "hoaDon")
+    private List<ChiTietHoaDon> dsCTHoaDon;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "maKH", nullable = false)
     private NguoiDung nguoiDung;
@@ -48,8 +53,9 @@ public class HoaDon implements Serializable {
         this.nguoiDung = nguoiDung;
     }
 
-    public HoaDon(Date ngayLHD, NguoiDung nguoiDung) {
-        this.ngayLHD = ngayLHD;
+    public HoaDon(double tongTien, double tongSoLuong, NguoiDung nguoiDung) {
+        this.tongTien = tongTien;
+        this.tongSoLuong = tongSoLuong;
         this.nguoiDung = nguoiDung;
     }
 
@@ -83,6 +89,14 @@ public class HoaDon implements Serializable {
 
     public void setTongSoLuong(double tongSoLuong) {
         this.tongSoLuong = tongSoLuong;
+    }
+
+    public List<ChiTietHoaDon> getDsCTHoaDon() {
+        return dsCTHoaDon;
+    }
+
+    public void setDsCTHoaDon(List<ChiTietHoaDon> dsCTHoaDon) {
+        this.dsCTHoaDon = dsCTHoaDon;
     }
 
     public NguoiDung getNguoiDung() {

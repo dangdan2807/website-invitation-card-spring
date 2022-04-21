@@ -11,29 +11,30 @@ import org.springframework.stereotype.Repository;
 
 import N1.entity.ChiTietLoaiSP;
 import N1.entity.LoaiSanPham;
-import N1.entity.SanPham;
 
 @Repository
-public class SanPhamDAOImpl implements SanPhamDAO {
+public class CTLoaiSPDAOImpl implements CTLoaiSPDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    public List<SanPham> getDSSanPham() {
+    public List<ChiTietLoaiSP> getDSChiTietLoaiSP() {
         Session currentSession = sessionFactory.getCurrentSession();
-        String queryStr = "SELECT sp.maSp, sp.tenSp, sp.giaSP, sp.hinhAnh "
-                + "FROM SanPham sp ";
+        String queryStr = "SELECT lsp.maLSP, lsp.tenLSP "
+                + "FROM ChiTietLoaiSP ctl, LoaiSanPham lsp "
+                + "WHERE ctl.maLSP = lsp.maLSP ";
+
         List<Object[]> results = currentSession.createNativeQuery(queryStr).getResultList();
-        List<SanPham> dataList = new ArrayList<>();
+        List<ChiTietLoaiSP> dataList = new ArrayList<>();
+
         results.stream().forEach(item -> {
-            int maSp = Integer.parseInt(item[0].toString());
-            String tenSp = item[1].toString();
-            double giaSp = Double.parseDouble(item[2].toString());
-            String hinhAnh = item[3].toString();
-            SanPham sanPham = new SanPham(maSp, tenSp, hinhAnh, giaSp);
-            dataList.add(sanPham);
+            int maLSP = Integer.parseInt(item[0].toString());
+            String tenLSP = item[1].toString();
+            LoaiSanPham loaiSanPham = new LoaiSanPham(maLSP, tenLSP);
+            dataList.add(new ChiTietLoaiSP(loaiSanPham));
         });
+        
         return dataList;
     }
-
+    
 }

@@ -31,14 +31,13 @@
     </div>
 
     <!-- Humberger Begin -->
-    <jsp:include page="./common/top-header.jsp" />
+    <jsp:include page="./common/header-mobile.jsp" />
     <!-- Humberger End -->
 
     <!-- Header Section Begin -->
     <jsp:include page="./common/header.jsp" />
     <!-- Header Section End -->
 
-    <!-- Hero Section Begin -->
     <!-- Search bar Begin -->
     <jsp:include page="./common/search-bar.jsp" />
     <!-- Search bar End -->

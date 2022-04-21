@@ -41,6 +41,12 @@ public class TaiKhoan implements Serializable {
         this.chucVu = chucVu;
     }
 
+    public TaiKhoan(String tenDangNhap, int tinhTrang, ChucVu chucVu) {
+        this.tenDangNhap = tenDangNhap;
+        this.tinhTrang = tinhTrang;
+        this.chucVu = chucVu;
+    }
+
     public TaiKhoan(String tenDangNhap, String matKhau) {
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;

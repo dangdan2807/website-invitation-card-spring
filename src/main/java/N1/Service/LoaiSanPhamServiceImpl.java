@@ -6,18 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import N1.entity.HoaDon;
-import N1.DAO.HoaDonDAO;
+import N1.DAO.LoaiSanPhamDAO;
+import N1.entity.LoaiSanPham;
 
 @Service
-public class HoaDonServiceImpl implements HoaDonService {
+public class LoaiSanPhamServiceImpl implements LoaiSanPhamService {
     @Autowired
-    private HoaDonDAO hoaDonDAO;
+    private LoaiSanPhamDAO loaiSanPhamDAO;
 
     @Override
     @Transactional
-    public List<HoaDon> getDSHoaDon() {
-        return hoaDonDAO.getDSHoaDon();
+    public List<LoaiSanPham> getDSLoaiSanPham() {
+        return loaiSanPhamDAO.getDSLoaiSanPham();
     }
-
 }
