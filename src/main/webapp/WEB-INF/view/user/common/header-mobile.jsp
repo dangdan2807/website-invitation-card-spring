@@ -4,7 +4,7 @@
 <div class="humberger__menu__overlay"></div>
 <div class="humberger__menu__wrapper">
 	<div class="humberger__menu__logo">
-		<a href="#"> <img src="<c:url value = '/resources/img/logo.png'/>"
+		<a href="#"> <img src="<c:url value = '/resources/user/img/logo.png'/>"
 			alt="">
 		</a>
 	</div>

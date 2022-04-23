@@ -40,8 +40,8 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a href='<c:url value = "/trang-chu" />'>
-                        <img src="<c:url value = '/resources/img/logo.png'/>" alt="">
+                    <a href="<c:url value ='/trang-chu' />">
+                        <img src="<c:url value = '/resources/user/img/logo.png'/>" alt="">
                     </a>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                         	}
                         	%>
                         >
-                            <a href='<c:url value = "/trang-chu" />'>Trang chủ</a>
+                            <a href="<c:url value ='/trang-chu' />">Trang chủ</a>
                         </li>
                         
                         <li <% 

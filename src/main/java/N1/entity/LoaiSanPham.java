@@ -21,6 +21,9 @@ public class LoaiSanPham implements Serializable {
 
     @Column(name = "tenLSP", nullable = false, columnDefinition = "nvarchar(100)")
     private String tenLSP;
+
+    @Column(name = "hinhAnh", columnDefinition = "text DEFAULT (N'')")
+    private String hinhAnh;
     
     @OneToMany(mappedBy = "loaiSanPham")
     private List<ChiTietLoaiSP> dsCTLoaiSP;

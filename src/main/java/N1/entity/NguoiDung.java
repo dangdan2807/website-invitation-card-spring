@@ -32,6 +32,9 @@ public class NguoiDung implements Serializable {
     @Column(name = "sdt", columnDefinition = "VARCHAR(10) DEFAULT('')")
     private String sdt;
 
+    @Column(name = "hinhAnh", columnDefinition = "text DEFAULT (N'')")
+    private String hinhAnh;
+
     @OneToOne
     @JoinColumn(name = "email", nullable = false, unique = true, columnDefinition = "VARCHAR(255) DEFAULT('')")
     private TaiKhoan taiKhoan;

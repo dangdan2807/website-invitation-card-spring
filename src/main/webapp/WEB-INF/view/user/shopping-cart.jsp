@@ -7,20 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ogani | Template</title>
+    <title>Giở Hàng</title>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
-
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="<c:url value = '/resources/css/bootstrap.min.css'/>" type="text/css">
-    <link rel="stylesheet" href="<c:url value = '/resources/css/font-awesome.min.css'/>" type="text/css">
-    <link rel="stylesheet" href="<c:url value = '/resources/css/elegant-icons.css'/>" type="text/css">
-    <link rel="stylesheet" href="<c:url value = '/resources/css/nice-select.css'/>" type="text/css">
-    <link rel="stylesheet" href="<c:url value = '/resources/css/jquery-ui.min.css'/>" type="text/css">
-    <link rel="stylesheet" href="<c:url value = '/resources/css/owl.carousel.min.css'/>" type="text/css">
-    <link rel="stylesheet" href="<c:url value = '/resources/css/slicknav.min.css'/>" type="text/css">
-    <link rel="stylesheet" href="<c:url value = '/resources/css/style.css'/>" type="text/css">
+    <jsp:include page="./common/link-css.jsp"/>
 </head>
 
 <body>
@@ -47,14 +36,14 @@
     </jsp:include>
     
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="<c:url value = '/resources/img/breadcrumb.jpg' />">
+    <section class="breadcrumb-section set-bg" data-setbg="<c:url value = '/resources/user/img/breadcrumb.jpg' />">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
                         <h2>Giỏ Hàng</h2>
                         <div class="breadcrumb__option">
-                            <a href="/trang-chu">Home</a>
+                            <a href="<c:url value ='/trang-chu' />">Home</a>
                             <span>Giỏ Hàng</span>
                         </div>
                     </div>
@@ -83,7 +72,7 @@
                             <tbody>
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <img src="<c:url value = '/resources/img/cart/cart-1.jpg' />" alt="">
+                                        <img src="<c:url value = '/resources/user/img/cart/cart-1.jpg' />" alt="">
                                         <h5>Product Name 1</h5>
                                     </td>
                                     <td class="shoping__cart__price">
@@ -105,7 +94,7 @@
                                 </tr>
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <img src="<c:url value = '/resources/img/cart/cart-2.jpg' />" alt="">
+                                        <img src="<c:url value = '/resources/user/img/cart/cart-2.jpg' />" alt="">
                                         <h5>Product name 2</h5>
                                     </td>
                                     <td class="shoping__cart__price">
@@ -127,7 +116,7 @@
                                 </tr>
                                 <tr>
                                     <td class="shoping__cart__item">
-                                        <img src="<c:url value = '/resources/img/cart/cart-3.jpg' />" alt="">
+                                        <img src="<c:url value = '/resources/user/img/cart/cart-3.jpg' />" alt="">
                                         <h5>Product name 3</h5>
                                     </td>
                                     <td class="shoping__cart__price">
@@ -190,15 +179,7 @@
     <jsp:include page="./common/footer.jsp" />
     <!-- Footer Section End -->
 
-   <!-- Js Plugins -->
-    <script src="<c:url value = '/resources/js/jquery-3.3.1.min.js'/>"></script>
-    <script src="<c:url value = '/resources/js/bootstrap.min.js'/>"></script>
-    <script src="<c:url value = '/resources/js/jquery.nice-select.min.js'/>"></script>
-    <script src="<c:url value = '/resources/js/jquery-ui.min.js'/>"></script>
-    <script src="<c:url value = '/resources/js/jquery.slicknav.js'/>"></script>
-    <script src="<c:url value = '/resources/js/mixitup.min.js'/>"></script>
-    <script src="<c:url value = '/resources/js/owl.carousel.min.js'/>"></script>
-    <script src="<c:url value = '/resources/js/main.js'/>"></script>
+    <jsp:include page="./common/link-js.jsp"/>
 
 </body>
 

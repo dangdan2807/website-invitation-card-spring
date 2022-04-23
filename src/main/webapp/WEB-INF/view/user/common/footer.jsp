@@ -8,7 +8,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         <div class="footer__about">
           <div class="footer__about__logo">
             <a href="<c:url value = '/trang-chu'/>">
-              <img src="<c:url value ='/resources/img/logo.png' />" alt="" />
+              <img src="<c:url value ='/resources/user/img/logo.png' />" alt="" />
             </a>
           </div>
           <ul>
@@ -67,7 +67,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
           </div>
           <div class="footer__copyright__payment">
             <img
-              src="<c:url value = '/resources/img/payment-item.png' />"
+              src="<c:url value = '/resources/user/img/payment-item.png' />"
               alt=""
             />
           </div>
