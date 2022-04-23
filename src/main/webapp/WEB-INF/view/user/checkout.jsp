@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"Billing Details
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" %> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -32,17 +32,21 @@
     </div>
 
     <!-- Humberger Begin -->
-    <jsp:include page="./common/top-header.jsp" />
+    <jsp:include page="./common/header-mobile.jsp" >
+    	<jsp:param name="activePage" value="shoppingCart" />
+    </jsp:include>
     <!-- Humberger End -->
 
     <!-- Header Section Begin -->
-    <jsp:include page="./common/header.jsp" />
+    <jsp:include page="./common/header.jsp" >
+    	<jsp:param name="activePage" value="shoppingCart" />
+    </jsp:include>
     <!-- Header Section End -->
 
-    <!-- Hero Section Begin -->
     <!-- Search bar Begin -->
-    <jsp:include page="./common/search-bar.jsp" />
-    <!-- Search bar End -->
+    <jsp:include page="./common/search-bar.jsp" >
+        <jsp:param name="showBanner" value="false" />
+    </jsp:include>
 
     <!-- Breadcrumb Section Begin -->
 

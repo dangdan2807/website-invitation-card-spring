@@ -18,8 +18,8 @@ public class ChiTietLoaiSP implements Serializable {
     private LoaiSanPham loaiSanPham;
 
     @Id
-    @JoinColumn(name = "maSp", columnDefinition = "INT")
     @ManyToOne
+    @JoinColumn(name = "maSp", columnDefinition = "INT")
     private SanPham sanPham;
 
     public ChiTietLoaiSP() {

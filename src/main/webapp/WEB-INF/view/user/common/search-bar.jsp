@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
     pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<section class="hero">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<section class='hero <c:if test="${!param.showBanner}">hero-normal</c:if>'>
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
@@ -11,17 +11,9 @@
                         <span>Loại thiệp</span>
                     </div>
                     <ul>
-                        <li><a href="#">Category Name</a></li>
-                        <li><a href="#">Category Name</a></li>
-                        <li><a href="#">Category Name</a></li>
-                        <li><a href="#">Category Name</a></li>
-                        <li><a href="#">Category Name</a></li>
-                        <li><a href="#">Category Name</a></li>
-                        <li><a href="#">Category Name</a></li>
-                        <li><a href="#">Category Name</a></li>
-                        <li><a href="#">Category Name</a></li>
-                        <li><a href="#">Category Name</a></li>
-                        <li><a href="#">Category Name</a></li>
+                    	<c:forEach var="loaiSp" items="${dsLoaiSanPham}">
+                        	<li><a href="#">${loaiSp.tenLSP}</a></li>
+                    	</c:forEach>
                     </ul>
                 </div>
             </div>
@@ -48,14 +40,16 @@
                     </div>
                 </div>
                 <!-- banner -->
-                <div class="hero__item set-bg" data-setbg="<c:url value ='/resources/img/hero/banner.jpg'/>" >
-                    <div class="hero__text">
-                        <span>FRUIT FRESH</span>
-                        <h2>Vegetable <br />100% Organic</h2>
-                        <p>Free Pickup and Delivery Available</p>
-                        <a href="#" class="primary-btn">SHOP NOW</a>
+                <c:if test="${param.showBanner}">
+                    <div class="hero__item set-bg" data-setbg="<c:url value ='/resources/img/hero/banner.jpg'/>" >
+                        <div class="hero__text">
+                            <span>FRUIT FRESH</span>
+                            <h2>Vegetable <br />100% Organic</h2>
+                            <p>Free Pickup and Delivery Available</p>
+                            <a href='<c:url value = "/shop/shop-grid" />' class="primary-btn">MUA NGAY</a>
+                        </div>
                     </div>
-                </div>
+                </c:if>
             </div>
         </div>
     </div>

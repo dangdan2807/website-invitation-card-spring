@@ -30,17 +30,21 @@
     </div>
 
     <!-- Humberger Begin -->
-    <jsp:include page="./common/top-header.jsp" />
+    <jsp:include page="./common/header-mobile.jsp" >
+    	<jsp:param name="activePage" value="shopping-cart" />
+    </jsp:include>
     <!-- Humberger End -->
 
     <!-- Header Section Begin -->
-    <jsp:include page="./common/header.jsp" />
+    <jsp:include page="./common/header.jsp" >
+    	<jsp:param name="activePage" value="shopping-cart" />
+    </jsp:include>
     <!-- Header Section End -->
 
-    <!-- Hero Section Begin -->
     <!-- Search bar Begin -->
-    <jsp:include page="./common/search-bar.jsp" />
-    <!-- Search bar End -->
+    <jsp:include page="./common/search-bar.jsp" >
+        <jsp:param name="showBanner" value="false" />
+    </jsp:include>
     
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-section set-bg" data-setbg="<c:url value = '/resources/img/breadcrumb.jpg' />">

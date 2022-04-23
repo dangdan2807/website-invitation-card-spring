@@ -2,6 +2,7 @@ package N1.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ public class SanPham implements Serializable {
     @Column(name = "maSp", nullable = false)
     private int maSp;
 
-    @Column(name = "tenSp", nullable = false, columnDefinition = "VARCHAR(255)")
+    @Column(name = "tenSp", nullable = false, columnDefinition = "NVARCHAR(255)")
     private String tenSp;
 
     @Column(name = "hinhAnh", columnDefinition = "TEXT")
@@ -33,6 +34,20 @@ public class SanPham implements Serializable {
 
     @OneToMany(mappedBy = "sanPham")
     private List<ChiTietLoaiSP> dsLoaiSP;
+    
+    @OneToMany(mappedBy = "sanPham")
+    private List<DanhGia> dsDanhGia;
+
+    @OneToMany(mappedBy = "sanPham")
+    private Set<GioHang> dsGioHang;
+
+    public SanPham(int maSp, String tenSp, String hinhAnh, double giaSP, List<ChiTietLoaiSP> dsLoaiSP) {
+        this.maSp = maSp;
+        this.tenSp = tenSp;
+        this.hinhAnh = hinhAnh;
+        this.giaSP = giaSP;
+        this.dsLoaiSP = dsLoaiSP;
+    }
 
     public SanPham(int maSp, String tenSp, String hinhAnh, double giaSP) {
         this.maSp = maSp;

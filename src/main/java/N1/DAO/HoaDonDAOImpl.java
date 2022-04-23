@@ -18,6 +18,7 @@ public class HoaDonDAOImpl implements HoaDonDAO {
     private SessionFactory sessionFactory;
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<HoaDon> getDSHoaDon() {
         Session currentSession = sessionFactory.getCurrentSession();
         String queryStr = "SELECT hd.maHD, hd.ngayLHD, hd.tongSoLuong, hd.tongTien, hd.maKH "
@@ -34,7 +35,7 @@ public class HoaDonDAOImpl implements HoaDonDAO {
             int maND = Integer.parseInt(item[4].toString());
 
             NguoiDung nguoiDung = new NguoiDung(maND);
-            HoaDon hoaDon = new HoaDon(maHD, ngayLHD, tongSoLuong, tongTien, nguoiDung);
+            HoaDon hoaDon = new HoaDon(maHD, ngayLHD, tongTien, tongSoLuong, nguoiDung);
             dataList.add(hoaDon);
         });
 

@@ -38,7 +38,7 @@
     <p>Hóa đơn</p>
     <ul>
         <c:forEach var="hoaDon" items="${hoaDonList}">
-            <li>${hoaDon.maHD}</li>
+            <li>${hoaDon.maHD} - ${hoaDon.ngayLHD}</li>
         </c:forEach>
     </ul>
     <hr />

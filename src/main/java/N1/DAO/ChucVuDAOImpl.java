@@ -17,6 +17,7 @@ public class ChucVuDAOImpl implements ChucVuDAO {
     private SessionFactory sessionFactory;
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<ChucVu> getDSChucVu() {
         Session currentSession = sessionFactory.getCurrentSession();
         String queryStr = "SELECT maChucVu, tenChucVu FROM ChucVu";

@@ -1,6 +1,7 @@
 package N1.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -38,13 +39,28 @@ public class NguoiDung implements Serializable {
     @OneToMany(mappedBy = "nguoiDung", fetch = FetchType.LAZY)
     private Set<HoaDon> hoaDon;
 
+    @OneToMany(mappedBy = "nguoiDung", fetch = FetchType.LAZY)
+    private List<DanhGia> danhGia;
+
+    @OneToMany(mappedBy = "nguoiDung", fetch = FetchType.LAZY)
+    private Set<GioHang> gioHang;
+
     public NguoiDung() {
     }
 
     public NguoiDung(int maND) {
         this.maND = maND;
     }
-    
+
+    public NguoiDung(int maND, String tenND, String diaChi, String sdt, TaiKhoan taiKhoan, Set<HoaDon> hoaDon) {
+        this.maND = maND;
+        this.tenND = tenND;
+        this.diaChi = diaChi;
+        this.sdt = sdt;
+        this.taiKhoan = taiKhoan;
+        this.hoaDon = hoaDon;
+    }
+
     public NguoiDung(int maND, String tenND, String diaChi, String sdt, TaiKhoan taiKhoan) {
         this.maND = maND;
         this.tenND = tenND;

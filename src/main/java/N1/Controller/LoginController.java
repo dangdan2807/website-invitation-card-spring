@@ -1,5 +1,6 @@
 package N1.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,14 @@ public class LoginController {
 	private LoaiSanPhamService loaiSanPham;
 
 	@RequestMapping({ "/", "/trang-chu", "/home" })
-	public String showHomePage() {
+	public String showHomePage(Model model) {
+		List<LoaiSanPham> dsLoaiSanPham = new ArrayList<LoaiSanPham>();
+		dsLoaiSanPham.add(new LoaiSanPham("Thiệp cưới"));
+		dsLoaiSanPham.add(new LoaiSanPham("Thiệp sinh nhật"));
+		dsLoaiSanPham.add(new LoaiSanPham("Thiệp mừng 20/11"));
+		dsLoaiSanPham.add(new LoaiSanPham("Thiệp năm mới"));
+		dsLoaiSanPham.add(new LoaiSanPham("Thiệp giáng sinh"));
+		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		return "index";
 	}
 
