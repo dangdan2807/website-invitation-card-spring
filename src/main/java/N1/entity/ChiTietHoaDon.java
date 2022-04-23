@@ -23,27 +23,19 @@ public class ChiTietHoaDon implements Serializable {
     @ManyToOne
     private SanPham sanPham;
 
-    @Column(name = "soLuong", columnDefinition = "INT DEFAULT(1) CHECK(soLuong >= 1)")
+    @Column(name = "soLuong", nullable = false, columnDefinition = "INT DEFAULT(1) CHECK(soLuong >= 1)")
     private int soLuong;
 
-    @Column(name = "thanhTien", columnDefinition = "MONEY DEFAULT(0) CHECK(thanhTien >= 0)")
-    private double thanhTien;
+    @Column(name = "giaBan", nullable = false, columnDefinition = "MONEY DEFAULT(0) CHECK(giaBan >= 0)")
+    private double giaBan;
 
     public ChiTietHoaDon() {
     }
 
-    public ChiTietHoaDon(SanPham sanPham, int soLuong, double thanhTien) {
+    public ChiTietHoaDon(SanPham sanPham, int soLuong, double giaBan) {
         this.sanPham = sanPham;
         this.soLuong = soLuong;
-        this.thanhTien = thanhTien;
-    }
-
-    public HoaDon getHoaDon() {
-        return hoaDon;
-    }
-
-    public void setHoaDon(HoaDon hoaDon) {
-        this.hoaDon = hoaDon;
+        this.giaBan = giaBan;
     }
 
     public SanPham getSanPham() {
@@ -63,11 +55,6 @@ public class ChiTietHoaDon implements Serializable {
     }
 
     public double getThanhTien() {
-        return thanhTien;
+        return this.giaBan * this.soLuong;
     }
-
-    public void tinhThanhTien() {
-        this.thanhTien = this.sanPham.getGiaSP() * this.soLuong;
-    }
-
 }

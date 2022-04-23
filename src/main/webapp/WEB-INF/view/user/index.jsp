@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.Random"  %>  
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -31,15 +32,21 @@
     </div>
 
     <!-- Humberger Begin -->
-    <jsp:include page="./common/header-mobile.jsp" />
+    <jsp:include page="./common/header-mobile.jsp">
+        <jsp:param name="activePage" value="home" />
+    </jsp:include>
     <!-- Humberger End -->
 
     <!-- Header Section Begin -->
-    <jsp:include page="./common/header.jsp" />
+    <jsp:include page="./common/header.jsp">
+        <jsp:param name="activePage" value="home" />
+    </jsp:include>
     <!-- Header Section End -->
 
     <!-- Search bar Begin -->
-    <jsp:include page="./common/search-bar.jsp" />
+    <jsp:include page="./common/search-bar.jsp">
+        <jsp:param name="showBanner" value="true" />
+    </jsp:include>
     <!-- Search bar End -->
 
     <!-- Categories Section Begin -->
@@ -47,36 +54,19 @@
         <div class="container">
             <div class="row">
                 <div class="categories__slider owl-carousel">
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg"
-                            data-setbg="<c:url value = '/resources/img/categories/cat-1.jpg' />">
-                            <h5><a href="#">Category Name 1</a></h5>
+                    <c:forEach var="loaiSp" items="${dsLoaiSanPham}">
+                        <div class="col-lg-3">
+                        	<%
+	                        	Random rand = new Random();
+	                            int ranNum = rand.nextInt(5)+1;
+	                            request.setAttribute("ranNum", ranNum);
+                        	%>
+                            <div class="categories__item set-bg"
+                                data-setbg="<c:url value = '/resources/img/categories/cat-${ranNum}.jpg' />">
+                                <h5><a href="#">${loaiSp.tenLSP}</a></h5>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg"
-                        data-setbg="<c:url value = '/resources/img/categories/cat-2.jpg' />">
-                        <h5><a href="#">Category Name 2</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg"
-                            data-setbg="<c:url value = '/resources/img/categories/cat-3.jpg' />">
-                            <h5><a href="#">Category Name 3</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg"
-                            data-setbg="<c:url value = '/resources/img/categories/cat-4.jpg' />">
-                            <h5><a href="#">Category Name 4</a></h5>
-                        </div>
-                    </div>
-                    <div class="col-lg-3">
-                        <div class="categories__item set-bg"
-                            data-setbg="<c:url value = '/resources/img/categories/cat-5.jpg' />">
-                            <h5><a href="#">Category Name 5</a></h5>
-                        </div>
-                    </div>
+                    </c:forEach>      
                 </div>
             </div>
         </div>
@@ -94,16 +84,15 @@
                     <div class="featured__controls">
                         <ul>
                             <li class="active" data-filter="*">Tất cả</li>
-                            <li data-filter=".Category-Name-1">Category Name 1</li>
-                            <li data-filter=".Category-Name-2">Category Name 2</li>
-                            <li data-filter=".Category-Name-3">Category Name 3</li>
-                            <li data-filter=".Category-Name-4">Category Name 4</li>
+                            <c:forEach var="loaiSp" items="${dsLoaiSanPham}">
+                                <li data-filter=".${loaiSp.tenLSP}">${loaiSp.tenLSP}</li>
+                            </c:forEach>
                         </ul>
                     </div>
                 </div>
             </div>
             <div id="featured__filter" class="row featured__filter">
-                <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fastfood">
+                <div class="col-lg-3 col-md-4 col-sm-6 mix Đào">
                     <div class="featured__item">
                         <div class="featured__item__pic set-bg"
                             data-setbg="${pageContext.request.contextPath}/resources/img/featured/feature-1.jpg">
@@ -147,7 +136,7 @@
                         </div>
                     </div>
                 </div>
-                                
+
                 <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fresh-meat">
                     <div class="featured__item">
                         <div class="featured__item__pic set-bg"

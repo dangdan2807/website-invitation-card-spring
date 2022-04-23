@@ -35,6 +35,16 @@ public class HoaDon implements Serializable {
     @Column(name = "tongSoLuong", nullable = false, columnDefinition = "INT DEFAULT(0) CHECK(tongSoLuong >= 0)")
     private double tongSoLuong;
 
+    @Column(name = "trangThaiDonHang", nullable = false, columnDefinition = "NVARCHAR(100) DEFAULT(N'Chưa thanh toán')")
+    private String trangThaiDonHang;
+
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(name = "ngayGiaoHang", columnDefinition = "DATETIME")
+    private Date ngayGiaoHang;
+
+    @Column(name = "diaChiGiaoHang", columnDefinition = "TEXT DEFAULT('')")
+    private String diaChiGiaoHang;
+
     @OneToMany(mappedBy = "hoaDon")
     private List<ChiTietHoaDon> dsCTHoaDon;
 
@@ -53,10 +63,12 @@ public class HoaDon implements Serializable {
         this.nguoiDung = nguoiDung;
     }
 
-    public HoaDon(double tongTien, double tongSoLuong, NguoiDung nguoiDung) {
+    public HoaDon(Date ngayLHD, double tongTien, double tongSoLuong, Date ngayGiaoHang, String diaChiGiaoHang) {
+        this.ngayLHD = ngayLHD;
         this.tongTien = tongTien;
         this.tongSoLuong = tongSoLuong;
-        this.nguoiDung = nguoiDung;
+        this.ngayGiaoHang = ngayGiaoHang;
+        this.diaChiGiaoHang = diaChiGiaoHang;
     }
 
     public int getMaHD() {
@@ -91,6 +103,14 @@ public class HoaDon implements Serializable {
         this.tongSoLuong = tongSoLuong;
     }
 
+    public String getTrangThaiDonHang() {
+        return trangThaiDonHang;
+    }
+
+    public void setTrangThaiDonHang(String trangThaiDonHang) {
+        this.trangThaiDonHang = trangThaiDonHang;
+    }
+
     public List<ChiTietHoaDon> getDsCTHoaDon() {
         return dsCTHoaDon;
     }
@@ -99,12 +119,20 @@ public class HoaDon implements Serializable {
         this.dsCTHoaDon = dsCTHoaDon;
     }
 
-    public NguoiDung getNguoiDung() {
-        return nguoiDung;
+    public Date getNgayGiaoHang() {
+        return ngayGiaoHang;
     }
 
-    public void setNguoiDung(NguoiDung nguoiDung) {
-        this.nguoiDung = nguoiDung;
+    public void setNgayGiaoHang(Date ngayGiaoHang) {
+        this.ngayGiaoHang = ngayGiaoHang;
+    }
+
+    public String getDiaChiGiaoHang() {
+        return diaChiGiaoHang;
+    }
+
+    public void setDiaChiGiaoHang(String diaChiGiaoHang) {
+        this.diaChiGiaoHang = diaChiGiaoHang;
     }
 
 }
