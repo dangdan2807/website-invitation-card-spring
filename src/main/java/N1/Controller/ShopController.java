@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ShopController {
     @RequestMapping("/shop-grid")
     public String showShopGridPage() {
-        return "shop-grid";
+        return "user/shop-grid";
     }
     
     @RequestMapping("/shopping-cart")
     public String showShoppingCartPage() {
-        return "shopping-cart";
+        return "user/shopping-cart";
     }
     
     @RequestMapping("/checkout")
 	public String showCheckoutPage() {
-		return "checkout";
+		return "user/checkout";
 	}
 }

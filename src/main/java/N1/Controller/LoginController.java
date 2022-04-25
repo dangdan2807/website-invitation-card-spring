@@ -41,7 +41,7 @@ public class LoginController {
 		dsLoaiSanPham.add(new LoaiSanPham("Thiệp năm mới"));
 		dsLoaiSanPham.add(new LoaiSanPham("Thiệp giáng sinh"));
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		return "index";
+		return "user/index";
 	}
 
 	@RequestMapping({ "/demo" })
@@ -62,21 +62,21 @@ public class LoginController {
 		// model.addAttribute("sanPhamList", sanPhamList);
 		// model.addAttribute("ctLoaiSPList", ctLoaiSPList);
 		// model.addAttribute("loaiSanPhamList", loaiSanPhamList);
-		return "demo";
+		return "user/demo";
 	}
 
 	@GetMapping("/contact")
 	public String showContractPage() {
-		return "contact";
+		return "user/contact";
 	}
 
 	@GetMapping("/login")
 	public String showLoginPage() {
-		return "login";
+		return "user/login";
 	}
 
 	@GetMapping("/access-denied")
 	public String showAccessDenied() {
-		return "access-denied";
+		return "user/access-denied";
 	}
 }

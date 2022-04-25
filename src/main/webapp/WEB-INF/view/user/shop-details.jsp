@@ -9,19 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Shop Details</title>
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap"
-        rel="stylesheet" />
-
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="<c:url value = '/resources/css/bootstrap.min.css'/>" type="text/css" />
-    <link rel="stylesheet" href="<c:url value = '/resources/css/font-awesome.min.css'/>" type="text/css" />
-    <link rel="stylesheet" href="<c:url value = '/resources/css/elegant-icons.css'/>" type="text/css" />
-    <link rel="stylesheet" href="<c:url value = '/resources/css/nice-select.css'/>" type="text/css" />
-    <link rel="stylesheet" href="<c:url value = '/resources/css/jquery-ui.min.css'/>" type="text/css" />
-    <link rel="stylesheet" href="<c:url value = '/resources/css/owl.carousel.min.css'/>" type="text/css" />
-    <link rel="stylesheet" href="<c:url value = '/resources/css/slicknav.min.css'/>" type="text/css" />
-    <link rel="stylesheet" href="<c:url value = '/resources/css/style.css'/>" type="text/css" />
+    <jsp:include page="./common/link-css.jsp"/>
 </head>
 
 <body>
@@ -48,17 +36,17 @@
     </jsp:include>
 
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="<c:url value = '/resources/img/breadcrumb.jpg' />">
+    <section class="breadcrumb-section set-bg" data-setbg="<c:url value = '/resources/user/img/breadcrumb.jpg' />">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="breadcrumb__text">
                         <h2>Product name</h2>
                         <div class="breadcrumb__option">
-                            <a href="/trang-chu">Trang chủ</a>
+                            <a href='<c:url value = "/trang-chu" />'>Trang chủ</a>
                             <!-- thay chữ vegetables bằng tên category -->
                             <!-- dùng jsp để thay -->
-                            <a href="/category/category-name">Category</a>
+                            <a href='<c:url value = "/category/id" />'>Category</a>
                             <span>Product name</span>
                         </div>
                     </div>
@@ -76,17 +64,17 @@
                     <div class="product__details__pic">
                         <div class="product__details__pic__item">
                             <img class="product__details__pic__item--large"
-                                src="<c:url value = '/resources/img/product/details/product-details-1.jpg' />" alt="" />
+                                src="<c:url value = '/resources/user/img/product/details/product-details-1.jpg' />" alt="" />
                         </div>
                         <div class="product__details__pic__slider owl-carousel">
                             <img data-imgbigurl="img/product/details/product-details-2.jpg"
-                                src="<c:url value = '/resources/img/product/details/thumb-1.jpg' />" alt="" />
+                                src="<c:url value = '/resources/user/img/product/details/thumb-1.jpg' />" alt="" />
                             <img data-imgbigurl="img/product/details/product-details-3.jpg"
-                                src="<c:url value = '/resources/img/product/details/thumb-2.jpg' />" alt="" />
+                                src="<c:url value = '/resources/user/img/product/details/thumb-2.jpg' />" alt="" />
                             <img data-imgbigurl="img/product/details/product-details-5.jpg"
-                                src="<c:url value = '/resources/img/product/details/thumb-3.jpg' />" alt="" />
+                                src="<c:url value = '/resources/user/img/product/details/thumb-3.jpg' />" alt="" />
                             <img data-imgbigurl="img/product/details/product-details-4.jpg"
-                                src="<c:url value = '/resources/img/product/details/thumb-4.jpg' />" alt="" />
+                                src="<c:url value = '/resources/user/img/product/details/thumb-4.jpg' />" alt="" />
                         </div>
                     </div>
                 </div>
@@ -260,7 +248,7 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
                         <div class="product__item__pic set-bg"
-                            data-setbg="<c:url value = '/resources/img/product/product-1.jpg' />">
+                            data-setbg="<c:url value = '/resources/user/img/product/product-1.jpg' />">
                             <ul class="product__item__pic__hover">
                                 <li>
                                     <a href="#"><i class="fa fa-heart"></i></a>
@@ -282,7 +270,7 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
                         <div class="product__item__pic set-bg"
-                            data-setbg="<c:url value = '/resources/img/product/product-2.jpg' />">
+                            data-setbg="<c:url value = '/resources/user/img/product/product-2.jpg' />">
                             <ul class="product__item__pic__hover">
                                 <li>
                                     <a href="#"><i class="fa fa-heart"></i></a>
@@ -304,7 +292,7 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
                         <div class="product__item__pic set-bg"
-                            data-setbg="<c:url value = '/resources/img/product/product-3.jpg' />">
+                            data-setbg="<c:url value = '/resources/user/img/product/product-3.jpg' />">
                             <ul class="product__item__pic__hover">
                                 <li>
                                     <a href="#"><i class="fa fa-heart"></i></a>
@@ -326,7 +314,7 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
                         <div class="product__item__pic set-bg"
-                            data-setbg="<c:url value = '/resources/img/product/product-7.jpg' />">
+                            data-setbg="<c:url value = '/resources/user/img/product/product-7.jpg' />">
                             <ul class="product__item__pic__hover">
                                 <li>
                                     <a href="#"><i class="fa fa-heart"></i></a>
@@ -355,14 +343,7 @@
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
-    <script src="<c:url value = '/resources/js/jquery-3.3.1.min.js'/>"></script>
-    <script src="<c:url value = '/resources/js/bootstrap.min.js'/>"></script>
-    <script src="<c:url value = '/resources/js/jquery.nice-select.min.js'/>"></script>
-    <script src="<c:url value = '/resources/js/jquery-ui.min.js'/>"></script>
-    <script src="<c:url value = '/resources/js/jquery.slicknav.js'/>"></script>
-    <script src="<c:url value = '/resources/js/mixitup.min.js'/>"></script>
-    <script src="<c:url value = '/resources/js/owl.carousel.min.js'/>"></script>
-    <script src="<c:url value = '/resources/js/main.js'/>"></script>
+    <jsp:include page="./common/link-js.jsp"/>
 </body>
 
 </html>

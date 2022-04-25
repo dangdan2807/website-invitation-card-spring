@@ -671,7 +671,7 @@ ol {
 }
 
 .hero__search__form form input {
-	width: 70%;
+	width: 86%;
 	border: none;
 	height: 48px;
 	font-size: 16px;
@@ -776,6 +776,10 @@ ol {
 	padding: 12px 0 10px;
 	background: #ffffff;
 	display: block;
+}
+
+.categories__item:hover h5 a {
+	color: #7fad39;
 }
 
 .categories__slider .col-lg-3 {
