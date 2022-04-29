@@ -22,15 +22,15 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         <div class="footer__widget">
           <h6>Liên kết hữu ích</h6>
           <ul>
-            <li><a href="<c:url value = "/contact" />">Về chúng tôi</a></li>
-            <li><a href="<c:url value = "/contact" />">Về cửa hàng của chúng tôi</a></li>
-            <li><a href="<c:url value = "/contact" />">Thông tin giao hàng</a></li>
+            <li><a href="<c:url value = '/contact' />">Về chúng tôi</a></li>
+            <li><a href="<c:url value = '/contact' />">Về cửa hàng của chúng tôi</a></li>
+            <li><a href="<c:url value = '/contact' />">Thông tin giao hàng</a></li>
             <li><a href="#">Chính sách bảo mật</a></li>
           </ul>
           <ul>
-            <li><a href="<c:url value = "/contact" />">Chúng tôi là ai</a></li>
-            <li><a href="<c:url value = "/contact" />">Dịch vụ của chúng tôi</a></li>
-            <li><a href="<c:url value = "/contact" />">Liên hệ</a></li>
+            <li><a href="<c:url value = '/contact' />">Chúng tôi là ai</a></li>
+            <li><a href="<c:url value = '/contact' />">Dịch vụ của chúng tôi</a></li>
+            <li><a href="<c:url value = '/contact' />">Liên hệ</a></li>
           </ul>
         </div>
       </div>

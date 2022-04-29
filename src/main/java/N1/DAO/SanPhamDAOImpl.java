@@ -30,8 +30,8 @@ public class SanPhamDAOImpl implements SanPhamDAO {
             String tenSp = item[1].toString();
             double giaSp = Double.parseDouble(item[2].toString());
             String hinhAnh = item[3].toString();
-            SanPham sanPham = new SanPham(maSp, tenSp, hinhAnh, giaSp);
-            dataList.add(sanPham);
+            // SanPham sanPham = new SanPham(maSp, tenSp, hinhAnh, giaSp);
+            // dataList.add(sanPham);
         });
         return dataList;
     }

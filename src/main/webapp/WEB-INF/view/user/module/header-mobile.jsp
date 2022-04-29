@@ -28,16 +28,6 @@
 		</div>
 	</div>
 	<div class="humberger__menu__widget">
-		<!-- chọn ngôn ngữ -->
-		<!-- <div class="header__top__right__language">
-            <img src="<c:url value = '/resources/img/language.png'/>" alt="">
-            <div>Tiếng Việt</div>
-            <span class="arrow_carrot-down"></span>
-            <ul>
-                <li><a href="#">Tiếng Việt</a></li>
-                <li><a href="#">English</a></li>
-            </ul>
-        </div> -->
 		<div class="header__top__right__auth">
 			<a href="#"><i class="fa fa-user"></i> Đăng nhập</a>
 		</div>

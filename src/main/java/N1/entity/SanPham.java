@@ -26,47 +26,94 @@ public class SanPham implements Serializable {
     @Column(name = "hinhAnh", columnDefinition = "TEXT")
     private String hinhAnh;
 
+    @Column(name = "moTa", nullable = false, columnDefinition = "TEXT DEFAULT(N'')")
+    private String moTa;
+
     @Column(name = "giaSP", nullable = false, columnDefinition = "MONEY DEFAULT(0) CHECK(giaSP >= 0)")
     private double giaSP;
+
+    @Column(name = "giamGia", nullable = false, columnDefinition = "float DEFAULT(0) CHECK(giamGia >= 0)")
+    private double giamGia;
+
+    @Column(name = "giaMua", nullable = false, columnDefinition = "MONEY DEFAULT(0) CHECK(giaMua >= 0)")
+    private double giaMua;
 
     @OneToMany(mappedBy = "sanPham")
     private List<ChiTietHoaDon> dsCTHoaDon;
 
     @OneToMany(mappedBy = "sanPham")
     private List<ChiTietLoaiSP> dsLoaiSP;
-    
+
     @OneToMany(mappedBy = "sanPham")
     private List<DanhGia> dsDanhGia;
 
     @OneToMany(mappedBy = "sanPham")
     private Set<GioHang> dsGioHang;
 
-    public SanPham(int maSp, String tenSp, String hinhAnh, double giaSP, List<ChiTietLoaiSP> dsLoaiSP) {
+    public SanPham(int maSp, String tenSp, String hinhAnh, String moTa, double giaSP, double giamGia, double giaMua,
+            List<ChiTietLoaiSP> dsLoaiSP) {
         this.maSp = maSp;
         this.tenSp = tenSp;
         this.hinhAnh = hinhAnh;
+        this.moTa = moTa;
         this.giaSP = giaSP;
+        this.giamGia = giamGia;
+        this.giaMua = giaMua;
         this.dsLoaiSP = dsLoaiSP;
     }
 
-    public SanPham(int maSp, String tenSp, String hinhAnh, double giaSP) {
+    public SanPham(int maSp, String tenSp, String hinhAnh, String moTa, double giaSP, double giamGia, double giaMua) {
         this.maSp = maSp;
         this.tenSp = tenSp;
         this.hinhAnh = hinhAnh;
+        this.moTa = moTa;
         this.giaSP = giaSP;
+        this.giamGia = giamGia;
+        this.giaMua = giaMua;
     }
 
-    public SanPham(String tenSp, String hinhAnh, double giaSP, List<ChiTietLoaiSP> dsLoaiSP) {
+    public SanPham(String tenSp, String hinhAnh, String moTa, double giaSP, double giamGia, double giaMua,
+            List<ChiTietLoaiSP> dsLoaiSP) {
         this.tenSp = tenSp;
         this.hinhAnh = hinhAnh;
+        this.moTa = moTa;
         this.giaSP = giaSP;
+        this.giamGia = giamGia;
+        this.giaMua = giaMua;
         this.dsLoaiSP = dsLoaiSP;
     }
 
-    public SanPham(String tenSp, String hinhAnh, double giaSP) {
+    public SanPham(String tenSp, String hinhAnh, String moTa, double giaSP, double giamGia, double giaMua) {
         this.tenSp = tenSp;
         this.hinhAnh = hinhAnh;
+        this.moTa = moTa;
         this.giaSP = giaSP;
+        this.giamGia = giamGia;
+        this.giaMua = giaMua;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
+
+    public double getGiamGia() {
+        return giamGia;
+    }
+
+    public void setGiamGia(double giamGia) {
+        this.giamGia = giamGia;
+    }
+
+    public double getGiaMua() {
+        return giaMua;
+    }
+
+    public void setGiaMua(double giaMua) {
+        this.giaMua = giaMua;
     }
 
     public SanPham() {

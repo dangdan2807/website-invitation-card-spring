@@ -1,15 +1,24 @@
-/*  ---------------------------------------------------
-    Template Name: Ogani
-    Description:  Ogani eCommerce  HTML Template
-    Author: Colorlib
-    Author URI: https://colorlib.com
-    Version: 1.0
-    Created: Colorlib
----------------------------------------------------------  */
-
 'use strict';
 
 (function ($) {
+    /*------------------
+        All Functions
+        uck
+    --------------------*/
+    const formatMoney = (value) => {
+        return new Intl.NumberFormat(
+            'vi-Vn',
+            { maximumSignificantDigits: 3 }).format(value)
+            + "đ";
+    }
+
+    const formatMoneyBySelect = function () {
+        var price = $(this).text();
+        $(this).text(new Intl.NumberFormat(
+            'vi-Vn',
+            { maximumSignificantDigits: 3 }).format(price)
+        + "đ");
+    }
 
     /*------------------
         Preloader
@@ -29,6 +38,14 @@
             var containerEl = document.querySelector('.featured__filter');
             var mixer = mixitup(containerEl);
         }
+
+        /*------------------
+            Format Money vnd
+        -------------------- */
+        // uck
+        $('.featured__item__text > h5').each(formatMoneyBySelect);
+        $('.latest-product__item__text > span').each(formatMoneyBySelect);
+        $('.product__item__price > span').each(formatMoneyBySelect);
     });
 
     /*------------------
@@ -162,6 +179,7 @@
     /*-----------------------
 		Price Range Slider
 	------------------------ */
+    // uck
     var rangeSlider = $(".price-range"),
         minamount = $("#minamount"),
         maxamount = $("#maxamount"),
@@ -173,12 +191,12 @@
         max: maxPrice,
         values: [minPrice, maxPrice],
         slide: function (event, ui) {
-            minamount.val('$' + ui.values[0]);
-            maxamount.val('$' + ui.values[1]);
+            minamount.val(formatMoney(ui.values[0] + '000'));
+            maxamount.val(formatMoney(ui.values[1] + '000'));
         }
     });
-    minamount.val('$' + rangeSlider.slider("values", 0));
-    maxamount.val('$' + rangeSlider.slider("values", 1));
+    minamount.val(formatMoney(rangeSlider.slider("values", 0) + "000"));
+    maxamount.val(formatMoney(rangeSlider.slider("values", 1) + "000"));
 
     /*--------------------------
         Select

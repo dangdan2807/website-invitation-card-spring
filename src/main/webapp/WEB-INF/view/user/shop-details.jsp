@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Shop Details</title>
 
-    <jsp:include page="./common/link-css.jsp"/>
+    <jsp:include page="./module/link-css.jsp"/>
 </head>
 
 <body>
@@ -19,19 +19,19 @@
     </div>
 
     <!-- Humberger Begin -->
-    <jsp:include page="./common/header-mobile.jsp" >
+    <jsp:include page="./module/header-mobile.jsp" >
     	<jsp:param name="activePage" value="shopGrid" />
     </jsp:include>
     <!-- Humberger End -->
 
     <!-- Header Section Begin -->
-    <jsp:include page="./common/header.jsp" >
+    <jsp:include page="./module/header.jsp" >
     	<jsp:param name="activePage" value="shopGrid" />
     </jsp:include>
     <!-- Header Section End -->
 
     <!-- Search bar Begin -->
-    <jsp:include page="./common/search-bar.jsp" >
+    <jsp:include page="./module/search-bar.jsp" >
         <jsp:param name="showBanner" value="false" />
     </jsp:include>
 
@@ -339,11 +339,11 @@
     <!-- Related Product Section End -->
 
     <!-- Footer Section Begin -->
-    <jsp:include page="./common/footer.jsp" />
+    <jsp:include page="./module/footer.jsp" />
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
-    <jsp:include page="./common/link-js.jsp"/>
+    <jsp:include page="./module/link-js.jsp"/>
 </body>
 
 </html>
