@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>  
 <%@ page import="java.util.Random"  %>  
+<%@ page import="java.text.DecimalFormat"  %>  
+<%@ page import="N1.Service.*"  %>  
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -10,7 +13,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Trang chủ</title>
 
-    <jsp:include page="./common/link-css.jsp"/>
+    <jsp:include page="./module/link-css.jsp"/>
 </head>
 
 <body>
@@ -20,19 +23,19 @@
     </div>
 
     <!-- Humberger Begin -->
-    <jsp:include page="./common/header-mobile.jsp">
+    <jsp:include page="./module/header-mobile.jsp">
         <jsp:param name="activePage" value="home" />
     </jsp:include>
     <!-- Humberger End -->
 
     <!-- Header Section Begin -->
-    <jsp:include page="./common/header.jsp">
+    <jsp:include page="./module/header.jsp">
         <jsp:param name="activePage" value="home" />
     </jsp:include>
     <!-- Header Section End -->
 
     <!-- Search bar Begin -->
-    <jsp:include page="./common/search-bar.jsp">
+    <jsp:include page="./module/search-bar.jsp">
         <jsp:param name="showBanner" value="true" />
     </jsp:include>
     <!-- Search bar End -->
@@ -73,166 +76,35 @@
                         <ul>
                             <li class="active" data-filter="*">Tất cả</li>
                             <c:forEach var="loaiSp" items="${dsLoaiSanPham}">
-                                <li data-filter=".${loaiSp.tenLSP}">${loaiSp.tenLSP}</li>
+                                <li data-filter='.${fn:replace(loaiSp.tenLSP, " ", "-")}'>${loaiSp.tenLSP}</li>
                             </c:forEach>
                         </ul>
                     </div>
                 </div>
             </div>
             <div id="featured__filter" class="row featured__filter">
-                <div class="col-lg-3 col-md-4 col-sm-6 mix Đào">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg"
-                            data-setbg="${pageContext.request.contextPath}/resources/user/img/featured/feature-1.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fastfood">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg"
-                            data-setbg="<c:url value = '/resources/user/img/featured/feature-2.jpg' />">
-                            <ul class="featured__item__pic__hover">
-                                <li>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
+                <c:forEach var="sanPham" items="${dsSanPham}" begin="0" end="7">
+                    <div class='col-lg-3 col-md-4 col-sm-6 mix <c:forEach var="lsp" items="${sanPham.dsLoaiSP}">${fn:replace(lsp.loaiSanPham.tenLSP, " ", "-")} </c:forEach>'>
+                        <div class="featured__item"
+                            onclick=window.location.href='<c:url value = "/trang-chu" />'>
+                            <div class="featured__item__pic set-bg"
+                                data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
+                                <ul class="featured__item__pic__hover">
+                                    <li>
+                                        <a href="#"><i class="fa fa-heart"></i></a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="featured__item__text">
+                                <h6><a href="#">${sanPham.tenSp}</a></h6>
+                                <h5>${sanPham.giaSP}</h5>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fresh-meat">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg"
-                            data-setbg="<c:url value = '/resources/user/img/featured/feature-3.jpg'/>">
-                            <ul class="featured__item__pic__hover">
-                                <li>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fastfood oranges">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg"
-                            data-setbg="<c:url value = '/resources/user/img/featured/feature-4.jpg'/>">
-                            <ul class="featured__item__pic__hover">
-                                <li>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fresh-meat vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg"
-                            data-setbg="<c:url value = '/resources/user/img/featured/feature-5.jpg'/>">
-                            <ul class="featured__item__pic__hover">
-                                <li>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fastfood">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg"
-                            data-setbg="<c:url value = '/resources/user/img/featured/feature-6.jpg'/>">
-                            <ul class="featured__item__pic__hover">
-                                <li>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fresh-meat vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg"
-                            data-setbg="<c:url value = '/resources/user/img/featured/feature-7.jpg'/>">
-                            <ul class="featured__item__pic__hover">
-                                <li>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fastfood vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg"
-                            data-setbg="<c:url value = '/resources/user/img/featured/feature-8.jpg'/>">
-                            <ul class="featured__item__pic__hover">
-                                <li>
-                                    <a href="#"><i class="fa fa-heart"></i></a>
-                                </li>
-                                <li>
-                                    <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">Crab Pool Security</a></h6>
-                            <h5>$30.00</h5>
-                        </div>
-                    </div>
-                </div>
+                </c:forEach>
             </div>
         </div>
     </section>
@@ -266,62 +138,30 @@
                         <h4>Sản phẩm mới nhất</h4>
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-1.jpg'/>" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-2.jpg'/>" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-3.jpg'/>" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
+                                <c:forEach var="sanPham" items="${dsSanPhamMoi}" begin="0" end="2">
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="<c:url value = '${sanPham.hinhAnh}'/>" alt="" />
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>${sanPham.tenSp}</h6>
+                                            <span>${sanPham.giaSP}</span>
+                                        </div>
+                                    </a>
+                                </c:forEach>
                             </div>
                             <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-1.jpg'/>" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-2.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-3.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
+                                <c:forEach var="sanPham" items="${dsSanPhamMoi}" begin="3" end="6">
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="<c:url value = '${sanPham.hinhAnh}'/>" alt="" />
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>${sanPham.tenSp}</h6>
+                                            <span>${sanPham.giaSP}</span>
+                                        </div>
+                                    </a>
+                                </c:forEach>
                             </div>
                         </div>
                     </div>
@@ -331,62 +171,30 @@
                         <h4>Sản phẩm hàng đầu</h4>
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-1.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-2.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-3.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
+                                <c:forEach var="sanPham" items="${dsSanPhamTot}" begin="0" end="2">
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="<c:url value = '${sanPham.hinhAnh}' />" alt="" />
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>${sanPham.tenSp}</h6>
+                                            <span>${sanPham.giaSP}</span>
+                                        </div>
+                                    </a>
+                                </c:forEach>
                             </div>
                             <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-1.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-2.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-3.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
+                                <c:forEach var="sanPham" items="${dsSanPhamTot}" begin="3" end="6">
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="<c:url value = '${sanPham.hinhAnh}' />" alt="" />
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>${sanPham.tenSp}</h6>
+                                            <span>${sanPham.giaSP}</span>
+                                        </div>
+                                    </a>
+                                </c:forEach>
                             </div>
                         </div>
                     </div>
@@ -396,62 +204,30 @@
                         <h4>Đánh giá Sản phẩm</h4>
                         <div class="latest-product__slider owl-carousel">
                             <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-1.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-2.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-3.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
+                                <c:forEach var="sanPham" items="${dsDanhGiaSp}" begin="0" end="2">
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="<c:url value = '${sanPham.hinhAnh}' />" alt="" />
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>${sanPham.tenSp}</h6>
+                                            <span>${sanPham.giaSP}</span>
+                                        </div>
+                                    </a>
+                                </c:forEach>
                             </div>
                             <div class="latest-prdouct__slider__item">
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-1.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-2.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
-                                <a href="#" class="latest-product__item">
-                                    <div class="latest-product__item__pic">
-                                        <img src="<c:url value = '/resources/user/img/latest-product/lp-3.jpg' />" alt="" />
-                                    </div>
-                                    <div class="latest-product__item__text">
-                                        <h6>Crab Pool Security</h6>
-                                        <span>$30.00</span>
-                                    </div>
-                                </a>
+                                <c:forEach var="sanPham" items="${dsDanhGiaSp}" begin="3" end="6">
+                                    <a href="#" class="latest-product__item">
+                                        <div class="latest-product__item__pic">
+                                            <img src="<c:url value = '${sanPham.hinhAnh}' />" alt="" />
+                                        </div>
+                                        <div class="latest-product__item__text">
+                                            <h6>${sanPham.tenSp}</h6>
+                                            <span>${sanPham.giaSP}</span>
+                                        </div>
+                                    </a>
+                                </c:forEach>
                             </div>
                         </div>
                     </div>
@@ -462,9 +238,9 @@
     <!-- Latest Product Section End -->
 
     <!-- Footer Section Begin -->
-    <jsp:include page="./common/footer.jsp" />
+    <jsp:include page="./module/footer.jsp" />
     <!-- Footer Section End -->
-    <jsp:include page="./common/link-js.jsp"/>
+    <jsp:include page="./module/link-js.jsp"/>
 </body>
 
 </html>

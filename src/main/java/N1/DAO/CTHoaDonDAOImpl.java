@@ -34,9 +34,9 @@ public class CTHoaDonDAOImpl implements CTHoaDonDAO {
             String tenSp = item[4].toString();
             double giaSp = Double.parseDouble(item[5].toString());
             String hinhAnh = item[6].toString();
-            SanPham sanPham = new SanPham(maSp, tenSp, hinhAnh, giaSp);
-            ChiTietHoaDon ctHoaDon = new ChiTietHoaDon(sanPham, soLuong, giaBan);
-            dataList.add(ctHoaDon);
+            // SanPham sanPham = new SanPham(maSp, tenSp, hinhAnh, giaSp);
+            // ChiTietHoaDon ctHoaDon = new ChiTietHoaDon(sanPham, soLuong, giaBan);
+            // dataList.add(ctHoaDon);
         });
 
         return dataList;
