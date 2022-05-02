@@ -60,21 +60,9 @@
 								<button class="btn btn-primary" data-toggle="modal"
 									data-target="#productModal">Thêm thiệp mời</button>
 							</div>
+							
 							<div class="col-8" style="text-align: right">
-								<nav aria-label="Page navigation example"
-									style="display: inline-block">
-									<ul class="pagination">
-										<li class="page-item"><a class="page-link" href="#"
-											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-										</a></li>
-										<li class="page-item"><a class="page-link" href="#">1</a></li>
-										<li class="page-item"><a class="page-link" href="#">2</a></li>
-										<li class="page-item"><a class="page-link" href="#">3</a></li>
-										<li class="page-item"><a class="page-link" href="#"
-											aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-										</a></li>
-									</ul>
-								</nav>
+								<jsp:include page="common/page.jsp"></jsp:include>
 							</div>
 						</div>
 						<div class="card-body">
@@ -83,6 +71,7 @@
 									width="100%" cellspacing="0">
 									<thead>
 										<tr>
+											<th>#</th>
 											<th>Mã thiệp</th>
 											<th>Tên thiệp</th>
 											<th>Giá nhập</th>
@@ -95,6 +84,7 @@
 									</thead>
 									<tfoot>
 										<tr>
+											<th>#</th>
 											<th>Mã thiệp</th>
 											<th>Tên thiệp</th>
 											<th>Giá nhập</th>
@@ -106,32 +96,27 @@
 										</tr>
 									</tfoot>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Hiện đại</td>
-											<td>100.000đ</td>
-											<td>100.000đ</td>
-											<td>5%</td>
-											<td>100.000đ</td>
-											<td>Thiệp cưới</td>
-											<td class="text-center">
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Hiện đại</td>
-											<td>100.000đ</td>
-											<td>100.000đ</td>
-											<td>5%</td>
-											<td>100.000đ</td>
-											<td>Thiệp cưới</td>
-											<td class="text-center">
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
+										<c:forEach var="sanPham" items="${dsSanPham}" varStatus="loop">
+											<tr>
+												<td>${loop.index+1}</td>
+												<td>${sanPham.maSp}</td>
+												<td>${sanPham.tenSp}</td>
+												<td>${sanPham.giaMua}</td>
+												<td>${sanPham.giaSP}</td>
+												<td>${sanPham.giamGia}</td>
+												<td>${sanPham.giaSP*sanPham.giamGia/100}</td>
+												<td>
+													<c:forEach var="loaiSp" items="${sanPham.dsLoaiSP}">
+														${loaiSp.loaiSanPham.tenLSP}
+														<br/>
+													</c:forEach>
+												</td>
+												<td class="text-center">
+													<button class="btn btn-warning btn-edit">Sửa</button>
+													<button class="btn btn-danger btn-delete">Xóa</button>
+												</td>
+											</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>
@@ -142,20 +127,7 @@
 									data-target="#productModal">Thêm thiệp mời</button>
 							</div>
 							<div class="col-8" style="text-align: right">
-								<nav aria-label="Page navigation example"
-									style="display: inline-block">
-									<ul class="pagination">
-										<li class="page-item"><a class="page-link" href="#"
-											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-										</a></li>
-										<li class="page-item"><a class="page-link" href="#">1</a></li>
-										<li class="page-item"><a class="page-link" href="#">2</a></li>
-										<li class="page-item"><a class="page-link" href="#">3</a></li>
-										<li class="page-item"><a class="page-link" href="#"
-											aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-										</a></li>
-									</ul>
-								</nav>
+								<jsp:include page="common/page.jsp"></jsp:include>
 							</div>
 						</div>
 					</div>
@@ -232,14 +204,16 @@
 								type="text" class="form-control" id="image">
 						</div>
 						<div class="mb-3">
-							<label for="image" class="form-label">Loại thiệp</label> 
-							<select class="form-select form-control" multiple
-								aria-label="multiple select example" aria-describedby="categoryHelp">
+							<label for="image" class="form-label">Loại thiệp</label> <select
+								class="form-select form-control" multiple
+								aria-label="multiple select example"
+								aria-describedby="categoryHelp">
 								<option selected>Thiệp cưới</option>
 								<option value="1">Thiệp tốt nghiệp</option>
 								<option value="2">Thiệp sinh nhật</option>
 							</select>
-							<div id="categoryHelp" class="form-text help-text">Bấm ctrl để chọn nhiều mục</div>
+							<div id="categoryHelp" class="form-text help-text">Bấm ctrl
+								để chọn nhiều mục</div>
 						</div>
 
 					</form>

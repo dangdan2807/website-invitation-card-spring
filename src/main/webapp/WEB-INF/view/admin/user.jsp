@@ -79,6 +79,7 @@
 									cellspacing="0">
 									<thead>
 										<tr>
+											<th>#</th>
 											<th>Mã người dùng</th>
 											<th>Họ và tên</th>
 											<th>Email</th>
@@ -89,7 +90,8 @@
 									</thead>
 									<tfoot>
 										<tr>
-											<th>MaND</th>
+											<th>#</th>
+											<th>Mã người dùng</th>
 											<th>Họ và tên</th>
 											<th>Email</th>
 											<th>Số điện thoại</th>
@@ -98,28 +100,20 @@
 										</tr>
 									</tfoot>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Trần Văn Nhân</td>
-											<td>tranvannhan1911@gmail.com</td>
-											<td>0369462308</td>
-											<td>TP.HCM</td>
-											<td class="text-center">
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Trần Văn Nhân</td>
-											<td>tranvannhan1911@gmail.com</td>
-											<td>0369462308</td>
-											<td>TP.HCM</td>
-											<td class="text-center">
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
+										<c:forEach var="user" items="${users}" varStatus="loop">
+											<tr>
+												<td>${loop.index+1}</td>
+												<td>${user.maND}</td>
+												<td>${user.taiKhoan.tenDangNhap}</td>
+												<td>${user.tenND}</td>
+												<td>${user.sdt}</td>
+												<td>${user.diaChi}</td>
+												<td class="text-center">
+													<button class="btn btn-warning btn-edit">Sửa</button>
+													<button class="btn btn-danger btn-delete">Xóa</button>
+												</td>
+											</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>

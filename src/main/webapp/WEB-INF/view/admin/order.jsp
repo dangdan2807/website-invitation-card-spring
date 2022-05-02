@@ -82,6 +82,7 @@
 									width="100%" cellspacing="0">
 									<thead>
 										<tr>
+											<th>#</th>
 											<th>Mã hóa đơn</th>
 											<th>Tên khách hàng</th>
 											<th>Số điện thoại</th>
@@ -95,6 +96,7 @@
 									</thead>
 									<tfoot>
 										<tr>
+											<th>#</th>
 											<th>Mã hóa đơn</th>
 											<th>Tên khách hàng</th>
 											<th>Số điện thoại</th>
@@ -107,34 +109,24 @@
 										</tr>
 									</tfoot>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Trần Văn Nhân</td>
-											<td>0369462308</td>
-											<td>TP.HCM</td>
-											<td>100.000đ</td>
-											<td>Đang giao hàng</td>
-											<td>27/04/2022</td>
-											<td>20/04/2022</td>
-											<td class="text-center">
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Trần Văn Nhân</td>
-											<td>0369462308</td>
-											<td>TP.HCM</td>
-											<td>100.000đ</td>
-											<td>Đang giao hàng</td>
-											<td>27/04/2022</td>
-											<td>20/04/2022</td>
-											<td class="text-center">
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
+										<c:forEach var="order" items="${orders}" varStatus="loop">
+											<tr>
+												<td>${loop.index + 1}</td>
+												<td>${order.maHD }</td>
+												<td>${order.nguoiDung.tenND }</td>
+												<td>${order.nguoiDung.sdt }</td>
+												<td>${order.diaChiGiaoHang }</td>
+												<td>${order.tongTien }<sup>đ</sup></td>
+												<td>${order.trangThaiDonHang }</td>
+												<td>${order.dateToString(order.ngayGiaoHang) }</td>
+												<td>${order.dateToString(order.ngayLHD) }</td>
+												<td class="text-center">
+													<button class="btn btn-warning btn-edit">Sửa</button>
+													<button class="btn btn-danger btn-delete">Xóa</button>
+												</td>
+											</tr>
+										</c:forEach>
+										
 									</tbody>
 								</table>
 							</div>
