@@ -48,7 +48,7 @@ public class HoaDon implements Serializable {
     @OneToMany(mappedBy = "hoaDon")
     private List<ChiTietHoaDon> dsCTHoaDon;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maKH", nullable = false)
     private NguoiDung nguoiDung;
 

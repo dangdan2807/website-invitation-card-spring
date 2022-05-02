@@ -54,7 +54,7 @@
     <p>Sản phẩm</p>
     <ul>
         <c:forEach var="sanPham" items="${sanPhamList}">
-            <li>${sanPham.tenSp}</li>
+            <li>${sanPham.tenSp} - ${sanPham.dsLoaiSP.get(0).loaiSanPham.tenLSP}</li>
         </c:forEach>
     </ul>
     <hr />

@@ -106,7 +106,7 @@ public class LoginController {
 		List<NguoiDung> nguoiDungList = new ArrayList<>();
 		List<HoaDon> hoaDonList = new ArrayList<>();
 		List<ChiTietHoaDon> ctHoaDonList = new ArrayList<>();
-		List<SanPham> sanPhamList = new ArrayList<>();
+		List<SanPham> sanPhamList = sanPhamService.getDSSanPham();
 		List<ChiTietLoaiSP> ctLoaiSPList = new ArrayList<>();
 		List<LoaiSanPham> loaiSanPhamList = new ArrayList<>();
 		model.addAttribute("chucVuList", chucVuList);

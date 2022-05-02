@@ -20,7 +20,7 @@ public class ChiTietHoaDon implements Serializable {
 
     @Id
     @JoinColumn(name = "maSp", columnDefinition = "INT")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private SanPham sanPham;
 
     @Column(name = "soLuong", nullable = false, columnDefinition = "INT DEFAULT(1) CHECK(soLuong >= 1)")
