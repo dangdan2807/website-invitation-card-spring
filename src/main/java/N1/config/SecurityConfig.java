@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/resources/bootstrap/**").permitAll()
                 .antMatchers("/resources/jquery/**").permitAll()
                 .antMatchers("/resources/fonts/**").permitAll()
-                .antMatchers("/").permitAll()
+                .antMatchers("/**").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/showLoginPage")

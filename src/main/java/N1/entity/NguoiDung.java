@@ -1,6 +1,7 @@
 package N1.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -22,7 +23,7 @@ public class NguoiDung implements Serializable {
     @Column(name = "maND", nullable = false, columnDefinition = "INT")
     private int maND;
 
-    @Column(name = "tenND", nullable = false, columnDefinition = "NVARCHAR(125) DEFAULT(N'')")
+    @Column(name = "tenND", nullable = false, columnDefinition = "NVARCHAR(125)")
     private String tenND;
 
     @Column(name = "diaChi", columnDefinition = "TEXT DEFAULT('')")
@@ -31,18 +32,47 @@ public class NguoiDung implements Serializable {
     @Column(name = "sdt", columnDefinition = "VARCHAR(10) DEFAULT('')")
     private String sdt;
 
+    @Column(name = "hinhAnh", columnDefinition = "text DEFAULT (N'')")
+    private String hinhAnh;
+
     @OneToOne
-    @JoinColumn(name = "email", nullable = false, unique = true, columnDefinition = "VARCHAR(255)")
+    @JoinColumn(name = "email", nullable = false, unique = true, columnDefinition = "VARCHAR(255) DEFAULT('')")
     private TaiKhoan taiKhoan;
 
     @OneToMany(mappedBy = "nguoiDung", fetch = FetchType.LAZY)
-	private Set<HoaDon> hoaDon;
+    private Set<HoaDon> hoaDon;
+
+    @OneToMany(mappedBy = "nguoiDung", fetch = FetchType.LAZY)
+    private List<DanhGia> danhGia;
+
+    @OneToMany(mappedBy = "nguoiDung", fetch = FetchType.LAZY)
+    private Set<GioHang> gioHang;
 
     public NguoiDung() {
     }
 
+    public NguoiDung(int maND) {
+        this.maND = maND;
+    }
+
+    public NguoiDung(int maND, String tenND, String diaChi, String sdt, TaiKhoan taiKhoan, Set<HoaDon> hoaDon) {
+        this.maND = maND;
+        this.tenND = tenND;
+        this.diaChi = diaChi;
+        this.sdt = sdt;
+        this.taiKhoan = taiKhoan;
+        this.hoaDon = hoaDon;
+    }
+
     public NguoiDung(int maND, String tenND, String diaChi, String sdt, TaiKhoan taiKhoan) {
         this.maND = maND;
+        this.tenND = tenND;
+        this.diaChi = diaChi;
+        this.sdt = sdt;
+        this.taiKhoan = taiKhoan;
+    }
+
+    public NguoiDung(String tenND, String diaChi, String sdt, TaiKhoan taiKhoan) {
         this.tenND = tenND;
         this.diaChi = diaChi;
         this.sdt = sdt;
@@ -89,5 +119,4 @@ public class NguoiDung implements Serializable {
         this.taiKhoan = taiKhoan;
     }
 
-    
 }

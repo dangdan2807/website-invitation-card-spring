@@ -18,7 +18,7 @@ public class ChucVuServiceImpl implements ChucVuService {
 	@Override
 	@Transactional
 	public List<ChucVu> getDSChucVu() {
-		return chucVuDAO.getDanhSachChucVu();
+		return chucVuDAO.getDSChucVu();
 	}
 
 }

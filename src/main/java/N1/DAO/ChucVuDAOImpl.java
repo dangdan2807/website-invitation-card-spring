@@ -1,8 +1,8 @@
 package N1.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +17,20 @@ public class ChucVuDAOImpl implements ChucVuDAO {
     private SessionFactory sessionFactory;
 
     @Override
-    public List<ChucVu> getDanhSachChucVu() {
+    @SuppressWarnings("unchecked")
+    public List<ChucVu> getDSChucVu() {
         Session currentSession = sessionFactory.getCurrentSession();
+        String queryStr = "SELECT maChucVu, tenChucVu FROM ChucVu";
+        List<Object[]> results = currentSession.createNativeQuery(queryStr).getResultList();
 
-        Query<ChucVu> theQuery = currentSession.createQuery("from ChucVu", ChucVu.class);
-        // execute query and get result list
-        List<ChucVu> persons = theQuery.getResultList();
-        return persons;
+        List<ChucVu> dataList = new ArrayList<>();
+        results.stream().forEach(item -> {
+            int maChucVu = Integer.parseInt(item[0].toString());
+            String tenChucVu = item[1].toString();
+            dataList.add(new ChucVu(maChucVu, tenChucVu));
+        });
+
+        return dataList;
     }
 
     @Override

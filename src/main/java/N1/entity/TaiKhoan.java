@@ -25,7 +25,7 @@ public class TaiKhoan implements Serializable {
     private int tinhTrang;
 
     @OneToOne
-    @JoinColumn(name = "maChucVu", nullable = false, unique = true, columnDefinition = "INT")
+    @JoinColumn(name = "maChucVu", nullable = false, columnDefinition = "INT")
     private ChucVu chucVu;
 
     @OneToOne(mappedBy = "taiKhoan", cascade = CascadeType.ALL)
@@ -45,6 +45,12 @@ public class TaiKhoan implements Serializable {
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
         this.tinhTrang = 1;
+    }
+
+    public TaiKhoan(String tenDangNhap, int tinhTrang, ChucVu chucVu) {
+        this.tenDangNhap = tenDangNhap;
+        this.tinhTrang = tinhTrang;
+        this.chucVu = chucVu;
     }
 
     public String getTenDangNhap() {

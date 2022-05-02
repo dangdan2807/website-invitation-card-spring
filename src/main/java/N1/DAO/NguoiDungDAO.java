@@ -1,5 +1,9 @@
 package N1.DAO;
 
-public interface NguoiDungDAO {
+import java.util.List;
 
+import N1.entity.NguoiDung;
+
+public interface NguoiDungDAO {
+    public List<NguoiDung> getDSNguoiDung();
 }
