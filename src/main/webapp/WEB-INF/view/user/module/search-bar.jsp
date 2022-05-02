@@ -11,9 +11,9 @@
                         <span>Loại thiệp</span>
                     </div>
                     <ul>
-                    	<c:forEach var="loaiSp" items="${dsLoaiSanPham}">
-                        	<li><a href="#">${loaiSp.tenLSP}</a></li>
-                    	</c:forEach>
+                        <c:forEach var="loaiSp" items="${dsLoaiSanPham}">
+                            <li><a href='<c:url value = "/category/id=${loaiSp.maLSP}" />'>${loaiSp.tenLSP}</a></li>
+                        </c:forEach>
                     </ul>
                 </div>
             </div>

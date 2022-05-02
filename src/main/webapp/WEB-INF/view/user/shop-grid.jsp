@@ -94,7 +94,7 @@
                                 <div class="latest-product__slider owl-carousel">
                                     <div class="latest-prdouct__slider__item">
                                         <c:forEach var="sanPham" items="${dsSanPhamMoi}" begin="0" end="2">
-                                            <a href="#" class="latest-product__item">
+                                            <a href="<c:url value = '/product/id=${sanPham.maSp}'/>" class="latest-product__item">
                                                 <div class="latest-product__item__pic">
                                                     <img src="<c:url value = '${sanPham.hinhAnh}'/>"
                                                     alt="" />
@@ -108,7 +108,7 @@
                                     </div>
                                     <div class="latest-prdouct__slider__item">
                                         <c:forEach var="sanPham" items="${dsSanPhamMoi}" begin="3" end="6">
-                                            <a href="#" class="latest-product__item">
+                                            <a href="<c:url value = '/product/id=${sanPham.maSp}'/>" class="latest-product__item">
                                                 <div class="latest-product__item__pic">
                                                     <img src="<c:url value = '${sanPham.hinhAnh}'/>"
                                                     alt="" />
@@ -134,25 +134,22 @@
                             <div class="product__discount__slider owl-carousel">
                                 <c:forEach var="sanPham" items="${dsSpGiamGia}" begin="0" end="2">
                                     <div class="col-lg-4">
-                                        <div class="product__discount__item">
+                                        <div class="product__discount__item"
+                                            onclick=window.location.href='<c:url value = "/product/id=${sanPham.maSp}" />'
+                                            >
                                             <div class="product__discount__item__pic set-bg"
-                                                data-setbg="<c:url value = '/resources/user/img/product/discount/pd-1.jpg' />">
+                                                data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
                                                 <div class="product__discount__percent">-${sanPham.giamGia}</div>
                                                 <ul class="product__item__pic__hover">
-                                                    <li>
-                                                        <a href="#"><i class="fa fa-heart"></i></a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                                    </li>
+                                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
                                                 </ul>
                                             </div>
                                             <div class="product__discount__item__text">
-                                                <h5><a href="#">${sanPham.tenSp}</a></h5>
+                                                <h5><a href="<c:url value = '/product/id=${sanPham.maSp}'/>">${sanPham.tenSp}</a></h5>
                                                 <div class="product__item__price">
+                                                    <strong>${sanPham.giaSP * (1 - sanPham.giamGia / 100)}</strong>
                                                     <span>${sanPham.giaSP}</span>
-                                                    <br />
-                                                    <span>${sanPham.giaSP * (100 - sanPham.giamGia)}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -174,7 +171,7 @@
                             </div>
                             <div class="col-lg-4 col-md-4">
                                 <div class="filter__found">
-                                    <h6>Tìm thấy <span>16</span> sản phẩm</h6>
+                                    <h6>Tìm thấy <span>${slSanPham}</span> sản phẩm</h6>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-3">
@@ -186,31 +183,36 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-6">
-                            <div class="product__item">
-                                <div class="product__item__pic set-bg"
-                                    data-setbg="<c:url value = '/resources/user/img/product/product-1.jpg' />">
-                                    <ul class="product__item__pic__hover">
-                                        <li>
-                                            <a href="#"><i class="fa fa-heart"></i></a>
-                                        </li>
-                                        <li>
-                                            <a href="#"><i class="fa fa-shopping-cart"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="product__item__text">
-                                    <h6><a href="#">Crab Pool Security</a></h6>
-                                    <h5>$30.00</h5>
-                                </div>
-                            </div>
-                        </div>
+                    	<c:forEach var="sanPham" items="${dsSanPham}">
+	                        <div class="col-lg-4 col-md-6 col-sm-6">
+	                            <div class="product__item"
+                                onclick=window.location.href='<c:url value = "/product/id=${sanPham.maSp}" />'
+                                >
+	                                <div class="product__item__pic set-bg"
+	                                    data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
+	                                    <ul class="product__item__pic__hover">
+	                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+	                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+	                                    </ul>
+	                                </div>
+	                                <div class="product__item__text">
+	                                    <h6><a href="#">${sanPham.tenSp}</a></h6>
+	                                    <h5>${sanPham.giaSP}</h5>
+	                                </div>
+	                            </div>
+	                        </div>
+                        </c:forEach>
                     </div>
                     <div class="product__pagination">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                    	<c:if test="${pageOfNumber > 1}">
+	                        <a href="#"><i class="fa fa-long-arrow-left"></i></a>
+                    	</c:if>
+	                    <c:forEach var="sp" items="${dsSanPham}" begin="1" end="${pageOfNumber}" varStatus="myIndex">
+	                        <a href="#">${myIndex.index}</a>
+	                    </c:forEach>
+                        <c:if test="${pageOfNumber > 1}">
+	                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                        </c:if>
                     </div>
                 </div>
             </div>

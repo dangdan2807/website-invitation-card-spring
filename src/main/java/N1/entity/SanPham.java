@@ -167,4 +167,12 @@ public class SanPham implements Serializable {
         this.dsLoaiSP = dsLoaiSP;
     }
 
+	public List<DanhGia> getDsDanhGia() {
+		return dsDanhGia;
+	}
+
+	public void setDsDanhGia(List<DanhGia> dsDanhGia) {
+		this.dsDanhGia = dsDanhGia;
+	}
+    
 }
