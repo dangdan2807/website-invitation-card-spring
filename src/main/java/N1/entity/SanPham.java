@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +27,7 @@ public class SanPham implements Serializable {
     @Column(name = "hinhAnh", columnDefinition = "TEXT")
     private String hinhAnh;
 
-    @Column(name = "moTa", nullable = false, columnDefinition = "TEXT DEFAULT(N'')")
+    @Column(name = "moTa", nullable = false, columnDefinition = "NTEXT DEFAULT(N'')")
     private String moTa;
 
     @Column(name = "giaSP", nullable = false, columnDefinition = "MONEY DEFAULT(0) CHECK(giaSP >= 0)")
@@ -41,7 +42,7 @@ public class SanPham implements Serializable {
     @OneToMany(mappedBy = "sanPham")
     private List<ChiTietHoaDon> dsCTHoaDon;
 
-    @OneToMany(mappedBy = "sanPham")
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.EAGER)
     private List<ChiTietLoaiSP> dsLoaiSP;
 
     @OneToMany(mappedBy = "sanPham")
