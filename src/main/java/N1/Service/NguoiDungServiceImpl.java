@@ -16,8 +16,22 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 
     @Override
     @Transactional
-    public List<NguoiDung> getDSNguoiDung() {
-        return NguoiDungDAO.getDSNguoiDung();
+    public List<NguoiDung> findAll() {
+        return NguoiDungDAO.findAll();
     }
+
+	@Override
+    @Transactional
+	public List<NguoiDung> findAll(int page) {
+		// TODO Auto-generated method stub
+		return NguoiDungDAO.findAll(page);
+	}
+
+	@Override
+    @Transactional
+	public int getNumberOfPage() {
+		// TODO Auto-generated method stub
+		return NguoiDungDAO.getNumberOfPage();
+	}
 
 }

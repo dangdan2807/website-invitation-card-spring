@@ -5,5 +5,7 @@ import java.util.List;
 import N1.entity.NguoiDung;
 
 public interface NguoiDungDAO {
-    public List<NguoiDung> getDSNguoiDung();
+    public List<NguoiDung> findAll();
+    public List<NguoiDung> findAll(int page);
+    public int getNumberOfPage(); 
 }

@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import N1.DAO.SanPhamDAO;
+import N1.Service.HoaDonService;
+import N1.Service.LoaiSanPhamService;
+import N1.Service.NguoiDungService;
 import N1.Service.SanPhamService;
 import N1.Service.SanPhamServiceImpl;
 import N1.entity.ChiTietLoaiSP;
@@ -31,7 +34,15 @@ import N1.entity.TaiKhoan;
 public class AdminController {
 	@Autowired
 	private SanPhamService sanPhamService;
-	
+
+	@Autowired
+	private NguoiDungService nguoiDungService;
+
+	@Autowired
+	private LoaiSanPhamService loaiSanPhamService;
+
+	@Autowired
+	private HoaDonService hoaDonService;	
 	
 	@GetMapping("")
 	public String home() {
@@ -39,24 +50,31 @@ public class AdminController {
 	}
 	
 	@GetMapping("/user")
-	public String user(Model model) {
-		List<NguoiDung> users = new ArrayList<NguoiDung>();
-		users.add(new NguoiDung("Trần Văn A", "TP.HCM", "0987654321", new TaiKhoan("tranvana@gmail.com", "123456")));
-		users.add(new NguoiDung("Trần Văn B", "TP.HCM", "0987654321", new TaiKhoan("tranvanb@gmail.com", "123456")));
-		users.add(new NguoiDung("Trần Văn C", "Hà Nội", "0987654321", new TaiKhoan("tranvanc@gmail.com", "123456")));
-		users.add(new NguoiDung("Trần Văn D", "Ninh Bình", "0987654321", new TaiKhoan("tranvand@gmail.com", "123456")));
+	public String user(@RequestParam(name = "page", required = false) Integer page, Model model, HttpServletRequest request) {
+		String path = request.getServletPath();
+		
+		if(page == null)
+			page = 1;
+		
+		List<NguoiDung> users = nguoiDungService.findAll(page);
+		model.addAttribute("numberOfPage", nguoiDungService.getNumberOfPage());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("path", path);
 		model.addAttribute("users", users);
 		return "admin/user";
 	}
 	
 	@GetMapping("/order")
-	public String order(Model model) {
-		List<HoaDon> orders = new ArrayList<HoaDon>();
-		NguoiDung user1 = new NguoiDung("Trần Văn A", "TP.HCM", "0987654321", new TaiKhoan("tranvana@gmail.com", "123456"));
-		NguoiDung user2 = new NguoiDung("Trần Văn B", "TP.HCM", "0987654321", new TaiKhoan("tranvanb@gmail.com", "123456"));
-		orders.add(new HoaDon(1, new Date("19/11/2021"), 100000.0, 120, user1));
-		orders.add(new HoaDon(2, new Date("19/12/2021"), 120000.0, 100, user2));
-		orders.add(new HoaDon(3, new Date("01/11/2021"), 100000.0, 150, user1));
+	public String order(@RequestParam(name = "page", required = false) Integer page, Model model, HttpServletRequest request) {
+		String path = request.getServletPath();
+		
+		if(page == null)
+			page = 1;
+		
+		List<HoaDon> orders = hoaDonService.findAll(page);
+		model.addAttribute("numberOfPage", hoaDonService.getNumberOfPage());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("path", path);
 		model.addAttribute("orders", orders);
 		return "admin/order";
 	}
@@ -80,13 +98,16 @@ public class AdminController {
 	}
 	
 	@GetMapping("/category")
-	public String category(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = new ArrayList<LoaiSanPham>();
-		dsLoaiSanPham.add(new LoaiSanPham("Thiệp cưới"));
-		dsLoaiSanPham.add(new LoaiSanPham("Thiệp sinh nhật"));
-		dsLoaiSanPham.add(new LoaiSanPham("Thiệp mừng 20-11"));
-		dsLoaiSanPham.add(new LoaiSanPham("Thiệp năm mới"));
-		dsLoaiSanPham.add(new LoaiSanPham("Thiệp giáng sinh"));
+	public String category(@RequestParam(name = "page", required = false) Integer page, Model model, HttpServletRequest request) {
+		String path = request.getServletPath();
+		
+		if(page == null)
+			page = 1;
+		
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll(page);
+		model.addAttribute("numberOfPage", loaiSanPhamService.getNumberOfPage());
+		model.addAttribute("currentPage", page);
+		model.addAttribute("path", path);
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		return "admin/category";
 	}

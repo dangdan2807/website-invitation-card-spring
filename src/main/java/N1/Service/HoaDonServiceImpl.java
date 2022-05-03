@@ -20,4 +20,22 @@ public class HoaDonServiceImpl implements HoaDonService {
         return hoaDonDAO.getDSHoaDon();
     }
 
+	@Override
+    @Transactional
+	public List<HoaDon> findAll() {
+		return hoaDonDAO.findAll();
+	}
+
+	@Override
+    @Transactional
+	public List<HoaDon> findAll(int page) {
+		return hoaDonDAO.findAll(page);
+	}
+
+	@Override
+    @Transactional
+	public int getNumberOfPage() {
+		return hoaDonDAO.getNumberOfPage();
+	}
+
 }
