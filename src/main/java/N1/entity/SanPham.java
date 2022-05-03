@@ -27,7 +27,7 @@ public class SanPham implements Serializable {
     @Column(name = "hinhAnh", columnDefinition = "TEXT")
     private String hinhAnh;
 
-    @Column(name = "moTa", nullable = false, columnDefinition = "TEXT DEFAULT(N'')")
+    @Column(name = "moTa", nullable = false, columnDefinition = "NTEXT DEFAULT(N'')")
     private String moTa;
 
     @Column(name = "giaSP", nullable = false, columnDefinition = "MONEY DEFAULT(0) CHECK(giaSP >= 0)")
@@ -168,4 +168,12 @@ public class SanPham implements Serializable {
         this.dsLoaiSP = dsLoaiSP;
     }
 
+	public List<DanhGia> getDsDanhGia() {
+		return dsDanhGia;
+	}
+
+	public void setDsDanhGia(List<DanhGia> dsDanhGia) {
+		this.dsDanhGia = dsDanhGia;
+	}
+    
 }

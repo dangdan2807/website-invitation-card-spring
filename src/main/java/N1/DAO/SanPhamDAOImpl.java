@@ -1,6 +1,5 @@
 package N1.DAO;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import N1.entity.ChiTietLoaiSP;
-import N1.entity.LoaiSanPham;
 import N1.entity.SanPham;
 
 @Repository

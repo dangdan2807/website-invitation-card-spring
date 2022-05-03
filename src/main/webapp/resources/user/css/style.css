@@ -1000,6 +1000,7 @@ ol {
 .latest-product__item__pic {
 	float: left;
 	margin-right: 26px;
+	margin-left: 1px;
 }
 
 /* uck */
@@ -1008,9 +1009,11 @@ ol {
 	width: 110px !important;
 }
 
+/* uck */
 .latest-product__item__text {
 	overflow: hidden;
 	padding-top: 10px;
+	padding-right: 1px;
 }
 
 .latest-product__item__text h6 {
@@ -1289,6 +1292,12 @@ ol {
 .product__discount__title h2:after {
 	margin: 0;
 	width: 100%;
+}
+
+/* uck */
+.product__item__pic,
+.product__discount__item {
+	cursor: pointer;
 }
 
 .product__discount__item:hover .product__discount__item__pic .product__item__pic__hover {
@@ -1673,9 +1682,9 @@ ol {
 /*---------------------
   Shop Details
 -----------------------*/
-
+/* uck */
 .product-details {
-	padding-top: 80px;
+	padding-top: 0px;
 }
 
 .product__details__pic__item {

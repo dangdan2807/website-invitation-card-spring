@@ -5,19 +5,24 @@
         All Functions
         uck
     --------------------*/
-    const formatMoney = (value) => {
+    const formatNumber = (value) => {
         return new Intl.NumberFormat(
             'vi-Vn',
-            { maximumSignificantDigits: 3 }).format(value)
-            + "đ";
+            { maximumSignificantDigits: 3 }).format(value);
+    }
+    
+    const formatMoney = (value) => {
+        return formatNumber(value) + "đ";
     }
 
     const formatMoneyBySelect = function () {
         var price = $(this).text();
-        $(this).text(new Intl.NumberFormat(
-            'vi-Vn',
-            { maximumSignificantDigits: 3 }).format(price)
-        + "đ");
+        $(this).text(formatNumber(price) + "đ");
+    }
+    
+    const formatPercentBySelect = function () {
+        var price = $(this).text();
+        $(this).text(formatNumber(price) + "%");
     }
 
     /*------------------
@@ -46,6 +51,11 @@
         $('.featured__item__text > h5').each(formatMoneyBySelect);
         $('.latest-product__item__text > span').each(formatMoneyBySelect);
         $('.product__item__price > span').each(formatMoneyBySelect);
+        $('.product__item__price > strong').each(formatMoneyBySelect);
+        $('.product__item__text > h5').each(formatMoneyBySelect);
+        $('.product__details__price').each(formatMoneyBySelect);
+        
+        $('.product__discount__percent').each(formatPercentBySelect);
     });
 
     /*------------------
