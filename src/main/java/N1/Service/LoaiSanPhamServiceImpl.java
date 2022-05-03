@@ -31,4 +31,16 @@ public class LoaiSanPhamServiceImpl implements LoaiSanPhamService {
 	public int getNumberOfPage() {
 		return loaiSanPhamDAO.getNumberOfPage();
 	}
+
+	@Override
+    @Transactional
+	public void save(LoaiSanPham lsp) {
+		loaiSanPhamDAO.save(lsp);
+	}
+
+	@Override
+    @Transactional
+	public void delete(int maLSP) {
+		loaiSanPhamDAO.delete(maLSP);
+	}
 }

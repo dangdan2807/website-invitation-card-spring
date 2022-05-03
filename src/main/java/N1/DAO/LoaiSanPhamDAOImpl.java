@@ -34,6 +34,18 @@ public class LoaiSanPhamDAOImpl implements LoaiSanPhamDAO {
         query.setMaxResults(pageSize);
         return query.getResultList();
 	}
+	
+	@Override
+    public void save(LoaiSanPham lsp) {
+    	Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.saveOrUpdate(lsp);
+    }
+
+	@Override
+	public void delete(int maLSP) {
+		Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.delete(currentSession.find(LoaiSanPham.class, maLSP));
+	}
 
 	@Override
 	public int getNumberOfPage() {

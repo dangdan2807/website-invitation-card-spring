@@ -11,8 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -49,6 +52,7 @@ public class AdminController {
 		return "admin/index";
 	}
 	
+	/**************************** User *******************************/
 	@GetMapping("/user")
 	public String user(@RequestParam(name = "page", required = false) Integer page, Model model, HttpServletRequest request) {
 		String path = request.getServletPath();
@@ -64,6 +68,7 @@ public class AdminController {
 		return "admin/user";
 	}
 	
+	/**************************** Order *******************************/
 	@GetMapping("/order")
 	public String order(@RequestParam(name = "page", required = false) Integer page, Model model, HttpServletRequest request) {
 		String path = request.getServletPath();
@@ -79,6 +84,7 @@ public class AdminController {
 		return "admin/order";
 	}
 	
+	/**************************** Product *******************************/
 	@GetMapping(value = "/product")
 	public String product(@RequestParam(name = "page", required = false) Integer page, Model model, HttpServletRequest request) {
 		String path = request.getServletPath();
@@ -97,6 +103,8 @@ public class AdminController {
 		return "admin/product";
 	}
 	
+	/**************************** Category *******************************/
+	
 	@GetMapping("/category")
 	public String category(@RequestParam(name = "page", required = false) Integer page, Model model, HttpServletRequest request) {
 		String path = request.getServletPath();
@@ -109,6 +117,20 @@ public class AdminController {
 		model.addAttribute("currentPage", page);
 		model.addAttribute("path", path);
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+		model.addAttribute("loaiSanPham", new LoaiSanPham());
 		return "admin/category";
+	}
+	
+	@PostMapping("/category")
+	public String addOrUpdateCategory(@ModelAttribute("loaiSanPham") LoaiSanPham loaiSanPham, Model model, HttpServletRequest request) {
+		System.out.println(loaiSanPham);
+		loaiSanPhamService.save(loaiSanPham);
+		return "redirect:/admin/category";
+	}
+	
+	@GetMapping("/delete-category")
+	public String deleteCategory(@RequestParam(name = "maLSP") Integer maLSP, Model model, HttpServletRequest request) {
+		loaiSanPhamService.delete(maLSP);
+		return "redirect:/admin/category";
 	}
 }

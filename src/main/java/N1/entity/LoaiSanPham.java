@@ -3,6 +3,7 @@ package N1.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,7 +26,7 @@ public class LoaiSanPham implements Serializable {
     @Column(name = "hinhAnh", columnDefinition = "text DEFAULT (N'')")
     private String hinhAnh;
     
-    @OneToMany(mappedBy = "loaiSanPham")
+    @OneToMany(mappedBy = "loaiSanPham", cascade = CascadeType.REMOVE)
     private List<ChiTietLoaiSP> dsCTLoaiSP;
 
     public LoaiSanPham() {
@@ -55,5 +56,22 @@ public class LoaiSanPham implements Serializable {
     public void setTenLSP(String tenLSP) {
         this.tenLSP = tenLSP;
     }
+    
+    
+
+	public String getHinhAnh() {
+		return hinhAnh;
+	}
+
+	public void setHinhAnh(String hinhAnh) {
+		this.hinhAnh = hinhAnh;
+	}
+
+	@Override
+	public String toString() {
+		return "LoaiSanPham [maLSP=" + maLSP + ", tenLSP=" + tenLSP + ", hinhAnh=" + hinhAnh + "]";
+	}
+    
+    
 
 }
