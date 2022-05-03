@@ -14,16 +14,16 @@ import N1.entity.SanPham;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-@RequestMapping("/category")
+@RequestMapping("/danh-muc")
 public class CategoryController {
     @RequestMapping("/id={categoryId}")
 	public String showCategoryPage(@PathVariable int categoryId, Model model) {
     	List<LoaiSanPham> dsLoaiSanPham = new ArrayList<LoaiSanPham>();
-		dsLoaiSanPham.add(new LoaiSanPham(1, "Thiệp cưới"));
-		dsLoaiSanPham.add(new LoaiSanPham(2, "Thiệp sinh nhật"));
-		dsLoaiSanPham.add(new LoaiSanPham(3, "Thiệp mừng 20-11"));
-		dsLoaiSanPham.add(new LoaiSanPham(4, "Thiệp năm mới"));
-		dsLoaiSanPham.add(new LoaiSanPham(5, "Thiệp giáng sinh"));
+		dsLoaiSanPham.add(new LoaiSanPham(1, "Thiệp cưới", "/resources/user/img/categories/cat-1.jpg"));
+		dsLoaiSanPham.add(new LoaiSanPham(2, "Thiệp sinh nhật", "/resources/user/img/categories/cat-2.jpg"));
+		dsLoaiSanPham.add(new LoaiSanPham(3, "Thiệp mừng 20-11", "/resources/user/img/categories/cat-3.jpg"));
+		dsLoaiSanPham.add(new LoaiSanPham(4, "Thiệp năm mới", "/resources/user/img/categories/cat-4.jpg"));
+		dsLoaiSanPham.add(new LoaiSanPham(5, "Thiệp giáng sinh", "/resources/user/img/categories/cat-5.jpg"));
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		
 		List<ChiTietLoaiSP> dsChiTietLoaiSP = new ArrayList<ChiTietLoaiSP>();

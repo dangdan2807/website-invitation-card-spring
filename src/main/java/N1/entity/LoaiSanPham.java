@@ -14,46 +14,67 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "LoaiSanPham")
 public class LoaiSanPham implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "maLSP")
-    private int maLSP;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "maLSP")
+	private int maLSP;
 
-    @Column(name = "tenLSP", nullable = false, columnDefinition = "nvarchar(100)")
-    private String tenLSP;
+	@Column(name = "tenLSP", nullable = false, columnDefinition = "nvarchar(100)")
+	private String tenLSP;
 
-    @Column(name = "hinhAnh", columnDefinition = "text DEFAULT (N'')")
-    private String hinhAnh;
-    
-    @OneToMany(mappedBy = "loaiSanPham")
-    private List<ChiTietLoaiSP> dsCTLoaiSP;
+	@Column(name = "hinhAnh", columnDefinition = "text DEFAULT (N'')")
+	private String hinhAnh;
 
-    public LoaiSanPham() {
-    }
+	@OneToMany(mappedBy = "loaiSanPham")
+	private List<ChiTietLoaiSP> dsCTLoaiSP;
 
-    public LoaiSanPham(int maLSP, String tenLSP) {
-        this.maLSP = maLSP;
-        this.tenLSP = tenLSP;
-    }
+	public LoaiSanPham() {
+	}
 
-    public LoaiSanPham(String tenLSP) {
-        this.tenLSP = tenLSP;
-    }
+	public LoaiSanPham(int maLSP, String tenLSP, String hinhAnh) {
+		super();
+		this.maLSP = maLSP;
+		this.tenLSP = tenLSP;
+		this.hinhAnh = hinhAnh;
+	}
 
-    public int getMaLSP() {
-        return maLSP;
-    }
+	public LoaiSanPham(String tenLSP, String hinhAnh) {
+		super();
+		this.tenLSP = tenLSP;
+		this.hinhAnh = hinhAnh;
+	}
 
-    public void setMaLSP(int maLSP) {
-        this.maLSP = maLSP;
-    }
+	public LoaiSanPham(int maLSP, String tenLSP) {
+		this.maLSP = maLSP;
+		this.tenLSP = tenLSP;
+	}
 
-    public String getTenLSP() {
-        return tenLSP;
-    }
+	public LoaiSanPham(String tenLSP) {
+		this.tenLSP = tenLSP;
+	}
 
-    public void setTenLSP(String tenLSP) {
-        this.tenLSP = tenLSP;
-    }
+	public int getMaLSP() {
+		return maLSP;
+	}
+
+	public void setMaLSP(int maLSP) {
+		this.maLSP = maLSP;
+	}
+
+	public String getTenLSP() {
+		return tenLSP;
+	}
+
+	public void setTenLSP(String tenLSP) {
+		this.tenLSP = tenLSP;
+	}
+
+	public String getHinhAnh() {
+		return hinhAnh;
+	}
+
+	public void setHinhAnh(String hinhAnh) {
+		this.hinhAnh = hinhAnh;
+	}
 
 }

@@ -54,6 +54,7 @@
         $('.product__item__price > strong').each(formatMoneyBySelect);
         $('.product__item__text > h5').each(formatMoneyBySelect);
         $('.product__details__price').each(formatMoneyBySelect);
+        $('.shoping__cart__price').each(formatMoneyBySelect);
         
         $('.product__discount__percent').each(formatPercentBySelect);
     });
@@ -240,10 +241,11 @@
             var newVal = parseFloat(oldValue) + 1;
         } else {
             // Don't allow decrementing below zero
-            if (oldValue > 0) {
+            if (oldValue > 1) {
                 var newVal = parseFloat(oldValue) - 1;
             } else {
-                newVal = 0;
+                // uck
+                newVal = 1;
             }
         }
         $button.parent().find('input').val(newVal);

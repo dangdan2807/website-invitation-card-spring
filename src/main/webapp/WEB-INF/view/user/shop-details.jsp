@@ -147,7 +147,7 @@
             	<c:forEach var="sanPham" items="${dsSanPhamLQ}">
 	                <div class="col-lg-3 col-md-4 col-sm-6">
 	                    <div class="product__item"
-	                    onclick=window.location.href='<c:url value = "/product/id=${sanPham.maSp}" />'
+	                    	onclick=window.location.href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'
 	                    >
 	                        <div class="product__item__pic set-bg"
 	                            data-setbg="<c:url value = '${sanPham.hinhAnh}' />">

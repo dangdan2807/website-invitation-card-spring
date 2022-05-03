@@ -12,7 +12,9 @@
                     </div>
                     <ul>
                         <c:forEach var="loaiSp" items="${dsLoaiSanPham}">
-                            <li><a href='<c:url value = "/category/id=${loaiSp.maLSP}" />'>${loaiSp.tenLSP}</a></li>
+                            <li>
+                            	<a href='<c:url value = "/danh-muc/id=${loaiSp.maLSP}" />'>${loaiSp.tenLSP}</a>
+                            </li>
                         </c:forEach>
                     </ul>
                 </div>
@@ -34,19 +36,22 @@
                             <i class="fa fa-phone"></i>
                         </div>
                         <div class="hero__search__phone__text">
-                            <h5>+84 09.999.999</h5>
+                            <h5><a href="tel:+849999999">+84 9.999.999</a></h5>
                             <span>Hỗ trợ 24/7</span>
                         </div>
                     </div>
                 </div>
                 <!-- banner -->
                 <c:if test="${param.showBanner}">
-                    <div class="hero__item set-bg" data-setbg="<c:url value ='http://thiepcuoi.giaodienwebmau.com/wp-content/uploads/2018/04/BANNER-CHAO-MUNG-DEN-VOI-PEONIES_599X401px-copy.jpg'/>" >
+                    <div class="hero__item set-bg" data-setbg="<c:url value ='${sanPhamMoi.hinhAnh}'/>">
                         <div class="hero__text">
-                            <span>FRUIT FRESH</span>
-                            <h2>Vegetable <br />100% Organic</h2>
-                            <p>Free Pickup and Delivery Available</p>
-                            <a href='<c:url value = "/shop/shop-grid" />' class="primary-btn">MUA NGAY</a>
+                            <span>${sanPhamMoi.dsLoaiSP.get(0).loaiSanPham.tenLSP}</span>
+                            <h4>Sản phẩm mới</h4>
+                            <h3>${sanPhamMoi.tenSp}</h3>
+                            <br />
+                            <!-- <p>Free Pickup and Delivery Available</p> -->
+                            <a href='<c:url value = "/san-pham/id=${sanPhamMoi.maSp}" />' 
+                                class="primary-btn">MUA NGAY</a>
                         </div>
                     </div>
                 </c:if>

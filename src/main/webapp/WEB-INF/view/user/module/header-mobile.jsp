@@ -4,24 +4,24 @@
 <div class="humberger__menu__overlay"></div>
 <div class="humberger__menu__wrapper">
 	<div class="humberger__menu__logo">
-		<a href="#"> <img src="<c:url value = '/resources/user/img/logo.png'/>"
-			alt="">
+		<a href="<c:url value ='/trang-chu' />">
+			<img src="<c:url value = '/resources/user/img/logo.png'/>" alt="">
 		</a>
 	</div>
 	<div class="humberger__menu__cart">
 		<ul>
 			<li>
-                <a href="#"> 
-                    <i class="fa fa-heart"></i> 
-                    <span>1</span>
-                </a>
-            </li>
+				<a href="#">
+					<i class="fa fa-heart"></i>
+					<span>1</span>
+				</a>
+			</li>
 			<li>
-                <a href="#"> 
-                    <i class="fa fa-shopping-bag"></i> 
-                    <span>3</span>
-                </a>
-            </li>
+				<a href="#">
+					<i class="fa fa-shopping-bag"></i>
+					<span>3</span>
+				</a>
+			</li>
 		</ul>
 		<div class="header__cart__price">
 			Tổng tiền: <span>150.000đ</span>
@@ -34,42 +34,45 @@
 	</div>
 	<nav class="humberger__menu__nav mobile-menu">
 		<ul>
-			<li <% 
-            	String tag = request.getParameter("activePage");
-            	if(tag.equals("home")) {
-            		out.print("class='active'");
-            	}
-            	%>
+			<li 
+				<% String tag=request.getParameter("activePage"); 
+					if(tag.equals("home")) { 
+						out.print("class='active'");
+					}
+				%>
             >
                 <a href='<c:url value = "/trang-chu" />'>Trang chủ</a>
-            </li>
-            
-            <li <% 
-            	if(tag.equals("shop-grid")) {
-            		out.print("class='active'");
-            	}
-            	%>
+			</li>
+
+			<li 
+				<% 
+					if(tag.equals("shop-grid")) { 
+						out.print("class='active'");
+					}
+				%>
             >
-                <a href='<c:url value = "/shop/shop-grid" />'>Cửa Hàng</a>
-            </li >
-            
-            <li <% 
-            	if(tag.equals("shopping-cart")) {
-            		out.print("class='active'");
-            	}
-            	%>
+                <a href='<c:url value = "/san-pham" />'>Cửa Hàng</a>
+			</li>
+
+			<li 
+				<% 
+					if(tag.equals("shopping-cart")) { 
+						out.print("class='active'");
+					}
+				%>
             >
-                <a href='<c:url value = "/shop/shopping-cart" />'>Giỏ Hàng</a>
-            </li>
-            
-            <li <% 
-            	if(tag.equals("contact")) {
-            		out.print("class='active'");
-            	}
-            	%>
+                <a href='<c:url value = "/gio-hang" />'>Giỏ Hàng</a>
+			</li>
+
+			<li 
+				<% 
+					if(tag.equals("contact")) { 
+						out.print("class='active'");
+					}
+				%>
             >
-                <a href='<c:url value = "/contact" />'>Liên Hệ</a>
-            </li>
+                <a href='<c:url value = "/lien-he" />'>Liên Hệ</a>
+			</li>
 			<!-- <li><a href="#">Pages</a>
                 <ul class="header__menu__dropdown">
                     <li><a href="/shop/shop-details">Shop Details</a></li>
@@ -85,7 +88,10 @@
 	</div>
 	<div class="humberger__menu__contact">
 		<ul>
-			<li><i class="fa fa-envelope"></i> hello@code.com</li>
+			<li>
+				<i class="fa fa-envelope"></i>
+				<a href="mailto:hello@code.com">hello@code.com</a>
+			</li>
 			<li>Miễn phí ship cho tất cả đơn hàng từ 99.000đ</li>
 		</ul>
 	</div>
