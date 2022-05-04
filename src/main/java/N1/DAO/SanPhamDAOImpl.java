@@ -2,19 +2,12 @@ package N1.DAO;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
-
-import N1.entity.ChiTietLoaiSP;
-import N1.entity.LoaiSanPham;
 import N1.entity.SanPham;
 
 @Repository
@@ -44,5 +37,47 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 	public int getNumberOfPage() {
         return (getDSSanPham().size()+pageSize-1)/pageSize;
 	}
+
+    @Override
+    public SanPham addSanPham(SanPham sanPham) {
+        Session currentSession=sessionFactory.getCurrentSession();
+        currentSession.saveOrUpdate(sanPham);
+        return sanPham;
+    }
+
+    @Override
+    public boolean updateSanPham(int sanPhamId, SanPham sanPham) {
+        Session currentSession=sessionFactory.getCurrentSession();
+        SanPham sanPham2=getSanPhamByIdSanPham(sanPhamId);
+        if(sanPham2==null)
+        {
+            return false;
+        }  
+        sanPham2.setGiaMua(sanPham.getGiaMua());
+        sanPham2.setHinhAnh(sanPham.getHinhAnh());
+        sanPham2.setMoTa(sanPham.getMoTa());
+        sanPham2.setTenSp(sanPham.getTenSp());
+        sanPham2.setGiamGia(sanPham.getGiaMua());
+        currentSession.saveOrUpdate(sanPham2);
+
+        return true;
+    }
+
+    @Override
+    public SanPham getSanPhamByIdSanPham(int sanPhamId) {
+        Session currentSession=sessionFactory.getCurrentSession();
+        SanPham sanPham=null;
+       sanPham= currentSession.find(SanPham.class, sanPhamId);
+        return sanPham;
+    }
+
+    @Override
+    public List<SanPham> getSanPhamByTenSanPham(String tenSP) {
+        Session currentSession=sessionFactory.getCurrentSession();
+        List<SanPham> sanPhams=new ArrayList<>();
+        String query=" SELECT * FROM SanPham where tenSp like N'%"+tenSP+"%'";
+        sanPhams=currentSession.createQuery(query, SanPham.class).getResultList();
+        return sanPhams;
+    }
 
 }
