@@ -34,4 +34,17 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 		return NguoiDungDAO.getNumberOfPage();
 	}
 
+	@Override
+    @Transactional
+	public void save(NguoiDung nguoiDung) {
+		NguoiDungDAO.updateNguoiDung(nguoiDung);
+	}
+
+	@Override
+    @Transactional
+	public NguoiDung findNguoiDungById(int id) {
+		// TODO Auto-generated method stub
+		return NguoiDungDAO.findNguoiDungById(id);
+	}
+
 }

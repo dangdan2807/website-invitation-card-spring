@@ -62,12 +62,35 @@ public class AdminController {
 		if(page == null)
 			page = 1;
 		
+		model.addAttribute("msg", request.getParameter("msg"));
+		model.addAttribute("status", request.getParameter("status"));
+		
 		List<NguoiDung> users = nguoiDungService.findAll(page);
 		model.addAttribute("numberOfPage", nguoiDungService.getNumberOfPage());
 		model.addAttribute("currentPage", page);
 		model.addAttribute("path", path);
 		model.addAttribute("users", users);
+		model.addAttribute("nguoiDung", new NguoiDung());
 		return "admin/user";
+	}
+	
+	@PostMapping("/user")
+	public String updateNguoiDung(@ModelAttribute("nguoiDung") NguoiDung nguoiDung, Model model, 
+			HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		System.out.println(nguoiDung);
+		
+		NguoiDung nguoiDung2 = nguoiDungService.findNguoiDungById(nguoiDung.getMaND());
+		nguoiDung2.setTenND(nguoiDung.getTenND());
+		nguoiDung2.setSdt(nguoiDung.getTenND());
+		nguoiDung2.setDiaChi(nguoiDung.getDiaChi());
+		nguoiDung2.setHinhAnh(nguoiDung.getTenND());
+		
+//		nguoiDungService.save(nguoiDung2);
+		
+		redirectAttributes.addAttribute("msg", "Cập nhật người dùng thành công");
+		redirectAttributes.addAttribute("status", 1);
+			
+		return "redirect:/admin/user";
 	}
 	
 	/**************************** Order *******************************/

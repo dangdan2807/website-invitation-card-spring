@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	
+<%@page import="org.springframework.web.servlet.tags.Param"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,12 +49,20 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
+					<c:if test="${status != null}">
+						<div class="alert alert-${status == 1 ? "success": "warning"} alert-dismissible fade show"
+							role="alert">
+							<strong>Thông báo</strong> ${msg}
+							<button type="button" class="close" data-dismiss="alert"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
 
+					</c:if>
+					
 					<!-- Page Heading -->
 					<h1 class="h3 mb-2 text-gray-800">Quản lý người dùng</h1>
-					<!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank"
-                            href="https://datatables.net">official DataTables documentation</a>.</p> -->
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
@@ -88,6 +99,9 @@
 									</tfoot>
 									<tbody>
 										<c:forEach var="user" items="${users}" varStatus="loop">
+											<c:url var="deleteLink" value="./delete-user">
+												<c:param name="maND" value="${user.maND}" />
+											</c:url>
 											<tr>
 												<td>${loop.index+1}</td>
 												<td>${user.maND}</td>
@@ -96,8 +110,9 @@
 												<td>${user.sdt}</td>
 												<td>${user.diaChi}</td>
 												<td class="text-center">
-													<button class="btn btn-warning btn-edit">Sửa</button>
-													<button class="btn btn-danger btn-delete">Xóa</button>
+													<button class="btn btn-warning btn-edit" 
+														data-maND="${user.maND}" data-tenND="${user.tenND}" data-sdt="${user.sdt}" 
+														data-diaChi="${user.diaChi}" data-hinhAnh="${user.hinhAnh}">Sửa</button>
 												</td>
 											</tr>
 										</c:forEach>
@@ -127,6 +142,59 @@
 
 	</div>
 	<!-- End of Page Wrapper -->
+	
+	<!-- user modal -->
+	<div class="modal fade" id="userModal" tabindex="-1" role="dialog"
+		aria-labelledby="userModal" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Sửa người dùng</h5>
+					<button class="close" type="button" data-dismiss="modal"
+						aria-label="">X</button>
+				</div>
+				<div class="modal-body">
+					<form:form id="form"
+						action="${pageContext.request.contextPath}/admin/user"
+						modelAttribute="nguoiDung" method="POST">
+						<div class="mb-3">
+							<form:label path="maND" cssClass="form-label">Mã người dùng</form:label>
+							<form:input path="maND" type="text" cssClass="form-control"
+								readonly="true" />
+							<form:errors path="maND" cssClass="form-text" />
+						</div>
+						<div class="mb-3">
+							<form:label path="tenND" cssClass="form-label">Tên người dùng</form:label>
+							<form:input path="tenND" type="text" cssClass="form-control" />
+							<form:errors path="tenND" cssClass="form-text" />
+						</div>
+						<div class="mb-3">
+							<form:label path="sdt" cssClass="form-label">Số điện thoại</form:label>
+							<form:input path="sdt" type="text" cssClass="form-control" />
+							<form:errors path="sdt" cssClass="form-text" />
+						</div>
+						<div class="mb-3">
+							<form:label path="diaChi" cssClass="form-label">Địa chỉ</form:label>
+							<form:input path="diaChi" type="text" cssClass="form-control" />
+							<form:errors path="diaChi" cssClass="form-text" />
+						</div>
+						<div class="mb-3">
+							<form:label path="hinhAnh" cssClass="form-label">Hình ảnh</form:label>
+							<form:input path="hinhAnh" type="text" cssClass="form-control" />
+							<form:errors path="hinhAnh" cssClass="form-text" />
+						</div>
+
+					</form:form>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" type="button"
+						data-dismiss="modal">Hủy</button>
+					<a class="btn btn-primary btn-form"
+						onclick="document.querySelector('form#form').submit();">Sửa</a>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i
@@ -138,6 +206,33 @@
 
 	<!-- Bootstrap core JavaScript-->
 	<jsp:include page="./common/link-js.jsp" />
+	
+	<script>
+		$(document).ready(
+				function() {
+					var modal = new bootstrap.Modal(document
+							.getElementById('userModal'), {
+						keyboard : false
+					});
+					
+					$(".btn-edit").click(function() {
+						$("#maND").attr('value',
+								$(this).attr("data-maND"));
+						$("#tenND").attr('value',
+								$(this).attr("data-tenND"));
+						$("#sdt").attr('value',
+								$(this).attr("data-sdt"));
+						$("#diaChi").attr('value',
+								$(this).attr("data-diaChi"));
+						$("#hinhAnh").attr('value',
+								$(this).attr("data-hinhAnh"));
+						modal.show();
+					});
+
+					
+					
+				});
+	</script>
 </body>
 
 </html>

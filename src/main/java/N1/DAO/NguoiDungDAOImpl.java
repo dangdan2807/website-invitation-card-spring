@@ -75,8 +75,8 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
     @Override
     public NguoiDung findNguoiDungByEmail(String email) {
         Session currentSession=sessionFactory.getCurrentSession();
-        String query="SELECT * FROM NguoiDung WHERE email ="+email;
-        NguoiDung nguoiDung=(NguoiDung) currentSession.createNamedQuery(query, NguoiDung.class);
+        String query="SELECT * FROM NguoiDung WHERE email ='"+email+"'";
+        NguoiDung nguoiDung=(NguoiDung) currentSession.createNativeQuery(query, NguoiDung.class).getSingleResult();
         return nguoiDung;
     }
 
@@ -90,6 +90,12 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
 	public List<NguoiDung> getDSNguoiDung() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void delete(int maND) {
+		Session currentSession=sessionFactory.getCurrentSession();
+		currentSession.delete(currentSession.find(NguoiDung.class, maND));
 	}
 
 
