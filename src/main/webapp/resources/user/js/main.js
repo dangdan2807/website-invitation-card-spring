@@ -55,6 +55,10 @@
         $('.product__item__text > h5').each(formatMoneyBySelect);
         $('.product__details__price').each(formatMoneyBySelect);
         $('.shoping__cart__price').each(formatMoneyBySelect);
+        $('.shoping__cart__total').each(formatMoneyBySelect);
+        $('.checkout__order > ul > li > span').each(formatMoneyBySelect);
+        $('.checkout__order__subtotal > span').each(formatMoneyBySelect);
+        $('.checkout__order__total > span').each(formatMoneyBySelect);
         
         $('.product__discount__percent').each(formatPercentBySelect);
     });

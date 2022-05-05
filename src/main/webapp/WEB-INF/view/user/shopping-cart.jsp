@@ -95,7 +95,6 @@
                                 </a>
                                 <span class="shoping__cart__price">${sanPham.giaSP}</span>
                                 <span class="shoping__cart__unit">/ chiếc</span>
-                                <a class="shoping__cart__btn-delete" href="#">Xóa</a>
                                 <div class="shoping__cart__quantity">
                                     <div class="quantity">
                                         <div class="pro-qty">
@@ -103,6 +102,12 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="shoping__cart__right">
+                                <div class="shoping__cart__total">
+                                    ${sanPham.giaSP}
+                                </div>
+                                <a class="shoping__cart__btn-delete" href="#">Xóa</a>
                             </div>
                             <c:if test="${status.last}">
                                 <hr/>
@@ -114,8 +119,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
-                        <a href="#" class="primary-btn cart-btn">TIẾP TỤC MUA SẮM</a>
-                        <a href="#" class="primary-btn cart-btn cart-btn-right">
+                        <a href="<c:url value = '/san-pham' />" class="primary-btn cart-btn">TIẾP TỤC MUA SẮM</a>
+                        <a href="" class="primary-btn cart-btn cart-btn-right">
                             <span class="icon_loading"></span>
                             CẬP NHẬT GIỎ HÀNG
                         </a>

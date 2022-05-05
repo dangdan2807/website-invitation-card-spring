@@ -14,7 +14,7 @@ import N1.entity.SanPham;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-@RequestMapping("/danh-muc")
+@RequestMapping({"/danh-muc", "/categories"})
 public class CategoryController {
     @RequestMapping("/id={categoryId}")
 	public String showCategoryPage(@PathVariable int categoryId, Model model) {

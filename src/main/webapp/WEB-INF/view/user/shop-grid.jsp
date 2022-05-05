@@ -113,10 +113,10 @@
                                             <div class="product__discount__item__pic set-bg"
                                                 data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
                                                 <div class="product__discount__percent">-${sanPham.giamGia}</div>
-                                                <ul class="product__item__pic__hover">
+                                                <!-- <ul class="product__item__pic__hover">
                                                     <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                                     <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                                </ul>
+                                                </ul> -->
                                             </div>
                                             <div class="product__discount__item__text">
                                                 <h5><a href="<c:url value = '/san-pham/id=${sanPham.maSp}'/>">${sanPham.tenSp}</a></h5>
@@ -163,10 +163,10 @@
                                 >
 	                                <div class="product__item__pic set-bg"
 	                                    data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
-	                                    <ul class="product__item__pic__hover">
+	                                    <!-- <ul class="product__item__pic__hover">
 	                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
 	                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-	                                    </ul>
+	                                    </ul> -->
 	                                </div>
 	                                <div class="product__item__text">
 	                                    <h6><a href="#">${sanPham.tenSp}</a></h6>

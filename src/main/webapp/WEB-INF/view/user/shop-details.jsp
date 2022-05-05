@@ -151,14 +151,14 @@
 	                    >
 	                        <div class="product__item__pic set-bg"
 	                            data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
-	                            <ul class="product__item__pic__hover">
-	                                <li>
-	                                    <a href="#"><i class="fa fa-heart"></i></a>
-	                                </li>
-	                                <li>
-	                                    <a href="#"><i class="fa fa-shopping-cart"></i></a>
-	                                </li>
-	                            </ul>
+<!-- 	                            <ul class="product__item__pic__hover"> -->
+<!-- 	                                <li> -->
+<!-- 	                                    <a href="#"><i class="fa fa-heart"></i></a> -->
+<!-- 	                                </li> -->
+<!-- 	                                <li> -->
+<!-- 	                                    <a href="#"><i class="fa fa-shopping-cart"></i></a> -->
+<!-- 	                                </li> -->
+<!-- 	                            </ul> -->
 	                        </div>
 	                        <div class="product__item__text">
 	                            <h6><a href="#">${sanPham.tenSp}</a></h6>

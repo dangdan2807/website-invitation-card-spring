@@ -86,14 +86,14 @@
                             onclick=window.location.href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'>
                             <div class="featured__item__pic set-bg"
                                 data-setbg='<c:url value = "${sanPham.hinhAnh}" />'>
-                                <ul class="featured__item__pic__hover">
+                                <!-- <ul class="featured__item__pic__hover">
                                     <li>
                                         <a href="#"><i class="fa fa-heart"></i></a>
                                     </li>
                                     <li>
                                         <a href="#"><i class="fa fa-shopping-cart"></i></a>
                                     </li>
-                                </ul>
+                                </ul> -->
                             </div>
                             <div class="featured__item__text">
                                 <h6><a href="#">${sanPham.tenSp}</a></h6>
