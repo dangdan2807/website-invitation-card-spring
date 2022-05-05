@@ -15,6 +15,8 @@ public interface SanPhamDAO {
 
 	public boolean updateSanPham(int sanPhamId, SanPham sanPham);
 
+    public List<SanPham> getDSSanPham(int page);
+
 	public SanPham getSanPhamByIdSanPham(int sanPhamId);
 
 	public List<SanPham> getSanPhamByTenSanPham(String tenSP);
@@ -30,4 +32,6 @@ public interface SanPhamDAO {
 	public int getNumberOfSanPhams();
 	
 	public List<SanPham> getReviewSanPhams(int quantity);
+
+    public void delete(int maSp);
 }

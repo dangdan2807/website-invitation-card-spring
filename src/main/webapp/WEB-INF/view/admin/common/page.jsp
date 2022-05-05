@@ -22,6 +22,11 @@
 				class="page-link"
 				href="${pageContext.request.contextPath}${path}?page=${index}">${index}</a></li>
 		</c:forEach>
+		<c:if test="${numberOfPage == 0}">
+			<li class="page-item ${currentPage == index ? "active": ""}"><a
+				class="page-link"
+				href="${pageContext.request.contextPath}${path}?page=1">1</a></li>
+		</c:if>
 		
 		
 		<c:if test="${currentPage+1 <= numberOfPage}">

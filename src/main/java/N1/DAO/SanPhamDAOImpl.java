@@ -18,9 +18,25 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 	private final int pageSize = 15;
 
 	@Override
+	public List<SanPham> getDSSanPham() {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query<SanPham> query = currentSession.createQuery("from SanPham", SanPham.class);
+		return query.getResultList();
+	}
+
+	@Override
 	public List<SanPham> getDSSanPham(int page, String sort) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		Query<SanPham> query = currentSession.createQuery("from SanPham order by giaSP " + sort, SanPham.class);
+		query.setHibernateFirstResult((page - 1) * pageSize);
+		query.setMaxResults(pageSize);
+		return query.getResultList();
+	}
+
+	@Override
+	public List<SanPham> getDSSanPham(int page) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query<SanPham> query = currentSession.createQuery("from SanPham", SanPham.class);
 		query.setHibernateFirstResult((page - 1) * pageSize);
 		query.setMaxResults(pageSize);
 		return query.getResultList();
@@ -70,13 +86,6 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 		String query = " SELECT * FROM SanPham where tenSp like N'%" + tenSP + "%'";
 		sanPhams = currentSession.createQuery(query, SanPham.class).getResultList();
 		return sanPhams;
-	}
-
-	@Override
-	public List<SanPham> getDSSanPham() {
-		Session currentSession = sessionFactory.getCurrentSession();
-		Query<SanPham> query = currentSession.createQuery("from SanPham", SanPham.class);
-		return query.getResultList();
 	}
 
 	@Override
@@ -138,5 +147,11 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 				+ ")";
 		Query<SanPham> results = currentSession.createNativeQuery(query, SanPham.class);
 		return results.getResultList();
+	}
+
+	@Override
+	public void delete(int maSp) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		currentSession.delete(currentSession.find(SanPham.class, maSp));
 	}
 }
