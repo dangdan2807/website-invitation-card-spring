@@ -1,5 +1,6 @@
 package N1.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -15,6 +16,14 @@ public class SanPhamDAOImpl implements SanPhamDAO {
     @Autowired
     private SessionFactory sessionFactory;
     private final int pageSize = 20;
+    
+
+	@Override
+	public List<SanPham> getDSSanPham() {
+		Session currentSession = sessionFactory.getCurrentSession();
+        Query<SanPham> query = currentSession.createQuery("from SanPham", SanPham.class);
+        return query.getResultList();
+	}
 
     @Override
     public List<SanPham> getDSSanPham(int page) {
@@ -71,4 +80,5 @@ public class SanPhamDAOImpl implements SanPhamDAO {
           sanPhams=currentSession.createQuery(query, SanPham.class).getResultList();
           return sanPhams;
       }
+
 }

@@ -19,3 +19,20 @@
 <!-- Page level custom scripts -->
 <script src="<c:url value = '/resources/admin/js/demo/chart-area-demo.js'/>"></script>
 <script src="<c:url value = '/resources/admin/js/demo/chart-pie-demo.js'/>"></script>
+
+<script>
+$(document).ready(function(){
+
+	var deleteModal = new bootstrap.Modal(document
+			.getElementById('deleteModal'), {
+		keyboard : false
+	});
+	
+	$(".btn-delete").click(function() {
+		$("#deleteTitleModal").text("Bạn có chắc chắn muốn xóa "+$(this).attr("data-msg")+"?");
+		$(".btn-delete-modal").attr("href", $(this).attr("data-href"));
+		deleteModal.show();
+	});	
+});
+
+</script>
