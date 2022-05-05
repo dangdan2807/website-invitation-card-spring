@@ -117,15 +117,45 @@ public class AdminController {
 		if(page == null)
 			page = 1;
 		
+		model.addAttribute("msg", request.getParameter("msg"));
+		model.addAttribute("status", request.getParameter("status"));
 		
 		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(page);
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsSanPham", dsSanPham);
+		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		model.addAttribute("numberOfPage", sanPhamService.getNumberOfPage());
 		model.addAttribute("currentPage", page);
 		model.addAttribute("path", path);
-		
+		model.addAttribute("sanPham", new SanPham());
 
 		return "admin/product";
+	}
+	
+	@PostMapping("/product")
+	public String addOrUpdateProduct(@ModelAttribute("sanPham") SanPham sanPham, 
+			Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		System.out.println("hi");
+		System.out.println(sanPham);
+		sanPhamService.save(sanPham);
+		if(sanPham.getMaSp() == 0) {
+			redirectAttributes.addAttribute("msg", "Thêm sản phẩm thành công!");
+			redirectAttributes.addAttribute("status", 1);
+		}else {
+			redirectAttributes.addAttribute("msg", "Cập nhật sản phẩm thành công");
+			redirectAttributes.addAttribute("status", 1);
+		}
+			
+		return "redirect:/admin/product";
+	}
+	
+	@GetMapping("/delete-product")
+	public String deleteProduct(@RequestParam(name = "maSp") Integer maSp, Model model, HttpServletRequest request, 
+			RedirectAttributes redirectAttributes) {
+		redirectAttributes.addAttribute("msg", "Xóa sản phẩm thành công!");
+		redirectAttributes.addAttribute("status", 1);
+		sanPhamService.delete(maSp);
+		return "redirect:/admin/product";
 	}
 	
 	/**************************** Category *******************************/

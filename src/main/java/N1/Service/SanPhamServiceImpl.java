@@ -35,4 +35,16 @@ public class SanPhamServiceImpl implements SanPhamService {
 		return sanPhamDAO.getNumberOfPage();
 	}
 
+	@Override
+    @Transactional
+	public void save(SanPham sanPham) {
+		sanPhamDAO.addSanPham(sanPham);
+	}
+
+	@Override
+    @Transactional
+	public void delete(int maSp) {
+		sanPhamDAO.delete(maSp);
+	}
+
 }

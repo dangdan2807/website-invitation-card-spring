@@ -81,4 +81,10 @@ public class SanPhamDAOImpl implements SanPhamDAO {
           return sanPhams;
       }
 
+	@Override
+	public void delete(int maSp) {
+		Session currentSession=sessionFactory.getCurrentSession();
+		currentSession.delete(currentSession.find(SanPham.class, maSp));
+	}
+
 }
