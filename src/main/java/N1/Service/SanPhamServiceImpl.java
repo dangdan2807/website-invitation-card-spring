@@ -24,15 +24,50 @@ public class SanPhamServiceImpl implements SanPhamService {
 
 	@Override
     @Transactional
-	public List<SanPham> getDSSanPham(int page) {
-		return sanPhamDAO.getDSSanPham(page);
+	public List<SanPham> getDSSanPham(int page, String sort) {
+		return sanPhamDAO.getDSSanPham(page, sort);
 	}
 
 	@Override
     @Transactional
 	public int getNumberOfPage() {
-		// TODO Auto-generated method stub
 		return sanPhamDAO.getNumberOfPage();
+	}
+
+	@Override
+	@Transactional
+	public SanPham getLatestSanPham() {
+		return sanPhamDAO.getLatestSanPham();
+	}
+
+	@Override
+	@Transactional
+	public List<SanPham> getLatestSanPhams(int quantity) {
+		return sanPhamDAO.getLatestSanPhams(quantity);
+	}
+
+	@Override
+	@Transactional
+	public List<SanPham> getRatedTopSanPhams(int quantity) {
+		return sanPhamDAO.getRatedTopSanPhams(quantity);
+	}
+	
+	@Override
+	@Transactional
+	public List<SanPham> getDiscountSanPhams(int quantity) {
+		return sanPhamDAO.getDiscountSanPhams(quantity);
+	}
+
+	@Override
+	@Transactional
+	public int getNumberOfSanPhams() {
+		return sanPhamDAO.getNumberOfSanPhams();
+	}
+
+	@Override
+	@Transactional
+	public List<SanPham> getReviewSanPhams(int quantity) {
+		return sanPhamDAO.getReviewSanPhams(quantity);
 	}
 
 }

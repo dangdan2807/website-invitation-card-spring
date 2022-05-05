@@ -13,3 +13,5 @@
 <link rel="stylesheet" href="<c:url value = '/resources/user/css/owl.carousel.min.css'/>" type="text/css" />
 <link rel="stylesheet" href="<c:url value = '/resources/user/css/slicknav.min.css'/>" type="text/css" />
 <link rel="stylesheet" href="<c:url value = '/resources/user/css/style.css'/>" type="text/css" />
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-latest.pack.js"></script>

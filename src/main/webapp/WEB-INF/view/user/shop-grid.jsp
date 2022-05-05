@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -50,7 +51,7 @@
                             <ul>
                                 <c:forEach var="loaiSp" items="${dsLoaiSanPham}">
                                     <li>
-                                    	<a href='<c:url value = '/san-pham/id=${loaiSp.maLSP}'/>'>${loaiSp.tenLSP}</a>
+                                    	<a href='<c:url value = '/danh-muc?id=${loaiSp.maLSP}'/>'>${loaiSp.tenLSP}</a>
                                     </li>
                                 </c:forEach>
                             </ul>
@@ -59,7 +60,7 @@
                             <h4>Giá</h4>
                             <div class="price-range-wrap">
                                 <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                    data-min="0" data-max="1000">
+                                    data-min="0" data-max="100">
                                     <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                                     <span tabindex="0"
                                         class="ui-slider-handle ui-corner-all ui-state-default"></span>
@@ -105,7 +106,7 @@
                         </div>
                         <div class="row">
                             <div class="product__discount__slider owl-carousel">
-                                <c:forEach var="sanPham" items="${dsSpGiamGia}" begin="0" end="2">
+                                <c:forEach var="sanPham" items="${dsSpGiamGia}" begin="0" end="5">
                                     <div class="col-lg-4">
                                         <div class="product__discount__item"
                                             onclick=window.location.href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'
@@ -136,9 +137,13 @@
                             <div class="col-lg-4 col-md-5">
                                 <div class="filter__sort">
                                     <span>Sắp xếp</span>
-                                    <select>
-                                        <option value="0">Giá: Thấp đến Cao</option>
-                                        <option value="1">Giá: Cao đến Thấp</option>
+                                    <select name="sort">
+                                       	<option value="asc" 
+                                       		<c:if test="${sort == 'asc'}">selected</c:if>
+                                       	>Giá: Thấp đến Cao</option>
+                                        <option value="desc"
+                                        	<c:if test="${sort == 'desc'}">selected</c:if>
+                                        >Giá: Cao đến Thấp</option>
                                     </select>
                                 </div>
                             </div>
@@ -156,35 +161,45 @@
                         </div>
                     </div>
                     <div class="row">
-                    	<c:forEach var="sanPham" items="${dsSanPham}">
-	                        <div class="col-lg-4 col-md-6 col-sm-6">
-	                            <div class="product__item"
+                        <c:forEach var="sanPham" items="${dsSanPham}">
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item"
                                 onclick=window.location.href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'
                                 >
-	                                <div class="product__item__pic set-bg"
-	                                    data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
-	                                    <!-- <ul class="product__item__pic__hover">
-	                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
-	                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-	                                    </ul> -->
-	                                </div>
-	                                <div class="product__item__text">
-	                                    <h6><a href="#">${sanPham.tenSp}</a></h6>
-	                                    <h5>${sanPham.giaSP}</h5>
-	                                </div>
-	                            </div>
-	                        </div>
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
+                                        <!-- <ul class="product__item__pic__hover">
+                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                        </ul> -->
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6><a href="#">${sanPham.tenSp}</a></h6>
+                                        <h5>${sanPham.giaSP}</h5>
+                                    </div>
+                                </div>
+                            </div>
                         </c:forEach>
                     </div>
                     <div class="product__pagination">
-                    	<c:if test="${pageOfNumber > 1}">
-	                        <a href="#"><i class="fa fa-long-arrow-left"></i></a>
-                    	</c:if>
-	                    <c:forEach var="sp" items="${dsSanPham}" begin="1" end="${pageOfNumber}" varStatus="myIndex">
-	                        <a href="#">${myIndex.index}</a>
-	                    </c:forEach>
-                        <c:if test="${pageOfNumber > 1}">
-	                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                        <c:if test="${currentPage > 1}">
+                            <a href='<c:url value="/san-pham?page=${currentPage - 1}&sort=${sort}" />'>
+                                <i class="fa fa-long-arrow-left"></i>
+                            </a>
+                        </c:if>
+                        <c:forEach var="sp" items="${ [5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5] }">
+                            <c:if test="${((currentPage - sp) >= 1) && ((currentPage - sp) <= pageOfNumber)}">
+                                <a href='<c:url value="/san-pham?page=${currentPage - sp}&sort=${sort}" />'
+                                    class='<c:if test="${currentPage == currentPage - sp}">active</c:if>'
+                                >
+                                    ${currentPage - sp}
+                                </a>
+                            </c:if>
+                        </c:forEach>
+                        <c:if test="${currentPage < pageOfNumber}">
+                            <a href='<c:url value="/san-pham?page=${currentPage + 1}&sort=${sort}" />'>
+                                <i class="fa fa-long-arrow-right"></i>
+                            </a>
                         </c:if>
                     </div>
                 </div>
@@ -199,6 +214,13 @@
 
     <!-- Js Plugins -->
     <jsp:include page="./module/link-js.jsp" />
+    <script type="text/javascript">
+        $('.filter__sort select[name="sort"]').change(function() {
+            var sort = $(this).val();
+            var url = '<c:url value="/san-pham?page=${currentPage}&sort=' + sort + '" />';
+            window.location.href = url;
+        });
+    </script>
 </body>
 
 </html>

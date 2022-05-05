@@ -45,8 +45,8 @@ public class ChucVuDAOImpl implements ChucVuDAO {
     @Override
     public ChucVu addChucVu(ChucVu chucVu) {
         Session currentSession = sessionFactory.getCurrentSession();
-          currentSession.saveOrUpdate(chucVu);
-          return chucVu;
+        currentSession.saveOrUpdate(chucVu);
+        return chucVu;
     }
 
     @Override
