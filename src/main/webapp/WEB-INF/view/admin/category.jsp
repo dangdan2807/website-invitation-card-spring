@@ -83,6 +83,7 @@
 									width="100%" cellspacing="0">
 									<thead>
 										<tr>
+											<th>#</th>
 											<th>Mã danh mục</th>
 											<th>Tên danh mục</th>
 											<th>Hành động</th>
@@ -90,36 +91,24 @@
 									</thead>
 									<tfoot>
 										<tr>
+											<th>#</th>
 											<th>Mã danh mục</th>
 											<th>Tên danh mục</th>
 											<th>Hành động</th>
 										</tr>
 									</tfoot>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Đám cưới</td>
-											<td>
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Sinh nhật</td>
-											<td>
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>Tân gia</td>
-											<td>
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
+										<c:forEach var="loaiSp" items="${dsLoaiSanPham}" varStatus="loop">
+											<tr>
+												<td>${loop.index+1}</td>
+												<td>${loaiSp.maLSP}</td>
+												<td>${loaiSp.tenLSP}</td>
+												<td>
+													<button class="btn btn-warning btn-edit">Sửa</button>
+													<button class="btn btn-danger btn-delete">Xóa</button>
+												</td>
+											</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>

@@ -58,23 +58,11 @@
 						<div class="card-header py-3 row" style="margin: 0">
 							<div class="col-4">
 								<button class="btn btn-primary" data-toggle="modal"
-								data-target="#productModal">Thêm thiệp mời</button>
+									data-target="#productModal">Thêm thiệp mời</button>
 							</div>
+							
 							<div class="col-8" style="text-align: right">
-								<nav aria-label="Page navigation example"
-									style="display: inline-block">
-									<ul class="pagination">
-										<li class="page-item"><a class="page-link" href="#"
-											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-										</a></li>
-										<li class="page-item"><a class="page-link" href="#">1</a></li>
-										<li class="page-item"><a class="page-link" href="#">2</a></li>
-										<li class="page-item"><a class="page-link" href="#">3</a></li>
-										<li class="page-item"><a class="page-link" href="#"
-											aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-										</a></li>
-									</ul>
-								</nav>
+								<jsp:include page="common/page.jsp"></jsp:include>
 							</div>
 						</div>
 						<div class="card-body">
@@ -83,43 +71,52 @@
 									width="100%" cellspacing="0">
 									<thead>
 										<tr>
+											<th>#</th>
 											<th>Mã thiệp</th>
 											<th>Tên thiệp</th>
-											<th>Giá</th>
+											<th>Giá nhập</th>
+											<th>Giá bán</th>
+											<th>Giảm giá</th>
+											<th>Giá mới</th>
 											<th>Loại thiệp</th>
 											<th class="text-center">Hành động</th>
 										</tr>
 									</thead>
 									<tfoot>
 										<tr>
+											<th>#</th>
 											<th>Mã thiệp</th>
 											<th>Tên thiệp</th>
-											<th>Giá</th>
+											<th>Giá nhập</th>
+											<th>Giá bán</th>
+											<th>Giảm giá</th>
+											<th>Giá mới</th>
 											<th>Loại thiệp</th>
 											<th class="text-center">Hành động</th>
 										</tr>
 									</tfoot>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Hiện đại</td>
-											<td>100.000đ</td>
-											<td>Thiệp cưới</td>
-											<td class="text-center">
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Hiện đại</td>
-											<td>100.000đ</td>
-											<td>Thiệp cưới</td>
-											<td class="text-center">
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
+										<c:forEach var="sanPham" items="${dsSanPham}" varStatus="loop">
+											<tr>
+												<td>${loop.index+1}</td>
+												<td>${sanPham.maSp}</td>
+												<td>${sanPham.tenSp}</td>
+												<td>${sanPham.giaMua}</td>
+												<td>${sanPham.giaSP}</td>
+												<td>${sanPham.giamGia}</td>
+												<td>${sanPham.giaSP*sanPham.giamGia/100}</td>
+												<td>
+													<c:forEach var="loaiSp" items="${sanPham.dsLoaiSP}">
+														${loaiSp.loaiSanPham.tenLSP}
+														<br/>
+													</c:forEach>
+												</td>
+												<td class="text-center">
+													<button class="btn btn-warning btn-edit">Sửa</button>
+													<button class="btn btn-danger btn-delete">Xóa</button>
+												</td>
+											</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>
@@ -127,23 +124,10 @@
 						<div class="card-footer py-3 row" style="margin: 0">
 							<div class="col-4">
 								<button class="btn btn-primary" data-toggle="modal"
-								data-target="#productModal">Thêm thiệp mời</button>
+									data-target="#productModal">Thêm thiệp mời</button>
 							</div>
 							<div class="col-8" style="text-align: right">
-								<nav aria-label="Page navigation example"
-									style="display: inline-block">
-									<ul class="pagination">
-										<li class="page-item"><a class="page-link" href="#"
-											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-										</a></li>
-										<li class="page-item"><a class="page-link" href="#">1</a></li>
-										<li class="page-item"><a class="page-link" href="#">2</a></li>
-										<li class="page-item"><a class="page-link" href="#">3</a></li>
-										<li class="page-item"><a class="page-link" href="#"
-											aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-										</a></li>
-									</ul>
-								</nav>
+								<jsp:include page="common/page.jsp"></jsp:include>
 							</div>
 						</div>
 					</div>
@@ -170,8 +154,8 @@
 	</a>
 
 	<!-- thêm thiệp modal -->
-	<div class="modal fade" id="productModal" tabindex="-1"
-		role="dialog" aria-labelledby="productModal" aria-hidden="true">
+	<div class="modal fade" id="productModal" tabindex="-1" role="dialog"
+		aria-labelledby="productModal" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -183,29 +167,55 @@
 					<form id="product-form" method="GET">
 						<!-- sửa lại thành POST -->
 						<div class="mb-3">
-							<label for="card-name" class="form-label">Tên thiệp</label> 
-							<input type="text" class="form-control" id="card-name"
+							<label for="card-name" class="form-label">Tên thiệp</label> <input
+								type="text" class="form-control" id="card-name"
 								aria-describedby="cardNameHelp">
 							<div id="cardNameHelp" class="form-text"></div>
 						</div>
 						<div class="mb-3">
-							<label for="price" class="form-label">Giá</label> 
-							<input type="number" class="form-control" id="price">
+							<label for="card-name" class="form-label">Mô tả</label>
+							<!-- <input type="text" class="form-control" id="card-name"
+								aria-describedby="cardNameHelp"> -->
+							<textarea class="form-control"></textarea>
+							<div id="cardNameHelp" class="form-text"></div>
+						</div>
+						<div class="row">
+							<div class="mb-3 col-6">
+								<label for="price-buy" class="form-label">Giá nhập</label> <input
+									type="number" class="form-control" id="price">
+							</div>
+							<div class="mb-3 col-6">
+								<label for="price-sell" class="form-label">Giá bán</label> <input
+									type="number" class="form-control" id="price">
+							</div>
+						</div>
+						<div class="row">
+							<div class="mb-3 col-6">
+								<label for="price-sell" class="form-label">Khuyến mãi</label> <input
+									type="number" class="form-control" id="price">
+							</div>
+							<div class="mb-3 col-6">
+								<label for="price-sell" class="form-label">Giá mới</label> <input
+									type="number" class="form-control" id="price" disabled>
+							</div>
 						</div>
 						<div class="mb-3">
-							<label for="image" class="form-label">Hình ảnh</label> 
-							<input type="text" class="form-control" id="image">
+							<label for="image" class="form-label">Hình ảnh</label> <input
+								type="text" class="form-control" id="image">
 						</div>
-						<select class="form-select form-control" multiple
-							aria-label="multiple select example">
-							<option selected>Open this select menu</option>
-							<option value="1">One</option>
-							<option value="2">Two</option>
-							<option value="3">Three</option>
-							<option value="4">Four</option>
-							<option value="5">Five</option>
-							<option value="6">Six</option>
-						</select>
+						<div class="mb-3">
+							<label for="image" class="form-label">Loại thiệp</label> <select
+								class="form-select form-control" multiple
+								aria-label="multiple select example"
+								aria-describedby="categoryHelp">
+								<option selected>Thiệp cưới</option>
+								<option value="1">Thiệp tốt nghiệp</option>
+								<option value="2">Thiệp sinh nhật</option>
+							</select>
+							<div id="categoryHelp" class="form-text help-text">Bấm ctrl
+								để chọn nhiều mục</div>
+						</div>
+
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -223,17 +233,18 @@
 
 	<!-- Bootstrap core JavaScript-->
 	<jsp:include page="./common/link-js.jsp" />
-	
+
 	<script>
-	
-		$(document).ready(function() {
-			var modal = new bootstrap.Modal(document.getElementById('productModal'), {
-				  keyboard: false
-			}); 
-			$(".btn-edit").click(function() {
-				modal.show();
-			});
-		});
+		$(document).ready(
+				function() {
+					var modal = new bootstrap.Modal(document
+							.getElementById('productModal'), {
+						keyboard : false
+					});
+					$(".btn-edit").click(function() {
+						modal.show();
+					});
+				});
 	</script>
 </body>
 

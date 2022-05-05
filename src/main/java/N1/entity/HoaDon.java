@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import N1.utils.Datetime;
+
 @Entity
 @Table(name = "HoaDon")
 public class HoaDon implements Serializable {
@@ -134,5 +136,33 @@ public class HoaDon implements Serializable {
     public void setDiaChiGiaoHang(String diaChiGiaoHang) {
         this.diaChiGiaoHang = diaChiGiaoHang;
     }
+    
+    
+
+	public NguoiDung getNguoiDung() {
+		return nguoiDung;
+	}
+
+	public void setNguoiDung(NguoiDung nguoiDung) {
+		this.nguoiDung = nguoiDung;
+	}
+	
+	public String dateToString(Date d) {
+		String str = Datetime.dateToString(d);
+		if(str==null){
+            return "";
+        }
+		return str;
+	}
+
+	@Override
+	public String toString() {
+		return "HoaDon [maHD=" + maHD + ", ngayLHD=" + ngayLHD + ", tongTien=" + tongTien + ", tongSoLuong="
+				+ tongSoLuong + ", trangThaiDonHang=" + trangThaiDonHang + ", ngayGiaoHang=" + ngayGiaoHang
+				+ ", diaChiGiaoHang=" + diaChiGiaoHang + ", dsCTHoaDon=" + dsCTHoaDon + ", nguoiDung=" + nguoiDung
+				+ "]";
+	}
+    
+    
 
 }

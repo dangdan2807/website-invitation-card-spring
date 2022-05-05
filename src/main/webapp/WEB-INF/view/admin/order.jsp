@@ -82,6 +82,7 @@
 									width="100%" cellspacing="0">
 									<thead>
 										<tr>
+											<th>#</th>
 											<th>Mã hóa đơn</th>
 											<th>Tên khách hàng</th>
 											<th>Số điện thoại</th>
@@ -95,6 +96,7 @@
 									</thead>
 									<tfoot>
 										<tr>
+											<th>#</th>
 											<th>Mã hóa đơn</th>
 											<th>Tên khách hàng</th>
 											<th>Số điện thoại</th>
@@ -107,34 +109,24 @@
 										</tr>
 									</tfoot>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Trần Văn Nhân</td>
-											<td>0369462308</td>
-											<td>TP.HCM</td>
-											<td>100.000đ</td>
-											<td>Đang giao hàng</td>
-											<td>27/04/2022</td>
-											<td>20/04/2022</td>
-											<td class="text-center">
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Trần Văn Nhân</td>
-											<td>0369462308</td>
-											<td>TP.HCM</td>
-											<td>100.000đ</td>
-											<td>Đang giao hàng</td>
-											<td>27/04/2022</td>
-											<td>20/04/2022</td>
-											<td class="text-center">
-												<button class="btn btn-warning btn-edit">Sửa</button>
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
+										<c:forEach var="order" items="${orders}" varStatus="loop">
+											<tr>
+												<td>${loop.index + 1}</td>
+												<td>${order.maHD }</td>
+												<td>${order.nguoiDung.tenND }</td>
+												<td>${order.nguoiDung.sdt }</td>
+												<td>${order.diaChiGiaoHang }</td>
+												<td>${order.tongTien }<sup>đ</sup></td>
+												<td>${order.trangThaiDonHang }</td>
+												<td>${order.dateToString(order.ngayGiaoHang) }</td>
+												<td>${order.dateToString(order.ngayLHD) }</td>
+												<td class="text-center">
+													<button class="btn btn-warning btn-edit">Sửa</button>
+													<button class="btn btn-danger btn-delete">Xóa</button>
+												</td>
+											</tr>
+										</c:forEach>
+										
 									</tbody>
 								</table>
 							</div>
@@ -232,6 +224,15 @@
 							<label for="image" class="form-label">Ngày giao hàng</label> <input
 								type="date" class="form-control" id="image">
 						</div>
+						<div class="mb-3">
+							<label for="image" class="form-label">Trạng thái giao hàng</label>
+							<select class="form-select form-control" aria-label="Default select example">
+								  <option selected>Đang xuất hàng</option>
+								  <option value="1">Đang giao hàng</option>
+								  <option value="2">Giao hàng hoàn tất</option>
+								  
+							</select>
+						</div>
 						<div class="card shadow mb-4">
 							<div class="card-header py-3 row" style="margin: 0">
 								<div class="col-6">
@@ -257,8 +258,7 @@
 									<button class="btn btn-primary">Thêm sản phẩm</button>
 								</div>
 							</div>
-							<div class="ta
-										ble-responsive">
+							<div class="table-responsive">
 								<table class="table table-bordered table-hover" id="dataTable"
 									width="100%" cellspacing="0">
 									<thead>
@@ -266,6 +266,8 @@
 											<th>Mã thiệp</th>
 											<th>Tên thiệp</th>
 											<th>Số lượng</th>
+											<th>Đơn giá</th>
+											<th>Thành tiền</th>
 											<th class="text-center">Hành động</th>
 										</tr>
 									</thead>
@@ -275,6 +277,8 @@
 											<td>Thiệp cưới hiện đại</td>
 											<td><input type="number" class="form-control"
 												value="100" /></td>
+											<td>10.000đ</td>
+											<td>100.000đ</td>
 											<td class="text-center">
 												<button class="btn btn-danger btn-delete">Xóa</button>
 											</td>
@@ -284,12 +288,22 @@
 											<td>Thiệp cưới hiện đại</td>
 											<td><input type="number" class="form-control"
 												value="100" /></td>
+											<td>10.000đ</td>
+											<td>100.000đ</td>
 											<td class="text-center">
 												<button class="btn btn-danger btn-delete">Xóa</button>
 											</td>
 										</tr>
 									</tbody>
 								</table>
+							</div>
+							<div class="card-footer py-3 row" style="margin: 0">
+								<div class="col-6">
+									Tổng tiền
+								</div>
+								<div class="col-6" style="text-align: right">
+									100.000đ
+								</div>
 							</div>
 					</form>
 				</div>

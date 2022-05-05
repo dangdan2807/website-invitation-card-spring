@@ -31,4 +31,11 @@ public class LoaiSanPhamDAOImpl implements LoaiSanPhamDAO {
         });
         return dataList;
     }
+
+    @Override
+    public boolean addLoaiSanPham(LoaiSanPham loaiSanPham) {
+       Session currentSession=sessionFactory.getCurrentSession();
+       currentSession.saveOrUpdate(loaiSanPham);
+        return true;
+    }
 }
