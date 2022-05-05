@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 @IdClass(ChiTietLoaiSPPK.class)
 public class ChiTietLoaiSP implements Serializable {
     @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "maLSP", columnDefinition = "INT")
     private LoaiSanPham loaiSanPham;
 

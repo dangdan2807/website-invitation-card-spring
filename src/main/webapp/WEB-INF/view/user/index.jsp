@@ -47,14 +47,11 @@
                 <div class="categories__slider owl-carousel">
                     <c:forEach var="loaiSp" items="${dsLoaiSanPham}">
                         <div class="col-lg-3">
-                            <% 
-                                Random rand=new Random(); 
-                                int ranNum=rand.nextInt(5)+1; 
-                                request.setAttribute("ranNum", ranNum); 
-                            %>
                             <div class="categories__item set-bg"
-                                data-setbg="<c:url value = '/resources/user/img/categories/cat-${ranNum}.jpg' />">
-                                <h5><a href="#">${loaiSp.tenLSP}</a></h5>
+                                data-setbg='<c:url value = "${loaiSp.hinhAnh}" />'>
+                                <h5>
+                                    <a href='<c:url value = "${loaiSp.hinhAnh}" />'>${loaiSp.tenLSP}</a>
+                                </h5>
                             </div>
                         </div>
                     </c:forEach>      
@@ -84,19 +81,19 @@
             </div>
             <div id="featured__filter" class="row featured__filter">
                 <c:forEach var="sanPham" items="${dsSanPham}" begin="0" end="7">
-                    <div class='col-lg-3 col-md-4 col-sm-6 mix <c:forEach var="lsp" items="${sanPham.dsLoaiSP}">${fn:replace(lsp.loaiSanPham.tenLSP, " ", "-")} </c:forEach>'>
+                    <div class='col-lg-3 col-md-4 col-sm-6 mix <c:forEach var="lsp" items="${sanPham.dsLoaiSP}"> ${fn:replace(lsp.loaiSanPham.tenLSP, " ", "-")}</c:forEach>'>
                         <div class="featured__item"
-                            onclick=window.location.href='<c:url value = "/trang-chu" />'>
+                            onclick=window.location.href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'>
                             <div class="featured__item__pic set-bg"
-                                data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
-                                <ul class="featured__item__pic__hover">
+                                data-setbg='<c:url value = "${sanPham.hinhAnh}" />'>
+                                <!-- <ul class="featured__item__pic__hover">
                                     <li>
                                         <a href="#"><i class="fa fa-heart"></i></a>
                                     </li>
                                     <li>
                                         <a href="#"><i class="fa fa-shopping-cart"></i></a>
                                     </li>
-                                </ul>
+                                </ul> -->
                             </div>
                             <div class="featured__item__text">
                                 <h6><a href="#">${sanPham.tenSp}</a></h6>
@@ -111,22 +108,22 @@
     <!-- Featured Section End -->
 
     <!-- Banner Begin -->
-    <div class="banner">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="banner__pic">
-                        <img src="<c:url value = '/resources/user/img/banner/banner-1.jpg' />" alt="" />
-                    </div>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="banner__pic">
-                        <img src="<c:url value = '/resources/user/img/banner/banner-2.jpg' />" alt="" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!--     <div class="banner"> -->
+<!--         <div class="container"> -->
+<!--             <div class="row"> -->
+<!--                 <div class="col-lg-6 col-md-6 col-sm-6"> -->
+<!--                     <div class="banner__pic"> -->
+<%--                         <img src="<c:url value = '/resources/user/img/banner/banner-1.jpg' />" alt="" /> --%>
+<!--                     </div> -->
+<!--                 </div> -->
+<!--                 <div class="col-lg-6 col-md-6 col-sm-6"> -->
+<!--                     <div class="banner__pic"> -->
+<%--                         <img src="<c:url value = '/resources/user/img/banner/banner-2.jpg' />" alt="" /> --%>
+<!--                     </div> -->
+<!--                 </div> -->
+<!--             </div> -->
+<!--         </div> -->
+<!--     </div> -->
     <!-- Banner End -->
 
     <!-- Latest Product Section Begin -->
@@ -137,32 +134,21 @@
                     <div class="latest-product__text">
                         <h4>Sản phẩm mới nhất</h4>
                         <div class="latest-product__slider owl-carousel">
-                            <div class="latest-prdouct__slider__item">
-                                <c:forEach var="sanPham" items="${dsSanPhamMoi}" begin="0" end="2">
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="<c:url value = '${sanPham.hinhAnh}'/>" alt="" />
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>${sanPham.tenSp}</h6>
-                                            <span>${sanPham.giaSP}</span>
-                                        </div>
-                                    </a>
-                                </c:forEach>
-                            </div>
-                            <div class="latest-prdouct__slider__item">
-                                <c:forEach var="sanPham" items="${dsSanPhamMoi}" begin="3" end="6">
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="<c:url value = '${sanPham.hinhAnh}'/>" alt="" />
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>${sanPham.tenSp}</h6>
-                                            <span>${sanPham.giaSP}</span>
-                                        </div>
-                                    </a>
-                                </c:forEach>
-                            </div>
+                           	<c:forEach var="i" items="{1, 2}" varStatus="myIndex">
+                           		<div class="latest-prdouct__slider__item">
+	                               	<c:forEach var="sanPham" items="${dsSanPhamMoi}" begin="${myIndex.index * 3}" end="${(myIndex.index + 1) * 3 - 1}">
+	                                    <a href="<c:url value = '/san-pham/id=${sanPham.maSp}'/>" class="latest-product__item">
+	                                        <div class="latest-product__item__pic">
+	                                            <img src="<c:url value = '${sanPham.hinhAnh}'/>" alt="" />
+	                                        </div>
+	                                        <div class="latest-product__item__text">
+	                                            <h6>${sanPham.tenSp}</h6>
+	                                            <span>${sanPham.giaSP}</span>
+	                                        </div>
+	                                    </a>
+	                               	</c:forEach>
+                           		</div>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>
@@ -170,32 +156,21 @@
                     <div class="latest-product__text">
                         <h4>Sản phẩm hàng đầu</h4>
                         <div class="latest-product__slider owl-carousel">
-                            <div class="latest-prdouct__slider__item">
-                                <c:forEach var="sanPham" items="${dsSanPhamTot}" begin="0" end="2">
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="<c:url value = '${sanPham.hinhAnh}' />" alt="" />
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>${sanPham.tenSp}</h6>
-                                            <span>${sanPham.giaSP}</span>
-                                        </div>
-                                    </a>
-                                </c:forEach>
-                            </div>
-                            <div class="latest-prdouct__slider__item">
-                                <c:forEach var="sanPham" items="${dsSanPhamTot}" begin="3" end="6">
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="<c:url value = '${sanPham.hinhAnh}' />" alt="" />
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>${sanPham.tenSp}</h6>
-                                            <span>${sanPham.giaSP}</span>
-                                        </div>
-                                    </a>
-                                </c:forEach>
-                            </div>
+                        	<c:forEach var="i" items="{1, 2}" varStatus="myIndex">
+	                            <div class="latest-prdouct__slider__item">
+	                                <c:forEach var="sanPham" items="${dsSanPhamTot}" begin="${myIndex.index * 3}" end="${(myIndex.index + 1) * 3 - 1}">
+	                                    <a href="<c:url value = '/san-pham/id=${sanPham.maSp}'/>" class="latest-product__item">
+	                                        <div class="latest-product__item__pic">
+	                                            <img src="<c:url value = '${sanPham.hinhAnh}' />" alt="" />
+	                                        </div>
+	                                        <div class="latest-product__item__text">
+	                                            <h6>${sanPham.tenSp}</h6>
+	                                            <span>${sanPham.giaSP}</span>
+	                                        </div>
+	                                    </a>
+	                                </c:forEach>
+	                            </div>
+	                        </c:forEach>
                         </div>
                     </div>
                 </div>
@@ -203,32 +178,21 @@
                     <div class="latest-product__text">
                         <h4>Đánh giá Sản phẩm</h4>
                         <div class="latest-product__slider owl-carousel">
-                            <div class="latest-prdouct__slider__item">
-                                <c:forEach var="sanPham" items="${dsDanhGiaSp}" begin="0" end="2">
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="<c:url value = '${sanPham.hinhAnh}' />" alt="" />
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>${sanPham.tenSp}</h6>
-                                            <span>${sanPham.giaSP}</span>
-                                        </div>
-                                    </a>
-                                </c:forEach>
-                            </div>
-                            <div class="latest-prdouct__slider__item">
-                                <c:forEach var="sanPham" items="${dsDanhGiaSp}" begin="3" end="6">
-                                    <a href="#" class="latest-product__item">
-                                        <div class="latest-product__item__pic">
-                                            <img src="<c:url value = '${sanPham.hinhAnh}' />" alt="" />
-                                        </div>
-                                        <div class="latest-product__item__text">
-                                            <h6>${sanPham.tenSp}</h6>
-                                            <span>${sanPham.giaSP}</span>
-                                        </div>
-                                    </a>
-                                </c:forEach>
-                            </div>
+                        	<c:forEach var="i" items="{1, 2}" varStatus="myIndex">
+	                            <div class="latest-prdouct__slider__item">
+	                                <c:forEach var="sanPham" items="${dsDanhGiaSp}" begin="${myIndex.index * 3}" end="${(myIndex.index + 1) * 3 - 1}">
+	                                    <a href="<c:url value = '/san-pham/id=${sanPham.maSp}'/>" class="latest-product__item">
+	                                        <div class="latest-product__item__pic">
+	                                            <img src="<c:url value = '${sanPham.hinhAnh}' />" alt="" />
+	                                        </div>
+	                                        <div class="latest-product__item__text">
+	                                            <h6>${sanPham.tenSp}</h6>
+	                                            <span>${sanPham.giaSP}</span>
+	                                        </div>
+	                                    </a>
+	                                </c:forEach>
+	                            </div>
+                           	</c:forEach>
                         </div>
                     </div>
                 </div>
