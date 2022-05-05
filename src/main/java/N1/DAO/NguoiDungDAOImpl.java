@@ -42,4 +42,55 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
 		return (findAll().size() + pageSize - 1)/pageSize;
 	}
 
+    @Override
+    public NguoiDung addNguoiDung(NguoiDung nguoiDung) {
+       Session currenSession=sessionFactory.getCurrentSession();
+       currenSession.saveOrUpdate(nguoiDung);
+        return nguoiDung;
+    }
+
+    @Override
+    public boolean updateNguoiDung(NguoiDung nguoiDung) {
+        Session currentSession=sessionFactory.getCurrentSession();
+        
+        String email=nguoiDung.getTaiKhoan().getTenDangNhap();
+        NguoiDung nguoiDungCapNhat=findNguoiDungByEmail(email);
+        if(nguoiDungCapNhat==null){
+            return false;
+        }
+        nguoiDungCapNhat.setDiaChi(nguoiDung.getDiaChi());
+        nguoiDungCapNhat.setTenND(nguoiDung.getTenND());
+        nguoiDungCapNhat.setSdt(nguoiDung.getSdt());
+
+        //xử lý tài khoản
+        TaiKhoan taiKhoanCapNhat=nguoiDungCapNhat.getTaiKhoan();
+        TaiKhoan taiKhoanCu=nguoiDung.getTaiKhoan();
+        // thay đổi matKhau
+        taiKhoanCapNhat.setMatKhau(taiKhoanCu.getMatKhau());
+        nguoiDungCapNhat.setTaiKhoan(taiKhoanCapNhat);
+        currentSession.saveOrUpdate(nguoiDungCapNhat);
+        return true;
+    }
+
+    @Override
+    public NguoiDung findNguoiDungByEmail(String email) {
+        Session currentSession=sessionFactory.getCurrentSession();
+        String query="SELECT * FROM NguoiDung WHERE email ="+email;
+        NguoiDung nguoiDung=(NguoiDung) currentSession.createNamedQuery(query, NguoiDung.class);
+        return nguoiDung;
+    }
+
+    @Override
+    public NguoiDung findNguoiDungById(int id) {
+        Session currentSession=sessionFactory.getCurrentSession();
+        return currentSession.find(NguoiDung.class, id);
+    }
+
+	@Override
+	public List<NguoiDung> getDSNguoiDung() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 }

@@ -3,6 +3,8 @@ package N1.DAO;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,24 +35,41 @@ public class ChucVuDAOImpl implements ChucVuDAO {
         return dataList;
     }
 
+    @Transactional
     @Override
     public ChucVu getChucVuById(int chucVuId) {
-        return null;
+        Session currentSession = sessionFactory.getCurrentSession();
+        return currentSession.find(ChucVu.class, chucVuId);
     }
 
     @Override
-    public boolean addChucVu(ChucVu chucVu) {
-        return false;
+    public ChucVu addChucVu(ChucVu chucVu) {
+        Session currentSession = sessionFactory.getCurrentSession();
+          currentSession.saveOrUpdate(chucVu);
+          return chucVu;
     }
 
     @Override
-    public boolean updateChucVu(ChucVu chucVu) {
-        return false;
+    public boolean updateChucVu(int chucVuId,ChucVu chucVu) {
+        Session currentSession = sessionFactory.getCurrentSession();
+		ChucVu chucVuUpdate= getChucVuById(chucVuId);
+        if(chucVuUpdate==null){
+            return false;
+        }
+		chucVuUpdate.setTenChucVu(chucVu.getTenChucVu());
+		currentSession.saveOrUpdate(chucVuUpdate);
+		return true;
     }
 
     @Override
     public boolean deleteChucVu(int chucVuId) {
-        return false;
+        Session currentSession = sessionFactory.getCurrentSession();
+        ChucVu chucVu=getChucVuById(chucVuId);
+        if(chucVu==null){
+            return false;
+        }
+        currentSession.delete(chucVu);
+        return true;
     }
 
 }

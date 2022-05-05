@@ -3,6 +3,7 @@ package N1.Controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import N1.DAO.SanPhamDAO;
 import N1.Service.HoaDonService;
@@ -112,6 +114,9 @@ public class AdminController {
 		if(page == null)
 			page = 1;
 		
+		model.addAttribute("msg", request.getParameter("msg"));
+		model.addAttribute("status", request.getParameter("status"));
+		
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll(page);
 		model.addAttribute("numberOfPage", loaiSanPhamService.getNumberOfPage());
 		model.addAttribute("currentPage", page);
@@ -122,14 +127,26 @@ public class AdminController {
 	}
 	
 	@PostMapping("/category")
-	public String addOrUpdateCategory(@ModelAttribute("loaiSanPham") LoaiSanPham loaiSanPham, Model model, HttpServletRequest request) {
+	public String addOrUpdateCategory(@ModelAttribute("loaiSanPham") LoaiSanPham loaiSanPham, Model model, 
+			HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		System.out.println(loaiSanPham);
 		loaiSanPhamService.save(loaiSanPham);
+		if(loaiSanPham.getMaLSP() == 0) {
+			redirectAttributes.addAttribute("msg", "Thêm danh mục sản phẩm thành công!");
+			redirectAttributes.addAttribute("status", 1);
+		}else {
+			redirectAttributes.addAttribute("msg", "Cập nhật danh mục sản phẩm thành công");
+			redirectAttributes.addAttribute("status", 1);
+		}
+			
 		return "redirect:/admin/category";
 	}
 	
 	@GetMapping("/delete-category")
-	public String deleteCategory(@RequestParam(name = "maLSP") Integer maLSP, Model model, HttpServletRequest request) {
+	public String deleteCategory(@RequestParam(name = "maLSP") Integer maLSP, Model model, HttpServletRequest request, 
+			RedirectAttributes redirectAttributes) {
+		redirectAttributes.addAttribute("msg", "Xóa danh mục sản phẩm thành công!");
+		redirectAttributes.addAttribute("status", 1);
 		loaiSanPhamService.delete(maLSP);
 		return "redirect:/admin/category";
 	}

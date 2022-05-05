@@ -26,6 +26,7 @@ public class LoaiSanPhamDAOImpl implements LoaiSanPhamDAO {
         return query.getResultList();
     }
 
+
 	@Override
 	public List<LoaiSanPham> findAll(int page) {
 		Session currentSession = sessionFactory.getCurrentSession();
@@ -50,5 +51,19 @@ public class LoaiSanPhamDAOImpl implements LoaiSanPhamDAO {
 	@Override
 	public int getNumberOfPage() {
 		return (findAll().size() + pageSize - 1)/pageSize;
+	}
+
+    @Override
+    public boolean addLoaiSanPham(LoaiSanPham loaiSanPham) {
+       Session currentSession=sessionFactory.getCurrentSession();
+       currentSession.saveOrUpdate(loaiSanPham);
+        return true;
+    }
+
+
+	@Override
+	public List<LoaiSanPham> getDSLoaiSanPham() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

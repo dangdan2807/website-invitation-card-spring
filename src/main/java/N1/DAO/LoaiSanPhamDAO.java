@@ -10,4 +10,6 @@ public interface LoaiSanPhamDAO {
     public int getNumberOfPage();
     public void save(LoaiSanPham lsp);
     public void delete(int maLSP);
+    public List<LoaiSanPham> getDSLoaiSanPham();
+    public boolean addLoaiSanPham(LoaiSanPham loaiSanPham);
 }

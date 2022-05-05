@@ -7,7 +7,10 @@
                 <div class="col-lg-6">
                     <div class="header__top__left">
                         <ul>
-                            <li><i class="fa fa-envelope"></i> hello@code.com</li>
+                            <li>
+                                <i class="fa fa-envelope"></i>
+                                <a href="mailto:hello@code.com">hello@code.com</a>
+                            </li>
                             <li>Miễn phí ship cho tất cả đơn hàng từ 99.000đ</li>
                         </ul>
                     </div>
@@ -54,7 +57,7 @@
                         	}
                         	%>
                         >
-                            <a href='<c:url value = "/shop/shop-grid" />'>Cửa Hàng</a>
+                            <a href='<c:url value = "/san-pham" />'>Cửa Hàng</a>
                         </li >
                         
                         <li <% 
@@ -63,7 +66,7 @@
                         	}
                         	%>
                         >
-                            <a href='<c:url value = "/shop/shopping-cart" />'>Giỏ Hàng</a>
+                            <a href='<c:url value = "/gio-hang" />'>Giỏ Hàng</a>
                         </li>
                         
                         <li <% 
@@ -72,7 +75,7 @@
                         	}
                         	%>
                         >
-                            <a href='<c:url value = "/contact" />'>Liên Hệ</a>
+                            <a href='<c:url value = "/lien-he" />'>Liên Hệ</a>
                         </li>
                         <!-- <li><a href="#">Pages</a>
                             <ul class="header__menu__dropdown">
@@ -88,8 +91,8 @@
             <div class="col-lg-3">
                 <div class="header__cart">
                     <ul>
-                        <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
-                        <li><a href="<c:url value = '/shop/shopping-cart' />"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
+<!--                         <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li> -->
+                        <li><a href="<c:url value = '/gio-hang' />"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                     </ul>
                     <div class="header__cart__price">Tổng tiền: <span>150.000đ</span></div>
                 </div>

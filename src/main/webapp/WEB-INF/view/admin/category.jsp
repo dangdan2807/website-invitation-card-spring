@@ -50,18 +50,26 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
+					<c:if test="${status != null}">
+						<div class="alert alert-${status == 1 ? "success": "warning"} alert-dismissible fade show"
+							role="alert">
+							<strong>Thông báo</strong> ${msg}
+							<button type="button" class="close" data-dismiss="alert"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
 
+					</c:if>
 					<!-- Page Heading -->
 					<h1 class="h3 mb-2 text-gray-800">Quản lý danh mục</h1>
-					<!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank"
-                            href="https://datatables.net">official DataTables documentation</a>.</p> -->
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 row" style="margin: 0">
 							<div class="col-4">
-								<button class="btn btn-primary btn-open-modal">Thêm danh mục</button>
+								<button class="btn btn-primary btn-open-modal">Thêm
+									danh mục</button>
 							</div>
 							<div class="col-8" style="text-align: right">
 
@@ -99,10 +107,11 @@
 												<td>${loaiSp.maLSP}</td>
 												<td>${loaiSp.tenLSP}</td>
 												<td>
-													<button class="btn btn-warning btn-edit" 
-														data-maLSP="${loaiSp.maLSP}" data-tenLSP="${loaiSp.tenLSP}"
-														data-hinhAnh="${loaiSp.hinhAnh}">Sửa</button>
-													<a class="btn btn-danger btn-delete" href="${deleteLink}">Xóa</a>
+													<button class="btn btn-warning btn-edit"
+														data-maLSP="${loaiSp.maLSP}"
+														data-tenLSP="${loaiSp.tenLSP}"
+														data-hinhAnh="${loaiSp.hinhAnh}">Sửa</button> 
+													<a class="btn btn-danger btn-delete" data-msg="danh mục sản phẩm với mã là ${loaiSp.maLSP}" data-href="${deleteLink }">Xóa</a>
 												</td>
 											</tr>
 										</c:forEach>
@@ -112,8 +121,8 @@
 						</div>
 						<div class="card-footer py-3 row" style="margin: 0">
 							<div class="col-4">
-								<button class="btn btn-primary" data-toggle="modal"
-									data-target="#categoryModal">Thêm danh mục</button>
+								<button class="btn btn-primary btn-open-modal">Thêm
+									danh mục</button>
 							</div>
 							<div class="col-8" style="text-align: right">
 
@@ -138,6 +147,8 @@
 	</div>
 	<!-- End of Page Wrapper -->
 
+
+
 	<!-- Scroll to Top Button-->
 	<a class="scroll-to-top rounded" href="#page-top"> <i
 		class="fas fa-angle-up"></i>
@@ -159,7 +170,8 @@
 						modelAttribute="loaiSanPham" method="POST">
 						<div class="mb-3">
 							<form:label path="maLSP" cssClass="form-label">Mã danh mục</form:label>
-							<form:input path="maLSP" type="text" cssClass="form-control" readonly="true"/>
+							<form:input path="maLSP" type="text" cssClass="form-control"
+								readonly="true" />
 							<form:errors path="maLSP" cssClass="form-text" />
 						</div>
 						<div class="mb-3">
@@ -184,6 +196,8 @@
 			</div>
 		</div>
 	</div>
+	
+	
 
 	<!-- Logout Modal-->
 	<jsp:include page="./common/logout-model.jsp" />
@@ -192,27 +206,35 @@
 	<jsp:include page="./common/link-js.jsp" />
 
 	<script>
-		$(document).ready(function() {
-			var modal = new bootstrap.Modal(document
-					.getElementById('categoryModal'), {
-				keyboard : false
-			});
-			$(".btn-edit").click(function() {
-				$(".btn-form").text("Sửa");
-				$("#maLSP").attr('value', $(this).attr("data-maLSP"));
-				$("#tenLSP").attr('value', $(this).attr("data-tenLSP"));
-				$("#hinhAnh").attr('value', $(this).attr("data-hinhAnh"));
-				modal.show();
-			});
-			
-			$(".btn-open-modal").click(function() {
-				$(".btn-form").text("Thêm");
-				$("#maLSP").attr('value', '0');
-				$("#tenLSP").attr('value', '');
-				$("#hinhAnh").attr('value', '');
-				modal.show();
-			});
-		});
+		$(document).ready(
+				function() {
+					var modal = new bootstrap.Modal(document
+							.getElementById('categoryModal'), {
+						keyboard : false
+					});
+					
+					$(".btn-edit").click(function() {
+						$(".btn-form").text("Sửa");
+						$("#maLSP").attr('value',
+								$(this).attr("data-maLSP"));
+						$("#tenLSP").attr('value',
+								$(this).attr("data-tenLSP"));
+						$("#hinhAnh").attr('value',
+								$(this).attr("data-hinhAnh"));
+						modal.show();
+					});
+
+					$(".btn-open-modal").click(function() {
+						$(".btn-form").text("Thêm");
+						$("#maLSP").attr('value', '0');
+						$("#tenLSP").attr('value', '');
+						$("#hinhAnh").attr('value', '');
+						modal.show();
+					});
+					
+					
+					
+				});
 	</script>
 </body>
 

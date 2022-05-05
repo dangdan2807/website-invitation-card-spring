@@ -149,8 +149,9 @@ public class HoaDon implements Serializable {
 	
 	public String dateToString(Date d) {
 		String str = Datetime.dateToString(d);
-		if(str == null)
-			return "";
+		if(str==null){
+            return "";
+        }
 		return str;
 	}
 

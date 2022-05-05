@@ -59,10 +59,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-6 text-center">
-                    <div class="contact__widget">
+                    <div class="contact__widget contact__widget__phone"
+                        onclick="window.location.href='tel:+849999999'"
+                    >
                         <span class="icon_phone"></span>
                         <h4>Số điện thoại</h4>
-                        <p>+84 09.999.999</p>
+                        <a href="tel:+849999999">+84 9.999.999</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 text-center">
@@ -80,10 +82,12 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 text-center">
-                    <div class="contact__widget">
+                    <div class="contact__widget contact__widget__email"
+                        onclick="window.location.href='mailto:hello@code.com'"
+                    >
                         <span class="icon_mail_alt"></span>
                         <h4>Email</h4>
-                        <p>hello@code.com</p>
+                        <a href="mailto:hello@code.com">hello@code.com</a>
                     </div>
                 </div>
             </div>

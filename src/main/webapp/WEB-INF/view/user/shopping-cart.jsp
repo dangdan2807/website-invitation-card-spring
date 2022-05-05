@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Giở Hàng</title>
+    <title>Giỏ Hàng</title>
 
     <jsp:include page="./module/link-css.jsp"/>
 </head>
@@ -36,27 +36,12 @@
     </jsp:include>
     
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="<c:url value = '/resources/user/img/breadcrumb.jpg' />">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="breadcrumb__text">
-                        <h2>Giỏ Hàng</h2>
-                        <div class="breadcrumb__option">
-                            <a href="<c:url value ='/trang-chu' />">Home</a>
-                            <span>Giỏ Hàng</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <!-- Breadcrumb Section End -->
 
     <!-- Shoping Cart Section Begin -->
     <section class="shoping-cart spad">
         <div class="container">
-            <div class="row">
+            <div class="row shoping__cart-desktop">
                 <div class="col-lg-12">
                     <div class="shoping__cart__table">
                         <table>
@@ -70,97 +55,78 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="<c:url value = '/resources/user/img/cart/cart-1.jpg' />" alt="">
-                                        <h5>Product Name 1</h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        55.000đ
-                                    </td>
-                                    <td class="shoping__cart__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="2">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="shoping__cart__total">
-                                        110.000đ
-                                    </td>
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="<c:url value = '/resources/user/img/cart/cart-2.jpg' />" alt="">
-                                        <h5>Product name 2</h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        39.000đ
-                                    </td>
-                                    <td class="shoping__cart__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="shoping__cart__total">
-                                        39.000đ
-                                    </td>
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="shoping__cart__item">
-                                        <img src="<c:url value = '/resources/user/img/cart/cart-3.jpg' />" alt="">
-                                        <h5>Product name 3</h5>
-                                    </td>
-                                    <td class="shoping__cart__price">
-                                        69.000đ
-                                    </td>
-                                    <td class="shoping__cart__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="shoping__cart__total">
-                                        69.000đ
-                                    </td>
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
-                                    </td>
-                                </tr>
+                                <c:forEach var="sanPham" items="${dsSanPham}">
+	                                <tr>
+                                        <td class="shoping__cart__item">
+	                                        <img src="<c:url value = '${sanPham.hinhAnh}' />" alt="">
+	                                        <h5>${sanPham.tenSp}</h5>
+	                                    </td>
+	                                    <td class="shoping__cart__price">
+	                                        ${sanPham.giaSP}
+	                                    </td>
+	                                    <td class="shoping__cart__quantity">
+	                                        <div class="quantity">
+	                                            <div class="pro-qty">
+	                                                <input type="text" value="2">
+	                                            </div>
+	                                        </div>
+	                                    </td>
+	                                    <td class="shoping__cart__total">
+	                                        110.000đ
+	                                    </td>
+	                                    <td class="shoping__cart__item__close">
+	                                        <span class="icon_close"></span>
+	                                    </td>
+	                                </tr>
+                                </c:forEach>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+            <div class="row shoping__cart-mobile">
+                <c:forEach var="sanPham" items="${dsSanPham}" varStatus="status">
+                    <div class="col-lg-12">
+                        <div class="shoping__cart-mobile__item">
+                            <img src="<c:url value = '${sanPham.hinhAnh}' />" alt="">
+                            <div class="cart__item__info">
+                                <a class="cart__item__name" href="<c:url value = '/san-pham/id=${sanPham.maSp}' />">
+                                    ${sanPham.tenSp}
+                                </a>
+                                <span class="shoping__cart__price">${sanPham.giaSP}</span>
+                                <span class="shoping__cart__unit">/ chiếc</span>
+                                <div class="shoping__cart__quantity">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input type="text" value="2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="shoping__cart__right">
+                                <div class="shoping__cart__total">
+                                    ${sanPham.giaSP}
+                                </div>
+                                <a class="shoping__cart__btn-delete" href="#">Xóa</a>
+                            </div>
+                            <c:if test="${status.last}">
+                                <hr/>
+                            </c:if>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="shoping__cart__btns">
-                        <a href="#" class="primary-btn cart-btn">TIẾP TỤC MUA SẮM</a>
-                        <a href="#" class="primary-btn cart-btn cart-btn-right"><span class="icon_loading"></span>
-                            CẬP NHẬT GIỎ HÀNG</a>
+                        <a href="<c:url value = '/san-pham' />" class="primary-btn cart-btn">TIẾP TỤC MUA SẮM</a>
+                        <a href="" class="primary-btn cart-btn cart-btn-right">
+                            <span class="icon_loading"></span>
+                            CẬP NHẬT GIỎ HÀNG
+                        </a>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="shoping__continue">
-                        <div class="shoping__discount">
-                            <h5>Mã giảm giá</h5>
-                            <form action="#">
-                                <input type="text" placeholder="Nhập mã giảm giá">
-                                <button type="submit" class="site-btn">ÁP DỤNG COUPON</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 offset-lg-6">
                     <div class="shoping__checkout">
                         <h5>Tổng số giỏ hàng</h5>
                         <ul>
