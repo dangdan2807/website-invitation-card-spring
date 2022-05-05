@@ -111,7 +111,9 @@
 														data-maLSP="${loaiSp.maLSP}"
 														data-tenLSP="${loaiSp.tenLSP}"
 														data-hinhAnh="${loaiSp.hinhAnh}">Sửa</button> 
-													<a class="btn btn-danger btn-delete" data-msg="danh mục sản phẩm với mã là ${loaiSp.maLSP}" data-href="${deleteLink }">Xóa</a>
+													<a class="btn btn-danger btn-delete" 
+														data-msg="danh mục sản phẩm với mã là ${loaiSp.maLSP}" 
+														data-href="${deleteLink }">Xóa</a>
 												</td>
 											</tr>
 										</c:forEach>
