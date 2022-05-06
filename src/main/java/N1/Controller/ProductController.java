@@ -32,7 +32,7 @@ public class ProductController {
 			currentPage = 1;
 		}
 		
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
 		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(currentPage, sort);
@@ -66,7 +66,7 @@ public class ProductController {
 			currentPage = 1;
 		}
 
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
 		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(currentPage, "asc");
@@ -93,7 +93,7 @@ public class ProductController {
 
 	@RequestMapping("/id={theId}")
 	public String getProductById(@PathVariable int theId, Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
 		List<ChiTietLoaiSP> dsChiTietLoaiSP = new ArrayList<ChiTietLoaiSP>();

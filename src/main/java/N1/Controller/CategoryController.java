@@ -1,6 +1,5 @@
 package N1.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import N1.Service.LoaiSanPhamService;
 import N1.Service.SanPhamService;
-import N1.entity.ChiTietLoaiSP;
 import N1.entity.LoaiSanPham;
 import N1.entity.SanPham;
 
@@ -32,7 +30,7 @@ public class CategoryController {
 			currentPage = 1;
 		}
 		
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
 		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(currentPage);

@@ -22,7 +22,7 @@ public class HomeController {
 
 	@RequestMapping({ "/", "/trang-chu", "/home" })
 	public String showHomePage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
 		List<SanPham> dsSanPham = sanPhamService.getLatestSanPhams(8);
@@ -65,7 +65,7 @@ public class HomeController {
 
 	@GetMapping({"/lien-he", "/contact"})
 	public String showContractPage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		
 		return "user/contact";
@@ -73,7 +73,7 @@ public class HomeController {
 
 	@GetMapping({"/dang-nhap", "/login"})
 	public String showLoginPage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		
 		return "user/login";
@@ -81,7 +81,7 @@ public class HomeController {
 	
 	@RequestMapping({"/gio-hang", "/cart"})
 	public String showShoppingCartPage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		
 		List<SanPham> dsSanPham = new ArrayList<SanPham>();
@@ -92,7 +92,7 @@ public class HomeController {
 
 	@RequestMapping({"/thanh-toan", "/checkout"})
 	public String showCheckoutPage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		
 		return "user/checkout";
