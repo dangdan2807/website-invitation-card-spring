@@ -5,22 +5,33 @@
         All Functions
         uck
     --------------------*/
-    const formatNumber = (value) => {
+    const getDayOfTime = function (time) {
+        var date = new Date(time);
+        const options = { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" };
+        return date.toLocaleDateString('vi-Vn', options);;
+    }
+    
+    const getDayOfTimeBySelect = function() {
+		var time = $(this).text();
+        $(this).text(getDayOfTime(time));
+	}
+
+    const formatNumber = function(value) {
         return new Intl.NumberFormat(
             'vi-Vn',
             { maximumSignificantDigits: 3 }).format(value);
     }
     
-    const formatMoney = (value) => {
+    const formatMoney = function(value) {
         return formatNumber(value) + "đ";
     }
 
-    const formatMoneyBySelect = function () {
+    const formatMoneyBySelect = function() {
         var price = $(this).text();
         $(this).text(formatNumber(price) + "đ");
     }
     
-    const formatPercentBySelect = function () {
+    const formatPercentBySelect = function() {
         var price = $(this).text();
         $(this).text(formatNumber(price) + "%");
     }
@@ -48,6 +59,7 @@
             Format Money vnd
         -------------------- */
         // uck
+        // format tiền
         $('.featured__item__text > h5').each(formatMoneyBySelect);
         $('.latest-product__item__text > span').each(formatMoneyBySelect);
         $('.product__item__price > span').each(formatMoneyBySelect);
@@ -60,7 +72,31 @@
         $('.checkout__order__subtotal > span').each(formatMoneyBySelect);
         $('.checkout__order__total > span').each(formatMoneyBySelect);
         
+        // format phần trăm
         $('.product__discount__percent').each(formatPercentBySelect);
+
+        // format thời gian
+        $('.product__details__comment-item > .comment__time').each(getDayOfTimeBySelect);
+
+        // select review star
+        for (let index = 1; index <= 5; index++) {
+            $(`.ul-star > li[data-val="${index}"]`).on('click', function () {
+                $('.review__xepHang').val(index);
+                if ($(`.ul-star > li[data-val="${index}"] > i`).hasClass('active')) {
+                    for (let i = index + 1; i <= 5; i++) {
+                        $(`.ul-star > li[data-val="${i}"] > i`).removeClass('active');
+                        $(`.ul-star > li[data-val="${i}"] > i`).removeClass('fa-star');
+                        $(`.ul-star > li[data-val="${i}"] > i`).addClass('fa-star-o');
+                    }
+                } else {
+                    for (let i = 1; i <= index; i++) {
+                        $(`.ul-star > li[data-val="${i}"] > i`).removeClass('fa-star-o');
+                        $(`.ul-star > li[data-val="${i}"] > i`).addClass('active');
+                        $(`.ul-star > li[data-val="${i}"] > i`).addClass('fa-star');
+                    }
+                }
+            });
+        }
     });
 
     /*------------------

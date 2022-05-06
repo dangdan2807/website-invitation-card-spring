@@ -187,7 +187,7 @@
                                 <i class="fa fa-long-arrow-left"></i>
                             </a>
                         </c:if>
-                        <c:forEach var="sp" items="${ [5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5] }">
+                        <c:forEach var="sp" items="${pageSize}">
                             <c:if test="${((currentPage - sp) >= 1) && ((currentPage - sp) <= pageOfNumber)}">
                                 <a href='<c:url value="/san-pham?page=${currentPage - sp}&sort=${sort}" />'
                                     class='<c:if test="${currentPage == currentPage - sp}">active</c:if>'

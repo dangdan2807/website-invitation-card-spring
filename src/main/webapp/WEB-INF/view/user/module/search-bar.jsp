@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
     pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%-- <%@page import="org.springframework.web.servlet.tags.Param"%> --%>
+<%-- <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %> --%>
 
 <section class='hero <c:if test="${!param.showBanner}">hero-normal</c:if>'>
     <div class="container">
@@ -28,10 +29,11 @@
                                 All Categories
                                 <span class="arrow_carrot-down"></span>
                             </div> -->
-                        <form:form method="GET" action='${pageContext.request.contextPath}/san-pham'>
-<%--                             <form:input path="maSp" type="text"/> --%>
+                        <form method="GET" action='${pageContext.request.contextPath}/san-pham'
+                        >
+                            <input type="text" name="tenSanPham" placeholder="Bạn cần gì?">
                             <button type="submit" class="site-btn">TÌM</button>
-                        </form:form>
+                        </form>
                     </div>
                     <div class="hero__search__phone">
                         <div class="hero__search__phone__icon">

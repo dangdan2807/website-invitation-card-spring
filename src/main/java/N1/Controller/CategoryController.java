@@ -45,6 +45,7 @@ public class CategoryController {
 		model.addAttribute("slSanPham", numberOfSanPham);
 		model.addAttribute("pageOfNumber", pageOfNumber);
 		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("pageSize", new int[] {5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5});
 
 		List<SanPham> dsSanPhamMoi = sanPhamService.getLatestSanPhams(6);
 		model.addAttribute("dsSanPhamMoi", dsSanPhamMoi);

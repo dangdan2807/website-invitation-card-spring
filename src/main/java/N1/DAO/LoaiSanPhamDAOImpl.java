@@ -36,6 +36,13 @@ public class LoaiSanPhamDAOImpl implements LoaiSanPhamDAO {
 	}
 	
 	@Override
+	public LoaiSanPham findById(int id) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		LoaiSanPham loaiSanPham = currentSession.get(LoaiSanPham.class, id);
+		return loaiSanPham;
+	}
+	
+	@Override
     public void save(LoaiSanPham lsp) {
     	Session currentSession = sessionFactory.getCurrentSession();
         currentSession.saveOrUpdate(lsp);

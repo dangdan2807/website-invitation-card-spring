@@ -19,13 +19,15 @@ public class HomeController {
 	private SanPhamService sanPhamService;
 	@Autowired
 	private LoaiSanPhamService loaiSanPhamService;
-
+	@Autowired
+	private DanhGiaService danhGiaService;
+	
 	@RequestMapping({ "/", "/trang-chu", "/home" })
 	public String showHomePage(Model model) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
-		List<SanPham> dsSanPham = sanPhamService.getLatestSanPhams(8);
+		List<SanPham> dsSanPham = sanPhamService.getFeaturedSanPhams(8);
 		model.addAttribute("dsSanPhamNoiBat", dsSanPham);
 
 		List<SanPham> dsSanPhamMoi = sanPhamService.getLatestSanPhams(6);
@@ -39,6 +41,8 @@ public class HomeController {
 
 		SanPham sanPhamMoi = sanPhamService.getLatestSanPham();
 		model.addAttribute("sanPhamMoi", sanPhamMoi);
+		
+		model.addAttribute("tenSanPham", "");
 
 		return "user/index";
 	}
@@ -53,6 +57,7 @@ public class HomeController {
 		List<ChiTietLoaiSP> ctLoaiSPList = new ArrayList<>();
 		List<LoaiSanPham> loaiSanPhamList = new ArrayList<>();
 		model.addAttribute("chucVuList", null);
+		model.addAttribute("danhGiaList", danhGiaService.getDanhGiasByIdSanPham(97));
 		model.addAttribute("taiKhoanList", taiKhoanList);
 		model.addAttribute("nguoiDungList", nguoiDungList);
 		model.addAttribute("hoaDonList", hoaDonList);
@@ -103,3 +108,4 @@ public class HomeController {
 		return "user/access-denied";
 	}
 }
+

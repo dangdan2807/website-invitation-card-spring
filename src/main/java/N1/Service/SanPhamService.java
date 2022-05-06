@@ -10,6 +10,8 @@ public interface SanPhamService {
 	public List<SanPham> getDSSanPham(int page);
 
 	public List<SanPham> getDSSanPham(int page, String sort);
+	
+	public SanPham getSanPhamByIdSanPham(int sanPhamId);
 
 	public int getNumberOfPage();
 
@@ -19,13 +21,19 @@ public interface SanPhamService {
 
 	public SanPham getLatestSanPham();
 
-	public List<SanPham> getLatestSanPhams(int quantity);
+	public List<SanPham> getLatestSanPhams(int numOfLines);
 
-	public List<SanPham> getRatedTopSanPhams(int quantity);
+	public List<SanPham> getRatedTopSanPhams(int numOfLines);
 
-	public List<SanPham> getDiscountSanPhams(int quantity);
+	public List<SanPham> getDiscountSanPhams(int numOfLines);
 
 	public int getNumberOfSanPhams();
 
-	public List<SanPham> getReviewSanPhams(int quantity);
+	public List<SanPham> getReviewSanPhams(int numOfLines);
+	
+	public List<SanPham> getFeaturedSanPhams(int numOfLines);
+	
+	public List<SanPham> getSanPhamsByCategoryId(int categoryId, int numOfLines);
+
+	public List<SanPham> getRandomSanPhamsByCategoryId(int categoryId, int numOfLines, int currentSanPhamId);
 }

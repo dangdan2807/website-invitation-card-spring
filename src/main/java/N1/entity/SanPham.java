@@ -46,7 +46,7 @@ public class SanPham implements Serializable {
     @OneToMany(mappedBy = "sanPham", fetch = FetchType.EAGER)
     private List<ChiTietLoaiSP> dsLoaiSP;
 
-    @OneToMany(mappedBy = "sanPham")
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.LAZY)
     private List<DanhGia> dsDanhGia;
 
     @OneToMany(mappedBy = "sanPham")

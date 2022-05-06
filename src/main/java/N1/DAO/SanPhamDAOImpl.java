@@ -74,9 +74,8 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 	@Override
 	public SanPham getSanPhamByIdSanPham(int sanPhamId) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		SanPham sanPham = null;
-		sanPham = currentSession.find(SanPham.class, sanPhamId);
-		return sanPham;
+		SanPham result = currentSession.get(SanPham.class, sanPhamId);
+		return result;
 	}
 
 	@Override
@@ -98,33 +97,31 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 	}
 
 	@Override
-	public List<SanPham> getLatestSanPhams(int quantity) {
+	public List<SanPham> getLatestSanPhams(int numOfLines) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		String query = "from SanPham sp Order By sp.maSp DESC";
 		Query<SanPham> results = currentSession.createQuery(query, SanPham.class);
-		results.setMaxResults(quantity);
+		results.setMaxResults(numOfLines);
 		return results.getResultList();
 	}
 
 	@Override
-	public List<SanPham> getRatedTopSanPhams(int quantity) {
+	public List<SanPham> getRatedTopSanPhams(int numOfLines) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		String query = "select * from SanPham sp "
-				+ "where sp.maSp in ( "
-				+ "	select TOP " + quantity + " sp1.maSp from SanPham sp1, DanhGia dg "
-				+ "	where sp1.maSp = dg.maSP "
-				+ "	order by dg.xepHang desc "
-				+ ")";
+		String query = "select * from SanPham sp " 
+				+ "where sp.maSp in ( " 
+					+ "	select TOP " + numOfLines + " dg.maSP from DanhGia dg " 
+					+ "	group by dg.maSP order by AVG(dg.xepHang) desc )";
 		Query<SanPham> results = currentSession.createNativeQuery(query, SanPham.class);
 		return results.getResultList();
 	}
 
 	@Override
-	public List<SanPham> getDiscountSanPhams(int quantity) {
+	public List<SanPham> getDiscountSanPhams(int numOfLines) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		String query = "from SanPham sp Order By sp.giamGia DESC";
 		Query<SanPham> results = currentSession.createQuery(query, SanPham.class);
-		results.setMaxResults(quantity);
+		results.setMaxResults(numOfLines);
 		return results.getResultList();
 	}
 
@@ -137,14 +134,11 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 	}
 
 	@Override
-	public List<SanPham> getReviewSanPhams(int quantity) {
+	public List<SanPham> getReviewSanPhams(int numOfLines) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		String query = "select * from SanPham sp "
-				+ "where sp.maSp in ( "
-				+ "	select top " + quantity + " dg1.maSp from DanhGia dg1 "
-				+ "	group by dg1.maSp "
-				+ "	order by count(dg1.maSp) desc "
-				+ ")";
+		String query = "select * from SanPham sp where sp.maSp in ( " 
+				+ "	select top " + numOfLines + " dg1.maSp from DanhGia dg1 " 
+				+ "	group by dg1.maSp order by count(dg1.maSp) desc )";
 		Query<SanPham> results = currentSession.createNativeQuery(query, SanPham.class);
 		return results.getResultList();
 	}
@@ -153,5 +147,42 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 	public void delete(int maSp) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		currentSession.delete(currentSession.find(SanPham.class, maSp));
+	}
+
+	@Override
+	public List<SanPham> getFeaturedSanPhams(int numOfLines) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		String query = "select * from SanPham sp where sp.maSp in ( " 
+					+ "	select top " + numOfLines + " sp1.maSp from SanPham sp1, ChiTietHoaDon cthd " 
+					+ "	where sp1.maSp = cthd.maSP and sp1.maSp in ( " 
+						+ " select top " + numOfLines + " dg.maSP from DanhGia dg " 
+						+ " group by dg.maSP order by count(dg.maSP) desc )" 
+					+ " group by sp1.maSp order by sum(cthd.soLuong) desc )";
+		Query<SanPham> results = currentSession.createNativeQuery(query, SanPham.class);
+		return results.getResultList();
+	}
+
+	@Override
+	public List<SanPham> getSanPhamsByCategoryId(int categoryId, int numOfLines) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		String query = "select * from SanPham sp where sp.maSp in ( "
+					+ " select TOP " + numOfLines + " ctlsp.maSp from ChiTietLoaiSP ctlsp, LoaiSanPham lsp "
+					+ " where ctlsp.maLSP = lsp.maLSP "
+					+ " and lsp.maLSP = " + categoryId + " )";
+		Query<SanPham> results = currentSession.createNativeQuery(query, SanPham.class);
+		return results.getResultList();
+	}
+	
+	@Override
+	public List<SanPham> getRandomSanPhamsByCategoryId(int categoryId, int numOfLines, int currentSanPhamId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		String query = "select * from SanPham sp where sp.maSp in ( "
+					+ " select TOP " + numOfLines + " ctlsp.maSp from ChiTietLoaiSP ctlsp, LoaiSanPham lsp "
+					+ " where ctlsp.maLSP = lsp.maLSP "
+					+ " and lsp.maLSP = " + categoryId 
+					+ " and ctlsp.maSp != " + currentSanPhamId
+					+ " ORDER BY NEWID() )";
+		Query<SanPham> results = currentSession.createNativeQuery(query, SanPham.class);
+		return results.getResultList();
 	}
 }
