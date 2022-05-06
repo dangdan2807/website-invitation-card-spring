@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="org.springframework.web.servlet.tags.Param"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -112,10 +111,10 @@
 												<td>${loop.index+1}</td>
 												<td>${sanPham.maSp}</td>
 												<td>${sanPham.tenSp}</td>
-												<td>${sanPham.giaMua}</td>
-												<td>${sanPham.giaSP}</td>
-												<td>${sanPham.giamGia}</td>
-												<td>${sanPham.giaSP*(100-sanPham.giamGia)/100}</td>
+												<td class="money-format">${sanPham.giaMua}</td>
+												<td class="money-format">${sanPham.giaSP}</td>
+												<td class="persent-format">${sanPham.giamGia}</td>
+												<td class="money-format">${sanPham.giaSP*(100-sanPham.giamGia)/100}</td>
 												<td>
 													<c:forEach var="loaiSp" items="${sanPham.dsLoaiSP}">
 														${loaiSp.loaiSanPham.tenLSP}
@@ -183,7 +182,6 @@
 					<form:form id="form"
 						action="${pageContext.request.contextPath}/admin/product"
 						modelAttribute="sanPham" method="POST">
-						<!-- sửa lại thành POST -->
 						<div class="mb-3">
 							<form:label path="maSp" cssClass="form-label">Mã thiệp</form:label>
 							<form:input path="maSp" type="text" cssClass="form-control"
@@ -219,8 +217,8 @@
 								<form:errors path="giamGia" cssClass="form-text" />
 							</div>
 							<div class="mb-3 col-6">
-								<label for="real-price" class="form-label">Giá sau khuyến mãi</label> <input
-									type="number" class="form-control" id="price" disabled>
+								<label for="real-price" class="form-label">Giá sau khuyến mãi (đồng)</label> 
+								<input type="number" class="form-control money-format" id="real-price" disabled>
 							</div>
 						</div>
 						<div class="mb-3">
@@ -232,6 +230,12 @@
 							<label for="image" class="form-label">Loại thiệp</label> 
 							<%-- <form:select path="dsLoaiSP" items="${dsLoaiSanPham}" cssClass="form-control"
 								  itemValue="maLSP" itemLabel="tenLSP"/> --%>
+							<select id="dsLoaiSanPham"   name="dsLoaiSanPham" class="form-control" multiple="multiple">
+								<c:forEach var="loaiSp" items="${dsLoaiSanPham}">
+									<option value="${loaiSp.maLSP}">${loaiSp.tenLSP}</option>
+								</c:forEach>
+							</select> 
+							
 							
 							<div id="categoryHelp" class="form-text help-text">Bấm ctrl
 								để chọn nhiều mục</div>
@@ -256,58 +260,70 @@
 	<jsp:include page="./common/link-js.jsp" />
 
 	<script>
-		$(document).ready(
-				function() {
-					var modal = new bootstrap.Modal(document
-							.getElementById('productModal'), {
-						keyboard : false
-					});
-					
-					$(".btn-edit").click(function() {
-						$(".btn-form").text("Sửa");
-						$("#maSp").attr('value',
-								$(this).attr("data-maSp"));
-						$("#tenSp").attr('value',
-								$(this).attr("data-tenSp"));
-						$("#moTa").attr('value',
-								$(this).attr("data-moTa"));
-						$("#giaMua").attr('value',
-								$(this).attr("data-giaMua"));
-						$("#giaSP").attr('value',
-								$(this).attr("data-giaSP"));
-						$("#giamGia").attr('value',
-								$(this).attr("data-giamGia"));
-						$("#hinhAnh").attr('value',
-								$(this).attr("data-hinhAnh"));
-						
-						var loaiSp = $(this).attr("data-dsLoaiSP").split(",");
-						$dslsp = $("#dsLoaiSP>option");
-						$dslsp.each(function() {
-							  console.log($(this));
-							  console.log(loaiSp.includes($(this).attr("value")));
-							  if(loaiSp.includes($(this).attr("value"))){
-								  $(this).attr("selected", "true");
-							  }
-						});
-						modal.show();
-					});
-
-					$(".btn-open-modal").click(function() {
-						$(".btn-form").text("Thêm");
-						$("#maSp").attr('value', '0');
-						$("#tenSp").attr('value', '');
-						$("#moTa").attr('value', '');
-						$("#giaMua").attr('value', '');
-						$("#giaSP").attr('value', '');
-						$("#giamGia").attr('value', '');
-						$("#hinhAnh").attr('value', '');
-						modal.show();
-					});
-					
-					
-					
+		$(document).ready(function() {
+			var modal = new bootstrap.Modal(document
+					.getElementById('productModal'), {
+				keyboard : false
+			});
+			
+			$(".btn-edit").click(function() {
+				$(".btn-form").text("Sửa");
+				$("#maSp").attr('value',
+						$(this).attr("data-maSp"));
+				$("#tenSp").attr('value',
+						$(this).attr("data-tenSp"));
+				$("#moTa").attr('value',
+						$(this).attr("data-moTa"));
+				$("#giaMua").attr('value',
+						$(this).attr("data-giaMua"));
+				$("#giaSP").attr('value',
+						$(this).attr("data-giaSP"));
+				$("#giamGia").attr('value',
+						$(this).attr("data-giamGia"));
+				$("#hinhAnh").attr('value',
+						$(this).attr("data-hinhAnh"));
+				
+				var loaiSp = $(this).attr("data-dsLoaiSP").split(",");
+				$dslsp = $("#dsLoaiSanPham>option");
+				$dslsp.each(function() {
+					  console.log($(this));
+					  console.log(loaiSp.includes($(this).attr("value")));
+					  if(loaiSp.includes($(this).attr("value"))){
+						  $(this).attr("selected", "true");
+					  }
 				});
-	</script>
+				$("#real-price").val(formatNumber(giaSauGiamGia()));
+				modal.show();
+			});
+
+			$(".btn-open-modal").click(function() {
+				$(".btn-form").text("Thêm");
+				$("#maSp").attr('value', '0');
+				$("#tenSp").attr('value', '');
+				$("#moTa").attr('value', '');
+				$("#giaMua").attr('value', '');
+				$("#giaSP").attr('value', '');
+				$("#giamGia").attr('value', '');
+				$("#hinhAnh").attr('value', '');
+				modal.show();
+			});
+			
+			$("#giaSP").on("input", function(){
+				$("#real-price").val(formatNumber(giaSauGiamGia()));
+			});
+			
+			$("#giamGia").on("input", function(){
+				$("#real-price").val(formatNumber(giaSauGiamGia()));
+			});
+			
+			function giaSauGiamGia(){
+				var price = Number($("#giaSP").val());
+				var discount = Number($("#giamGia").val());
+				return price*(100 - discount)/100;
+			}
+		});
+
+</script>
 </body>
 
 </html>

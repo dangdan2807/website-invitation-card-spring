@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import N1.DAO.CTLoaiSPDAO;
 import N1.entity.ChiTietLoaiSP;
+import N1.entity.SanPham;
 
 @Service
 public class CTLoaiSPServiceImpl implements CTLoaiSPService {
@@ -19,5 +20,20 @@ public class CTLoaiSPServiceImpl implements CTLoaiSPService {
     public List<ChiTietLoaiSP> getDSCTLoaiSP() {
         return ctLoaiSPDAO.getDSChiTietLoaiSP();
     }
+
+	@Override
+	public List<ChiTietLoaiSP> getDSCTLSPByMaSP(int maSp) {
+		return ctLoaiSPDAO.getDSCTLSPByMaSP( maSp);
+	}
+
+	@Override
+	public void save(ChiTietLoaiSP chiTietLoaiSP) {
+		ctLoaiSPDAO.save( chiTietLoaiSP);
+	}
+
+	@Override
+	public void updateChiTietLoaiSP(SanPham sanPham) {
+		ctLoaiSPDAO.updateChiTietLoaiSP(sanPham);
+	}
     
 }

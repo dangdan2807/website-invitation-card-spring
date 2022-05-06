@@ -2,6 +2,7 @@ package N1.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -45,4 +46,10 @@ public class ChiTietLoaiSP implements Serializable {
         this.sanPham = sanPham;
     }
 
+//	@Override
+//	public String toString() {
+//		return "ChiTietLoaiSP [loaiSanPham=" + loaiSanPham.getMaLSP() + ", sanPham=" + sanPham.getMaSp() + "]";
+//	}
+    
+    
 }

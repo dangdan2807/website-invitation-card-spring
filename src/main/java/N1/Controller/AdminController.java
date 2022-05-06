@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import N1.DAO.SanPhamDAO;
@@ -134,10 +135,12 @@ public class AdminController {
 	
 	@PostMapping("/product")
 	public String addOrUpdateProduct(@ModelAttribute("sanPham") SanPham sanPham, 
-			Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+			Model model, HttpServletRequest request, RedirectAttributes redirectAttributes, 
+			@RequestParam(value = "dsLoaiSanPham") List<Integer> dsLoaiSanPham) {
 		System.out.println("hi");
 		System.out.println(sanPham);
-		sanPhamService.save(sanPham);
+		System.out.println(dsLoaiSanPham);
+		
 		if(sanPham.getMaSp() == 0) {
 			redirectAttributes.addAttribute("msg", "Thêm sản phẩm thành công!");
 			redirectAttributes.addAttribute("status", 1);
@@ -145,6 +148,19 @@ public class AdminController {
 			redirectAttributes.addAttribute("msg", "Cập nhật sản phẩm thành công");
 			redirectAttributes.addAttribute("status", 1);
 		}
+		
+		List<ChiTietLoaiSP> ctlsp = new ArrayList<ChiTietLoaiSP>();
+		dsLoaiSanPham.forEach(lsp -> {
+			ctlsp.add(new ChiTietLoaiSP(new LoaiSanPham(lsp, null)));
+		});
+		sanPham.setDsLoaiSP(ctlsp);
+		try {
+			sanPhamService.save(sanPham);
+		}catch (Exception e) {
+			redirectAttributes.addAttribute("msg", "Có lỗi xảy ra");
+			redirectAttributes.addAttribute("status", 0);
+		}
+		
 			
 		return "redirect:/admin/product";
 	}
