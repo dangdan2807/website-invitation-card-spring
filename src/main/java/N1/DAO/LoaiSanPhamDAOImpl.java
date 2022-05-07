@@ -1,6 +1,5 @@
 package N1.DAO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -34,6 +33,13 @@ public class LoaiSanPhamDAOImpl implements LoaiSanPhamDAO {
         query.setHibernateFirstResult((page-1)*pageSize);
         query.setMaxResults(pageSize);
         return query.getResultList();
+	}
+	
+	@Override
+	public LoaiSanPham findById(int id) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		LoaiSanPham loaiSanPham = currentSession.get(LoaiSanPham.class, id);
+		return loaiSanPham;
 	}
 	
 	@Override
