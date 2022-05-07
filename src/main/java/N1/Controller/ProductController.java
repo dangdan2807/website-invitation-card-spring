@@ -1,129 +1,124 @@
 package N1.Controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import N1.entity.ChiTietLoaiSP;
-import N1.entity.LoaiSanPham;
-import N1.entity.SanPham;
+import N1.entity.*;
+import N1.Service.*;
 
 @Controller
-@RequestMapping({"/san-pham", "/product"})
+@RequestMapping({ "/san-pham", "/product" })
 public class ProductController {
-	@RequestMapping("")
-	public String showShopGridPage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = new ArrayList<LoaiSanPham>();
-		dsLoaiSanPham.add(new LoaiSanPham(1, "Thiệp cưới", "/resources/user/img/categories/cat-1.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(2, "Thiệp sinh nhật", "/resources/user/img/categories/cat-2.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(3, "Thiệp mừng 20-11", "/resources/user/img/categories/cat-3.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(4, "Thiệp năm mới", "/resources/user/img/categories/cat-4.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(5, "Thiệp giáng sinh", "/resources/user/img/categories/cat-5.jpg"));
+	private final int pageSize = 15;
+
+	@Autowired
+	private LoaiSanPhamService loaiSanPhamService;
+	@Autowired
+	private SanPhamService sanPhamService;
+	@Autowired
+	private DanhGiaService danhGiaService;
+
+	@RequestMapping(value = { "", "/tim-kiem" }, method = RequestMethod.GET)
+	public String showProductPage(Model model,
+			@RequestParam(name = "ten-san-pham", required = false, defaultValue = "") String tenSanPham,
+			@RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
+			@RequestParam(name = "page", required = false, defaultValue = "1") Integer currentPage,
+			@RequestParam(name = "minPrice", required = false, defaultValue = "0") String minPriceStr,
+			@RequestParam(name = "maxPrice", required = false, defaultValue = "100000") String maxPriceStr) {
+		
+		double minPrice = Double.parseDouble(minPriceStr.replaceAll("[/s.đ]", ""));
+		double maxPrice = Double.parseDouble(maxPriceStr.replaceAll("[/s.đ]", ""));
+		
+		if (currentPage <= 0 || currentPage == null) {
+			currentPage = 1;
+		}
+		if (minPrice <= 0.0) {
+			minPrice = 0.0;
+		}
+		if (maxPrice <= 0) {
+			maxPrice = 0.0;
+		}
+
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
-		List<ChiTietLoaiSP> dsChiTietLoaiSP = new ArrayList<ChiTietLoaiSP>();
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(0)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(1)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(2)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(3)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(4)));
-
-		List<SanPham> dsSanPham = new ArrayList<SanPham>();
-		dsSanPham.add(new SanPham( 1, "Sản phẩm 1", "/resources/user/img/featured/feature-2.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(1, 3)));
-		dsSanPham.add(new SanPham( 2, "Sản phẩm 2", "/resources/user/img/featured/feature-1.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(0, 2)));
-		dsSanPham.add(new SanPham( 3, "Sản phẩm 3", "/resources/user/img/featured/feature-3.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(2, 4)));
-		dsSanPham.add(new SanPham( 4, "Sản phẩm 4", "/resources/user/img/featured/feature-4.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(3, 5)));
-		dsSanPham.add(new SanPham( 5, "Sản phẩm 5", "https://d25tv1xepz39hi.cloudfront.net/2016-01-31/files/1045.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(1, 3)));
-		dsSanPham
-				.add(new SanPham( 6, "Sản phẩm 6", "https://icdn.dantri.com.vn/thumb_w/640/2020/08/04/19-1596556901619.jpg",
-						"mo ta san pham", 100000, 20, 50000,
-						dsChiTietLoaiSP.subList(1, 2)));
-		dsSanPham
-				.add(new SanPham( 7, "Sản phẩm 7", "https://icdn.dantri.com.vn/thumb_w/640/2020/08/04/24-1596556901623.jpg",
-						"mo ta san pham", 100000, 20, 50000, dsChiTietLoaiSP.subList(2, 3)));
-		dsSanPham
-				.add(new SanPham( 8, "Sản phẩm 8", "https://icdn.dantri.com.vn/thumb_w/640/2020/08/04/27-1596556901642.jpg",
-						"mo ta san pham", 100000, 20, 50000, dsChiTietLoaiSP.subList(3, 4)));
-		dsSanPham
-				.add(new SanPham( 9, "Sản phẩm 9", "https://icdn.dantri.com.vn/thumb_w/640/2020/08/04/28-1596556901636.jpg",
-						"mo ta san pham", 100000, 20, 50000, dsChiTietLoaiSP.subList(4, 5)));
-		dsSanPham.add(new SanPham( 10, "Sản phẩm 10", "/resources/user/img/featured/feature-5.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(0, 1)));
-		dsSanPham.add(new SanPham( 11, "Sản phẩm 11", "/resources/user/img/featured/feature-6.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(1, 2)));
-		dsSanPham.add(new SanPham( 12, "Sản phẩm 12", "/resources/user/img/featured/feature-7.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(4, 5)));
+		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(currentPage, sort, tenSanPham, minPrice, maxPrice);
 		model.addAttribute("dsSanPham", dsSanPham);
-		model.addAttribute("slSanPham", dsSanPham.size());
-		model.addAttribute("pageOfNumber", 1);
 
-		List<SanPham> dsSanPhamMoi = dsSanPham.subList(0, 6);
+		int numberOfSanPham = sanPhamService.getNumberOfSanPhamsByTenSpAndPrice(tenSanPham, minPrice, maxPrice);
+		int pageOfNumber = 1;
+		if ((numberOfSanPham % pageSize) != 0) {
+			pageOfNumber = (numberOfSanPham / pageSize) + 1;
+		} else {
+			pageOfNumber = (numberOfSanPham / pageSize);
+		}
+
+		model.addAttribute("slSanPham", numberOfSanPham);
+		model.addAttribute("pageOfNumber", pageOfNumber);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("sort", sort);
+		model.addAttribute("minPrice", minPrice);
+		model.addAttribute("maxPrice", maxPrice);
+		model.addAttribute("pagingSize", new int[] { 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5 });
+
+		List<SanPham> dsSanPhamMoi = sanPhamService.getLatestSanPhams(6);
 		model.addAttribute("dsSanPhamMoi", dsSanPhamMoi);
 
-		List<SanPham> dsSpGiamGia = dsSanPham.subList(3, 10);
+		List<SanPham> dsSpGiamGia = sanPhamService.getDiscountSanPhams(6);
 		model.addAttribute("dsSpGiamGia", dsSpGiamGia);
 
 		return "user/shop-grid";
 	}
-	
-	@RequestMapping("/id={theId}")
-	public String getProductById(@PathVariable int theId, Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = new ArrayList<LoaiSanPham>();
-		dsLoaiSanPham.add(new LoaiSanPham(1, "Thiệp cưới", "/resources/user/img/categories/cat-1.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(2, "Thiệp sinh nhật", "/resources/user/img/categories/cat-2.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(3, "Thiệp mừng 20-11", "/resources/user/img/categories/cat-3.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(4, "Thiệp năm mới", "/resources/user/img/categories/cat-4.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(5, "Thiệp giáng sinh", "/resources/user/img/categories/cat-5.jpg"));
+
+	@GetMapping("/id={theId}")
+	public String getProductById(Model model, @PathVariable(name = "theId", required = false) Integer id) {
+		if (id <= 0 || id == null)
+			id = 1;
+
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
-		List<ChiTietLoaiSP> dsChiTietLoaiSP = new ArrayList<ChiTietLoaiSP>();
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(0)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(1)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(2)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(3)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(4)));
-		
-//		lấy 4 sản phẩm
-		List<SanPham> dsSanPhamLQ = new ArrayList<SanPham>();
-		dsSanPhamLQ.add(new SanPham( 1, "Sản phẩm 1", "/resources/user/img/featured/feature-2.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(1, 3)));
-		dsSanPhamLQ.add(new SanPham( 2, "Sản phẩm 2", "/resources/user/img/featured/feature-1.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(0, 2)));
-		dsSanPhamLQ.add(new SanPham( 3, "Sản phẩm 3", "/resources/user/img/featured/feature-3.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(2, 4)));
-		dsSanPhamLQ.add(new SanPham( 4, "Sản phẩm 4", "/resources/user/img/featured/feature-4.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(3, 5)));
-		model.addAttribute("dsSanPhamLQ", dsSanPhamLQ);
-
-		SanPham sanPham = new SanPham(1, "Sản phẩm 1", "/resources/user/img/featured/feature-2.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(1, 2));
+		SanPham sanPham = sanPhamService.getSanPhamByIdSanPham(id);
+		List<DanhGia> danhGias = danhGiaService.getDanhGiasByIdSanPham(id);
+		sanPham.setDsDanhGia(danhGias);
 		model.addAttribute("sanPham", sanPham);
-		
+
+		double star = 0.0;
+		for (DanhGia danhGia : danhGias) {
+			star += danhGia.getXepHang();
+		}
+		if (danhGias.size() > 0)
+			star /= danhGias.size();
+		else {
+			star = 5;
+		}
+		model.addAttribute("starSize", new int[] { 1, 2, 3, 4, 5 });
+		model.addAttribute("star", star);
+
 		LoaiSanPham loaiSanPham = sanPham.getDsLoaiSP().get(0).getLoaiSanPham();
 		model.addAttribute("loaiSanPham", loaiSanPham);
-		
+
+		List<SanPham> dsSanPhamLQ = sanPhamService.getRandomSanPhamsByCategoryId(loaiSanPham.getMaLSP(), 4,
+				sanPham.getMaSp());
+		model.addAttribute("dsSanPhamLQ", dsSanPhamLQ);
+
 		return "user/shop-details";
+	}
+
+	@PostMapping("/id={theId}")
+	public HttpStatus addReviewProduct(Model model, @RequestBody DanhGia danhGia) {
+		System.out.println(danhGia.getNoiDung());
+		return HttpStatus.OK;
 	}
 }

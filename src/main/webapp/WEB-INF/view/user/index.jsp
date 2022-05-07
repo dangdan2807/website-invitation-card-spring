@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>  
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@page import="org.springframework.web.servlet.tags.Param"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %> 
 <%@ page import="java.util.Random"  %>  
 <%@ page import="java.text.DecimalFormat"  %>  
 <%@ page import="N1.Service.*"  %>  
@@ -50,7 +52,7 @@
                             <div class="categories__item set-bg"
                                 data-setbg='<c:url value = "${loaiSp.hinhAnh}" />'>
                                 <h5>
-                                    <a href='<c:url value = "${loaiSp.hinhAnh}" />'>${loaiSp.tenLSP}</a>
+                                    <a href='<c:url value = "/danh-muc?id=${loaiSp.maLSP}" />'>${loaiSp.tenLSP}</a>
                                 </h5>
                             </div>
                         </div>
@@ -80,7 +82,7 @@
                 </div>
             </div>
             <div id="featured__filter" class="row featured__filter">
-                <c:forEach var="sanPham" items="${dsSanPham}" begin="0" end="7">
+                <c:forEach var="sanPham" items="${dsSanPhamNoiBat}" begin="0" end="7">
                     <div class='col-lg-3 col-md-4 col-sm-6 mix <c:forEach var="lsp" items="${sanPham.dsLoaiSP}"> ${fn:replace(lsp.loaiSanPham.tenLSP, " ", "-")}</c:forEach>'>
                         <div class="featured__item"
                             onclick=window.location.href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'>

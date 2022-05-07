@@ -25,6 +25,12 @@ public class LoaiSanPhamServiceImpl implements LoaiSanPhamService {
 	public List<LoaiSanPham> findAll(int page) {
 		return loaiSanPhamDAO.findAll(page);
 	}
+	
+	@Override
+    @Transactional
+	public LoaiSanPham findById(int id) {
+		return loaiSanPhamDAO.findById(id);
+	}
 
 	@Override
     @Transactional

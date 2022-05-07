@@ -67,6 +67,7 @@ public class AdminController {
 		model.addAttribute("status", request.getParameter("status"));
 		
 		List<NguoiDung> users = nguoiDungService.findAll(page);
+		model.addAttribute("title", "Quản lý người dùng");
 		model.addAttribute("numberOfPage", nguoiDungService.getNumberOfPage());
 		model.addAttribute("currentPage", page);
 		model.addAttribute("path", path);
@@ -86,7 +87,7 @@ public class AdminController {
 		nguoiDung2.setDiaChi(nguoiDung.getDiaChi());
 		nguoiDung2.setHinhAnh(nguoiDung.getTenND());
 		
-//		nguoiDungService.save(nguoiDung2);
+		nguoiDungService.save(nguoiDung2);
 		
 		redirectAttributes.addAttribute("msg", "Cập nhật người dùng thành công");
 		redirectAttributes.addAttribute("status", 1);
@@ -102,11 +103,17 @@ public class AdminController {
 		if(page == null)
 			page = 1;
 		
+		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(page);
+		List<NguoiDung> users = nguoiDungService.findAll();
 		List<HoaDon> orders = hoaDonService.findAll(page);
+		model.addAttribute("title", "Quản lý hóa đơn");
 		model.addAttribute("numberOfPage", hoaDonService.getNumberOfPage());
 		model.addAttribute("currentPage", page);
 		model.addAttribute("path", path);
 		model.addAttribute("orders", orders);
+		model.addAttribute("users", users);
+		model.addAttribute("dsSanPham", dsSanPham);
+		model.addAttribute("order", new HoaDon());
 		return "admin/order";
 	}
 	
@@ -123,6 +130,7 @@ public class AdminController {
 		
 		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(page);
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+		model.addAttribute("title", "Quản lý thiệp");
 		model.addAttribute("dsSanPham", dsSanPham);
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		model.addAttribute("numberOfPage", sanPhamService.getNumberOfPage());
@@ -187,6 +195,7 @@ public class AdminController {
 		model.addAttribute("status", request.getParameter("status"));
 		
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll(page);
+		model.addAttribute("title", "Quản lý danh mục thiệp");
 		model.addAttribute("numberOfPage", loaiSanPhamService.getNumberOfPage());
 		model.addAttribute("currentPage", page);
 		model.addAttribute("path", path);

@@ -21,29 +21,30 @@
 	<hr class="sidebar-divider my-0">
 
 	<!-- Nav Item - Dashboard -->
-	<li class="nav-item active"><a class="nav-link"
+	 
+	<li class="nav-item" ${path == '/admin' ? 'active': ''}><a class="nav-link"
 		href="${pageContext.request.contextPath}/admin"> <i
 			class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
 
 	<hr class="sidebar-divider">
 
-	<li class="nav-item"><a class="nav-link"
+	<li class="nav-item ${path == '/admin/user' ? 'active': ''}"><a class="nav-link"
 		href="${pageContext.request.contextPath}/admin/user"> 
 		<i class="fa fa-user"></i> <span>Người dùng</span></a></li>
 	
 	<hr class="sidebar-divider">
 
-	<li class="nav-item"><a class="nav-link"
+	<li class="nav-item ${path == '/admin/order' ? 'active': ''}"><a class="nav-link"
 		href="${pageContext.request.contextPath}/admin/order"> 
 		<i class="fas fa-receipt"></i> <span>Hóa đơn</span></a></li>
 	
 	<hr class="sidebar-divider">
 
-	<li class="nav-item"><a class="nav-link"
+	<li class="nav-item ${path == '/admin/product' ? 'active': ''}"><a class="nav-link"
 		href="${pageContext.request.contextPath}/admin/product"> 
 		<i class="fab fa-product-hunt"></i> <span>Thiệp mời</span></a></li>
 	
-	<li class="nav-item"><a class="nav-link"
+	<li class="nav-item ${path == '/admin/category' ? 'active': ''}"><a class="nav-link"
 		href="${pageContext.request.contextPath}/admin/category"> 
 		<i class="fas fa-layer-group"></i> <span>Danh mục thiệp mời</span></a></li>
 
