@@ -34,5 +34,29 @@ $(document).ready(function(){
 		deleteModal.show();
 	});	
 });
+const formatNumber = (value) => {
+    return new Intl.NumberFormat(
+        'vi-Vn',
+        { maximumSignificantDigits: 3 }).format(value);
+}
+
+const formatMoney = (value) => {
+    return formatNumber(value) + "đ";
+}
+
+const formatMoneyBySelect = function () {
+    var price = $(this).text();
+    $(this).text(formatNumber(price) + "đ");
+}
+
+const formatPercentBySelect = function () {
+    var price = $(this).text();
+    $(this).text(formatNumber(price) + "%");
+}
+
+$(".money-format").each(formatMoneyBySelect);
+$(".persent-format").each(formatPercentBySelect);
+
+
 
 </script>

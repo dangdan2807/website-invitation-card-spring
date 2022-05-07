@@ -17,14 +17,13 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>SB Admin 2 - Dashboard</title>
+<title>${title }</title>
 
-<!-- Custom fonts for this template-->
 <jsp:include page="./common/link-css.jsp" />
 <style>
-.btn-edit, .btn-delete {
-	margin: 5px;
-}
+	.btn-edit, .btn-delete {
+		margin: 5px;
+	}
 </style>
 
 </head>
