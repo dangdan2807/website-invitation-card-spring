@@ -28,6 +28,7 @@ import N1.Service.LoaiSanPhamService;
 import N1.Service.NguoiDungService;
 import N1.Service.SanPhamService;
 import N1.Service.SanPhamServiceImpl;
+import N1.Service.ThongKeService;
 import N1.entity.ChiTietLoaiSP;
 import N1.entity.HoaDon;
 import N1.entity.LoaiSanPham;
@@ -38,6 +39,9 @@ import N1.entity.TaiKhoan;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+	@Autowired
+	private ThongKeService thongKeService;
+	
 	@Autowired
 	private SanPhamService sanPhamService;
 
@@ -50,8 +54,19 @@ public class AdminController {
 	@Autowired
 	private HoaDonService hoaDonService;	
 	
+	/**************************** Dashboard *******************************/
 	@GetMapping("")
-	public String home() {
+	public String dashboard(Model model, HttpServletRequest request) {
+		String path = request.getServletPath();
+		long tongDoanhThu = thongKeService.tongDoanhThu(new Date(2022-1900, 3, 26), new Date(2022-1900, 3, 26));
+		long tongLoiNhuan = thongKeService.tongLoiNhuan(new Date(2022-1900, 3, 26), new Date(2022-1900, 3, 26));
+		long tongSoDonHang = thongKeService.tongSoDonHang(new Date(2022-1900, 3, 26), new Date(2022-1900, 3, 26));
+		long tongSoThiepBan = thongKeService.tongSoThiepBan(new Date(2022-1900, 3, 26), new Date(2022-1900, 3, 26));
+		model.addAttribute("tongDoanhThu", tongDoanhThu);
+		model.addAttribute("tongLoiNhuan", tongLoiNhuan);
+		model.addAttribute("tongSoDonHang", tongSoDonHang);
+		model.addAttribute("tongSoThiepBan", tongSoThiepBan);
+		model.addAttribute("path", path);
 		return "admin/index";
 	}
 	

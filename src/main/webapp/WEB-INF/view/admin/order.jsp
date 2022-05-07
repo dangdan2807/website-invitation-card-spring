@@ -99,10 +99,6 @@
 									</tfoot>
 									<tbody>
 										<c:forEach var="order" items="${orders}" varStatus="loop">
-											<c:forEach var="cthd" items="order.dsCTHoaDon" varStatus="status">
-												${cthd }
-												
-											</c:forEach>
 											<tr>
 												<td>${loop.index + 1}</td>
 												<td>${order.maHD }</td>

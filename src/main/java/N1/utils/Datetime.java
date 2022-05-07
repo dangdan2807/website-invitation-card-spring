@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class Datetime {
     static DateFormat datetimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    static DateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public static Date getToday(){
         return new Date(System.currentTimeMillis());
@@ -40,6 +41,15 @@ public class Datetime {
     public static String dateToString(Date date){
         try {
             return dateFormat.format(date);
+        }catch (Exception e){
+        }
+        return null;
+
+    }
+    
+    public static String sqlDateFormat(Date date){
+        try {
+            return sqlDateFormat.format(date);
         }catch (Exception e){
         }
         return null;
