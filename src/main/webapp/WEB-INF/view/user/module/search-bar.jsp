@@ -25,14 +25,10 @@
             <div class="col-lg-9">
                 <div class="hero__search">
                     <div class="hero__search__form">
-                            <!-- <div class="hero__search__categories">
-                                All Categories
-                                <span class="arrow_carrot-down"></span>
-                            </div> -->
-                        <form method="GET" action='${pageContext.request.contextPath}/san-pham'
+                        <form class="search__form" method="GET" action='${pageContext.request.contextPath}/san-pham/tim-kiem'
                         >
-                            <input type="text" name="tenSanPham" placeholder="Bạn cần gì?">
-                            <button type="submit" class="site-btn">TÌM</button>
+                            <input class="search__form-input" type="text" name="ten-san-pham" placeholder="Bạn cần gì?" />
+                            <button class="site-btn search__form-button" type="submit">TÌM</button>
                         </form>
                     </div>
                     <div class="hero__search__phone">

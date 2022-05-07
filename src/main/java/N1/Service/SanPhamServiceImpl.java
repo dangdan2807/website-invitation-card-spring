@@ -29,14 +29,32 @@ public class SanPhamServiceImpl implements SanPhamService {
 
 	@Override
 	@Transactional
-	public List<SanPham> getDSSanPham(int page, String sort) {
-		return sanPhamDAO.getDSSanPham(page, sort);
+	public List<SanPham> getDSSanPham(int page, String sort, String tenSanPham, double minPrice, double maxPrice) {
+		return sanPhamDAO.getDSSanPham(page, sort, tenSanPham, minPrice, maxPrice);
 	}
 	
 	@Override
 	@Transactional
 	public SanPham getSanPhamByIdSanPham(int sanPhamId) {
 		return sanPhamDAO.getSanPhamByIdSanPham(sanPhamId);
+	}
+
+	@Override
+	@Transactional
+	public List<SanPham> getSanPhamsByTenSanPham(String tenSP) {
+		return sanPhamDAO.getSanPhamsByTenSanPham(tenSP);
+	}
+
+	@Override
+	@Transactional
+	public List<SanPham> getSanPhamsByTenSanPhamAndPage(String tenSP, int page, String sort) {
+		return sanPhamDAO.getSanPhamsByTenSanPhamAndPage(tenSP, page, sort);
+	}
+	
+	@Override
+	@Transactional
+	public int getNumberOfSanPhamsByTenSpAndPrice(String tenSanPham, double minPrice, double maxPrice) {
+		return sanPhamDAO.getNumberOfSanPhamsByTenSpAndPrice(tenSanPham, minPrice, maxPrice);
 	}
 
 	@Override
@@ -73,6 +91,12 @@ public class SanPhamServiceImpl implements SanPhamService {
 	@Transactional
 	public int getNumberOfSanPhams() {
 		return sanPhamDAO.getNumberOfSanPhams();
+	}
+	
+	@Override
+	@Transactional
+	public int getNumberOfSanPhamsByTenSp(String tenSanPham) {
+		return sanPhamDAO.getNumberOfSanPhamsByTenSp(tenSanPham);
 	}
 
 	@Override

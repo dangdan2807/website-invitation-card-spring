@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/showLoginPage")
+                .loginPage("/dang-nhap")
                 .loginProcessingUrl("/authenticateLogin")
                 .permitAll()
                 .and()

@@ -51,7 +51,7 @@
                             <ul>
                                 <c:forEach var="loaiSp" items="${dsLoaiSanPham}">
                                     <li>
-                                    	<a href='<c:url value = '/danh-muc?id=${loaiSp.maLSP}'/>'>${loaiSp.tenLSP}</a>
+                                    	<a href='<c:url value = "/danh-muc?id=${loaiSp.maLSP}"/>'>${loaiSp.tenLSP}</a>
                                     </li>
                                 </c:forEach>
                             </ul>
@@ -69,9 +69,14 @@
                                 </div>
                                 <div class="range-slider">
                                     <div class="price-input">
-                                        <input type="text" id="minamount" />
-                                        <input type="text" id="maxamount" />
+                                        <input name="minPrice" type="text" id="minamount" />
+                                        <input name="maxPrice" type="text" id="maxamount" />
                                     </div>
+                                </div>
+                                <div class="sidebar__item__btn">
+                                	<button 
+                                		class="site-btn sidebar__item__btn-submit"
+                                	>Tìm</button>
                                 </div>
                             </div>
                         </div>
@@ -114,10 +119,6 @@
                                             <div class="product__discount__item__pic set-bg"
                                                 data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
                                                 <div class="product__discount__percent">-${sanPham.giamGia}</div>
-                                                <!-- <ul class="product__item__pic__hover">
-                                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                                </ul> -->
                                             </div>
                                             <div class="product__discount__item__text">
                                                 <h5><a href="<c:url value = '/san-pham/id=${sanPham.maSp}'/>">${sanPham.tenSp}</a></h5>
@@ -153,10 +154,6 @@
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-3">
-                                <!-- <div class="filter__option">
-                                    <span class="icon_grid-2x2"></span>
-                                    <span class="icon_ul"></span>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -168,13 +165,9 @@
                                 >
                                     <div class="product__item__pic set-bg"
                                         data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
-                                        <!-- <ul class="product__item__pic__hover">
-                                            <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                            <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul> -->
                                     </div>
                                     <div class="product__item__text">
-                                        <h6><a href="#">${sanPham.tenSp}</a></h6>
+                                        <h6><a href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'>${sanPham.tenSp}</a></h6>
                                         <h5>${sanPham.giaSP}</h5>
                                     </div>
                                 </div>
@@ -183,13 +176,13 @@
                     </div>
                     <div class="product__pagination">
                         <c:if test="${currentPage > 1}">
-                            <a href='<c:url value="/san-pham?page=${currentPage - 1}&sort=${sort}" />'>
+                            <a onclick="pagingPage(${currentPage - 1});">
                                 <i class="fa fa-long-arrow-left"></i>
                             </a>
                         </c:if>
-                        <c:forEach var="sp" items="${pageSize}">
+                        <c:forEach var="sp" items="${pagingSize}">
                             <c:if test="${((currentPage - sp) >= 1) && ((currentPage - sp) <= pageOfNumber)}">
-                                <a href='<c:url value="/san-pham?page=${currentPage - sp}&sort=${sort}" />'
+                                <a onclick="pagingPage(${currentPage - sp});"
                                     class='<c:if test="${currentPage == currentPage - sp}">active</c:if>'
                                 >
                                     ${currentPage - sp}
@@ -197,7 +190,7 @@
                             </c:if>
                         </c:forEach>
                         <c:if test="${currentPage < pageOfNumber}">
-                            <a href='<c:url value="/san-pham?page=${currentPage + 1}&sort=${sort}" />'>
+                            <a onclick="pagingPage(${currentPage + 1});">
                                 <i class="fa fa-long-arrow-right"></i>
                             </a>
                         </c:if>
@@ -215,9 +208,55 @@
     <!-- Js Plugins -->
     <jsp:include page="./module/link-js.jsp" />
     <script type="text/javascript">
+        function getUrl() {
+            var url = window.location.href;
+            if (!url.includes('?')) {
+                url += "?"
+            }
+            return url;
+		}
+
+        function pagingPage(page) {
+            var url = getUrl();
+
+            if (url.includes('page')) {
+                url = url.replace(/page=[\d]+/ig, 'page=' + page);
+            } else {
+                url += '&page=' + page;
+            }
+
+            window.location.href = url;
+        }
+
+        $('button.sidebar__item__btn-submit').click(function() {
+            let minPrice = $('#minamount').val().replaceAll(/[/s.đ]/ig, '');
+            let maxPrice = $('#maxamount').val().replaceAll(/[/s.đ]/ig, '');
+            var url = getUrl();
+
+            if (url.includes('minPrice')) {
+                url = url.replace(/minPrice=[\d]+[đ]*/ig, 'minPrice=' + minPrice);
+            } else {
+                url += '&minPrice=' + minPrice;
+            }
+
+            if (url.includes('maxPrice')) {
+                url = url.replace(/maxPrice=[\d]+[đ]*/ig, 'maxPrice=' + maxPrice);
+            } else {
+                url += '&maxPrice=' + maxPrice;
+            }
+
+            window.location.href = url;
+        });
+
         $('.filter__sort select[name="sort"]').change(function() {
             var sort = $(this).val();
-            var url = '<c:url value="/san-pham?page=${currentPage}&sort=' + sort + '" />';
+            var url = getUrl();
+
+            if (url.includes('sort')) {
+                url = url.replace(/sort=[a-zA-z]+/ig, 'sort=' + sort);
+            } else {
+                url += '&sort=' + sort;
+            }
             window.location.href = url;
         });
     </script>

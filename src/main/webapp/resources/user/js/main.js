@@ -249,6 +249,15 @@
     minamount.val(formatMoney(rangeSlider.slider("values", 0) + "000"));
     maxamount.val(formatMoney(rangeSlider.slider("values", 1) + "000"));
 
+    minamount.change(function () {
+        let data = minamount.val();
+        minamount.val(formatMoney(data.replaceAll(/[/s.đ]/ig, '')));
+    });
+    maxamount.change(function () {
+        let data = maxamount.val();
+        maxamount.val(formatMoney(data.replaceAll(/[/s.đ]/ig, '')));
+    });
+
     /*--------------------------
         Select
     ----------------------------*/

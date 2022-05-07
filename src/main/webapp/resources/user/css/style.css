@@ -647,7 +647,7 @@ ol {
     float: left;
 }
 
-.hero__search__form form .hero__search__categories {
+.hero__search__form .search__form .hero__search__categories {
     width: 30%;
     float: left;
     font-size: 16px;
@@ -658,7 +658,7 @@ ol {
     position: relative;
 }
 
-.hero__search__form form .hero__search__categories:after {
+.hero__search__form .search__form .hero__search__categories:after {
     position: absolute;
     right: 0;
     top: 14px;
@@ -669,13 +669,13 @@ ol {
     content: '';
 }
 
-.hero__search__form form .hero__search__categories span {
+.hero__search__form .search__form .hero__search__categories span {
     position: absolute;
     right: 14px;
     top: 14px;
 }
 
-.hero__search__form form input {
+.hero__search__form .search__form .search__form-input {
     width: 86%;
     border: none;
     height: 48px;
@@ -684,11 +684,11 @@ ol {
     padding-left: 20px;
 }
 
-.hero__search__form form input::placeholder {
+.hero__search__form .search__form .search__form-input::placeholder {
     color: #b2b2b2;
 }
 
-.hero__search__form form button {
+.hero__search__form .search__form .search__form-button {
     position: absolute;
     right: 0;
     top: -1px;
@@ -1206,6 +1206,12 @@ ol {
     .price-range
     .ui-slider-range.ui-corner-all.ui-widget-header:last-child {
     background: #dd2222;
+}
+
+/* uck - cv */
+.sidebar__item .sidebar__item__btn .sidebar__item__btn-submit {
+	width: 100%;
+	margin-top: 8px;
 }
 
 .sidebar__item__color {
@@ -3076,6 +3082,10 @@ ol {
     .shoping__discount form input {
         width: 240px;
     }
+
+    .price-range-wrap .range-slider .price-input input {
+        max-width: 35%;
+    }
 }
 
 /* Tablet Device = 768px */
@@ -3317,10 +3327,10 @@ ol {
     .hero__search__form {
         width: 100%;
     }
-    .hero__search__form form input {
+    .hero__search__form .search__form .search__form-input {
         width: 100%;
     }
-    .hero__search__form form .hero__search__categories {
+    .hero__search__form .search__form .hero__search__categories {
         display: none;
     }
     .hero__search__phone {
@@ -3681,7 +3691,7 @@ ol {
 /* Small Device = 320px */
 
 @media only screen and (max-width: 479px) {
-    .hero__search__form form .hero__search__categories {
+    .hero__search__form .search__form .hero__search__categories {
         display: none;
     }
     .featured__controls ul li {
