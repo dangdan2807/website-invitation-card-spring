@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import N1.entity.ChucVu;
 import N1.entity.NguoiDung;
@@ -80,11 +81,12 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
     public NguoiDung findNguoiDungByEmail(String email) {
         Session currentSession=sessionFactory.getCurrentSession();
         String query="SELECT * FROM NguoiDung WHERE email ="+email;
-        NguoiDung nguoiDung=(NguoiDung) currentSession.createNamedQuery(query, NguoiDung.class);
+        NguoiDung nguoiDung=(NguoiDung) currentSession.createNativeQuery(query, NguoiDung.class);
         return nguoiDung;
     }
 
     @Override
+    @Transactional
     public NguoiDung findNguoiDungById(int id) {
         Session currentSession=sessionFactory.getCurrentSession();
         return currentSession.find(NguoiDung.class, id);

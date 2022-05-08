@@ -12,12 +12,18 @@ import N1.entity.NguoiDung;
 @Service
 public class NguoiDungServiceImpl implements NguoiDungService {
     @Autowired
-    private NguoiDungDAO NguoiDungDAO;
+    private NguoiDungDAO nguoiDungDAO;
 
     @Override
     @Transactional
     public List<NguoiDung> getDSNguoiDung() {
-        return NguoiDungDAO.getDSNguoiDung();
+        return nguoiDungDAO.getDSNguoiDung();
     }
+
+	@Override
+	public NguoiDung findNguoiDungById(int id) {
+		
+		return nguoiDungDAO.findNguoiDungById(id) ;
+	}
 
 }

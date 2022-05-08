@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div id="featured__filter" class="row featured__filter">
-                <c:forEach var="sanPham" items="${dsSanPham}" begin="0" end="7">
+                <c:forEach var="sanPham" items="${dsSanPhamNoiBat}" begin="0" end="7">
                     <div class='col-lg-3 col-md-4 col-sm-6 mix <c:forEach var="lsp" items="${sanPham.dsLoaiSP}"> ${fn:replace(lsp.loaiSanPham.tenLSP, " ", "-")}</c:forEach>'>
                         <div class="featured__item"
                             onclick=window.location.href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'>

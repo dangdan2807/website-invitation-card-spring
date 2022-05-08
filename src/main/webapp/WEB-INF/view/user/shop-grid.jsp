@@ -105,7 +105,7 @@
                         </div>
                         <div class="row">
                             <div class="product__discount__slider owl-carousel">
-                                <c:forEach var="sanPham" items="${dsSpGiamGia}" begin="0" end="2">
+                                <c:forEach var="sanPham" items="${dsSpGiamGia}" begin="0" end="5">
                                     <div class="col-lg-4">
                                         <div class="product__discount__item"
                                             onclick=window.location.href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'
@@ -137,8 +137,8 @@
                                 <div class="filter__sort">
                                     <span>Sắp xếp</span>
                                     <select>
-                                        <option value="0">Giá: Thấp đến Cao</option>
-                                        <option value="1">Giá: Cao đến Thấp</option>
+                                        <option value="asc">Giá: Thấp đến Cao</option>
+                                        <option value="desc">Giá: Cao đến Thấp</option>
                                     </select>
                                 </div>
                             </div>
@@ -181,7 +181,7 @@
 	                        <a href="#"><i class="fa fa-long-arrow-left"></i></a>
                     	</c:if>
 	                    <c:forEach var="sp" items="${dsSanPham}" begin="1" end="${pageOfNumber}" varStatus="myIndex">
-	                        <a href="#">${myIndex.index}</a>
+	                        <a href='<c:url value="/san-pham/page=${myIndex.index}" />'>${myIndex.index}</a>
 	                    </c:forEach>
                         <c:if test="${pageOfNumber > 1}">
 	                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>

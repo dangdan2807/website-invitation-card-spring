@@ -13,7 +13,7 @@
                     <ul>
                         <c:forEach var="loaiSp" items="${dsLoaiSanPham}">
                             <li>
-                            	<a href='<c:url value = "/danh-muc/id=${loaiSp.maLSP}" />'>${loaiSp.tenLSP}</a>
+                                <a href='<c:url value = "/danh-muc/id=${loaiSp.maLSP}" />'>${loaiSp.tenLSP}</a>
                             </li>
                         </c:forEach>
                     </ul>
@@ -43,15 +43,17 @@
                 </div>
                 <!-- banner -->
                 <c:if test="${param.showBanner}">
-                    <div class="hero__item set-bg" data-setbg="<c:url value ='${sanPhamMoi.hinhAnh}'/>">
-                        <div class="hero__text">
-                            <span>${sanPhamMoi.dsLoaiSP.get(0).loaiSanPham.tenLSP}</span>
-                            <h4>Sản phẩm mới</h4>
-                            <h3>${sanPhamMoi.tenSp}</h3>
-                            <br />
-                            <!-- <p>Free Pickup and Delivery Available</p> -->
-                            <a href='<c:url value = "/san-pham/id=${sanPhamMoi.maSp}" />' 
+                    <div>
+                        <div class="ribbon ribbon-top-right"><span>Mới</span></div>
+                        <div class="hero__item set-bg" data-setbg="<c:url value ='${sanPhamMoi.hinhAnh}'/>">
+                            <div class="hero__text">
+                                <span>${sanPhamMoi.dsLoaiSP.get(0).loaiSanPham.tenLSP}</span>
+                                <h3>${sanPhamMoi.tenSp}</h3>
+                                <br />
+                                <!-- <p>Free Pickup and Delivery Available</p> -->
+                                <a href='<c:url value = "/san-pham/id=${sanPhamMoi.maSp}" />' 
                                 class="primary-btn">MUA NGAY</a>
+                            </div>
                         </div>
                     </div>
                 </c:if>

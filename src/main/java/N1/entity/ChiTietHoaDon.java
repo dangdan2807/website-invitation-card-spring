@@ -31,8 +31,20 @@ public class ChiTietHoaDon implements Serializable {
 
     public ChiTietHoaDon() {
     }
+    
+    
 
-    public ChiTietHoaDon(SanPham sanPham, int soLuong, double giaBan) {
+    public ChiTietHoaDon(HoaDon hoaDon, SanPham sanPham, int soLuong, double giaBan) {
+		
+		this.hoaDon = hoaDon;
+		this.sanPham = sanPham;
+		this.soLuong = soLuong;
+		this.giaBan = giaBan;
+	}
+
+
+
+	public ChiTietHoaDon(SanPham sanPham, int soLuong, double giaBan) {
         this.sanPham = sanPham;
         this.soLuong = soLuong;
         this.giaBan = giaBan;

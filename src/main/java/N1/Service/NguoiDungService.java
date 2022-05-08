@@ -6,4 +6,5 @@ import N1.entity.NguoiDung;
 
 public interface NguoiDungService {
     public List<NguoiDung> getDSNguoiDung();
+    public NguoiDung findNguoiDungById(int id);
 }

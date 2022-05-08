@@ -20,4 +20,11 @@ public class HoaDonServiceImpl implements HoaDonService {
         return hoaDonDAO.getDSHoaDon();
     }
 
+	@Override
+	@Transactional
+	public HoaDon addHoaDon(HoaDon hoaDon) {
+		
+		return hoaDonDAO.addHoaDon(hoaDon);
+	}
+
 }

@@ -1,14 +1,22 @@
 package N1.Controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import N1.Dto.PayLoadCreateOrder;
+import N1.Dto.SanPhamMua;
 import N1.Service.*;
 import N1.entity.*;
 
@@ -16,87 +24,41 @@ import N1.entity.*;
 @RequestMapping("")
 public class HomeController {
 	@Autowired
-	private ChucVuService chucVuService;
-	@Autowired
-	private TaiKhoanService taiKhoanService;
+	private SanPhamService sanPhamService;
+
 	@Autowired
 	private NguoiDungService nguoiDungService;
+
+	@Autowired
+	private LoaiSanPhamService loaiSanPhamService;
+
 	@Autowired
 	private HoaDonService hoaDonService;
+
+	@Autowired
+	private GioHangService gioHangService;
+
 	@Autowired
 	private CTHoaDonService ctHoaDonService;
-	@Autowired
-	private SanPhamService sanPhamService;
-	@Autowired
-	private CTLoaiSPService ctLoaiSPService;
-	@Autowired
-	private LoaiSanPhamService loaiSanPham;
 
 	@RequestMapping({ "/", "/trang-chu", "/home" })
 	public String showHomePage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = new ArrayList<LoaiSanPham>();
-		dsLoaiSanPham.add(new LoaiSanPham(1, "Thiệp cưới", "/resources/user/img/categories/cat-1.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(2, "Thiệp sinh nhật", "/resources/user/img/categories/cat-2.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(3, "Thiệp mừng 20-11", "/resources/user/img/categories/cat-3.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(4, "Thiệp năm mới", "/resources/user/img/categories/cat-4.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(5, "Thiệp giáng sinh", "/resources/user/img/categories/cat-5.jpg"));
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
-		List<ChiTietLoaiSP> dsChiTietLoaiSP = new ArrayList<ChiTietLoaiSP>();
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(0)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(1)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(2)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(3)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(4)));
+		List<SanPham> dsSanPham = sanPhamService.getLatestSanPhams(8);
+		model.addAttribute("dsSanPhamNoiBat", dsSanPham);
 
-		List<SanPham> dsSanPham = new ArrayList<SanPham>();
-		dsSanPham.add(new SanPham( 1, "Sản phẩm 1", "/resources/user/img/featured/feature-2.jpg",
-				"mo ta san pham", 100000, 0.2, 50000,
-				dsChiTietLoaiSP.subList(1, 3)));
-		dsSanPham.add(new SanPham( 2, "Sản phẩm 2", "/resources/user/img/featured/feature-1.jpg",
-				"mo ta san pham", 100000, 0.2, 50000,
-				dsChiTietLoaiSP.subList(0, 2)));
-		dsSanPham.add(new SanPham( 3, "Sản phẩm 3", "/resources/user/img/featured/feature-3.jpg",
-				"mo ta san pham", 100000, 0.2, 50000,
-				dsChiTietLoaiSP.subList(2, 4)));
-		dsSanPham.add(new SanPham( 4, "Sản phẩm 4", "/resources/user/img/featured/feature-4.jpg",
-				"mo ta san pham", 100000, 0.2, 50000,
-				dsChiTietLoaiSP.subList(3, 5)));
-		dsSanPham.add(new SanPham( 5, "Sản phẩm 5", "https://d25tv1xepz39hi.cloudfront.net/2016-01-31/files/1045.jpg",
-				"mo ta san pham", 100000, 0.2, 50000, dsChiTietLoaiSP.subList(1, 3)));
-		dsSanPham
-				.add(new SanPham( 6, "Sản phẩm 6", "https://icdn.dantri.com.vn/thumb_w/640/2020/08/04/19-1596556901619.jpg",
-						"mo ta san pham", 100000, 0.2, 50000, dsChiTietLoaiSP.subList(1, 2)));
-		dsSanPham
-				.add(new SanPham( 7, "Sản phẩm 7", "https://icdn.dantri.com.vn/thumb_w/640/2020/08/04/24-1596556901623.jpg",
-						"mo ta san pham", 100000, 0.2, 50000, dsChiTietLoaiSP.subList(2, 3)));
-		dsSanPham
-				.add(new SanPham( 8, "Sản phẩm 8", "https://icdn.dantri.com.vn/thumb_w/640/2020/08/04/27-1596556901642.jpg",
-						"mo ta san pham", 100000, 0.2, 50000, dsChiTietLoaiSP.subList(3, 4)));
-		dsSanPham
-				.add(new SanPham( 9, "Sản phẩm 9", "https://icdn.dantri.com.vn/thumb_w/640/2020/08/04/28-1596556901636.jpg",
-						"mo ta san pham", 100000, 0.2, 50000, dsChiTietLoaiSP.subList(4, 5)));
-		dsSanPham.add(new SanPham( 10, "Sản phẩm 10", "/resources/user/img/featured/feature-5.jpg",
-				"mo ta san pham", 100000, 0.2, 50000,
-				dsChiTietLoaiSP.subList(0, 1)));
-		dsSanPham.add(new SanPham( 11, "Sản phẩm 11", "/resources/user/img/featured/feature-6.jpg",
-				"mo ta san pham", 100000, 0.2, 50000,
-				dsChiTietLoaiSP.subList(1, 2)));
-		dsSanPham.add(new SanPham( 12, "Sản phẩm 12", "/resources/user/img/featured/feature-7.jpg",
-				"mo ta san pham", 100000, 0.2, 50000,
-				dsChiTietLoaiSP.subList(4, 5)));
-		model.addAttribute("dsSanPham", dsSanPham);
-
-		List<SanPham> dsSanPhamMoi = dsSanPham.subList(0, 6);
+		List<SanPham> dsSanPhamMoi = sanPhamService.getLatestSanPhams(6);
 		model.addAttribute("dsSanPhamMoi", dsSanPhamMoi);
 
-		List<SanPham> dsSanPhamTot = dsSanPham.subList(3, 9);
+		List<SanPham> dsSanPhamTot = sanPhamService.getRatedTopSanPhams(6);
 		model.addAttribute("dsSanPhamTot", dsSanPhamTot);
 
-		List<SanPham> dsDanhGiaSp = dsSanPham.subList(6, 12);
-		model.addAttribute("dsDanhGiaSp", dsDanhGiaSp);
-
-		SanPham sanPhamMoi = dsSanPham.get(6);
+//		List<SanPham> dsDanhGiaSp = dsSanPham.subList(6, 12);
+//		model.addAttribute("dsDanhGiaSp", dsDanhGiaSp);
+//
+		SanPham sanPhamMoi = sanPhamService.getLatestSanPham();
 		model.addAttribute("sanPhamMoi", sanPhamMoi);
 
 		return "user/index";
@@ -104,15 +66,14 @@ public class HomeController {
 
 	@RequestMapping({ "/demo" })
 	public String showDemoPage(Model model) {
-		List<ChucVu> chucVuList = chucVuService.getDSChucVu();
 		List<TaiKhoan> taiKhoanList = new ArrayList<>();
 		List<NguoiDung> nguoiDungList = new ArrayList<>();
 		List<HoaDon> hoaDonList = new ArrayList<>();
 		List<ChiTietHoaDon> ctHoaDonList = new ArrayList<>();
-		List<SanPham> sanPhamList = sanPhamService.getDSSanPham();
+		List<SanPham> sanPhamList = sanPhamService.getRatedTopSanPhams(6);
 		List<ChiTietLoaiSP> ctLoaiSPList = new ArrayList<>();
 		List<LoaiSanPham> loaiSanPhamList = new ArrayList<>();
-		model.addAttribute("chucVuList", chucVuList);
+		model.addAttribute("chucVuList", null);
 		model.addAttribute("taiKhoanList", taiKhoanList);
 		model.addAttribute("nguoiDungList", nguoiDungList);
 		model.addAttribute("hoaDonList", hoaDonList);
@@ -123,81 +84,102 @@ public class HomeController {
 		return "user/demo";
 	}
 
-	@GetMapping({"/lien-he", "/contact"})
+	@GetMapping({ "/lien-he", "/contact" })
 	public String showContractPage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = new ArrayList<LoaiSanPham>();
-		dsLoaiSanPham.add(new LoaiSanPham(1, "Thiệp cưới", "/resources/user/img/categories/cat-1.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(2, "Thiệp sinh nhật", "/resources/user/img/categories/cat-2.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(3, "Thiệp mừng 20-11", "/resources/user/img/categories/cat-3.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(4, "Thiệp năm mới", "/resources/user/img/categories/cat-4.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(5, "Thiệp giáng sinh", "/resources/user/img/categories/cat-5.jpg"));
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		
+
 		return "user/contact";
 	}
 
-	@GetMapping({"/dang-nhap", "/login"})
+	@GetMapping({ "/dang-nhap", "/login" })
 	public String showLoginPage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = new ArrayList<LoaiSanPham>();
-		dsLoaiSanPham.add(new LoaiSanPham(1, "Thiệp cưới", "/resources/user/img/categories/cat-1.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(2, "Thiệp sinh nhật", "/resources/user/img/categories/cat-2.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(3, "Thiệp mừng 20-11", "/resources/user/img/categories/cat-3.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(4, "Thiệp năm mới", "/resources/user/img/categories/cat-4.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(5, "Thiệp giáng sinh", "/resources/user/img/categories/cat-5.jpg"));
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		
+
 		return "user/login";
 	}
-	
-	@RequestMapping({"/gio-hang", "/cart"})
+
+	@RequestMapping({ "/gio-hang", "/cart" })
 	public String showShoppingCartPage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = new ArrayList<LoaiSanPham>();
-		dsLoaiSanPham.add(new LoaiSanPham(1, "Thiệp cưới", "/resources/user/img/categories/cat-1.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(2, "Thiệp sinh nhật", "/resources/user/img/categories/cat-2.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(3, "Thiệp mừng 20-11", "/resources/user/img/categories/cat-3.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(4, "Thiệp năm mới", "/resources/user/img/categories/cat-4.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(5, "Thiệp giáng sinh", "/resources/user/img/categories/cat-5.jpg"));
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		
-		List<ChiTietLoaiSP> dsChiTietLoaiSP = new ArrayList<ChiTietLoaiSP>();
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(0)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(1)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(2)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(3)));
-		dsChiTietLoaiSP.add(new ChiTietLoaiSP(dsLoaiSanPham.get(4)));
 
 		List<SanPham> dsSanPham = new ArrayList<SanPham>();
-		dsSanPham.add(new SanPham( 1, "Sản phẩm 1", "/resources/user/img/featured/feature-2.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(1, 3)));
-		dsSanPham.add(new SanPham( 2, "Sản phẩm 2", "/resources/user/img/featured/feature-1.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(0, 2)));
-		dsSanPham.add(new SanPham( 3, "Sản phẩm 3", "/resources/user/img/featured/feature-3.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(2, 4)));
-		dsSanPham.add(new SanPham( 4, "Sản phẩm 4", "/resources/user/img/featured/feature-4.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(3, 5)));
-		dsSanPham.add(new SanPham( 5, "Sản phẩm 5", "https://d25tv1xepz39hi.cloudfront.net/2016-01-31/files/1045.jpg",
-				"mo ta san pham", 100000, 20, 50000,
-				dsChiTietLoaiSP.subList(1, 3)));
 		model.addAttribute("dsSanPham", dsSanPham);
-		
+
 		return "user/shopping-cart";
 	}
 
-	@RequestMapping({"/thanh-toan", "/checkout"})
-	public String showCheckoutPage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = new ArrayList<LoaiSanPham>();
-		dsLoaiSanPham.add(new LoaiSanPham(1, "Thiệp cưới", "/resources/user/img/categories/cat-1.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(2, "Thiệp sinh nhật", "/resources/user/img/categories/cat-2.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(3, "Thiệp mừng 20-11", "/resources/user/img/categories/cat-3.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(4, "Thiệp năm mới", "/resources/user/img/categories/cat-4.jpg"));
-		dsLoaiSanPham.add(new LoaiSanPham(5, "Thiệp giáng sinh", "/resources/user/img/categories/cat-5.jpg"));
+	@RequestMapping({ "/thanh-toan/{maND}", "/checkout/{maND}" })
+	public String showCheckoutPage(Model model, @PathVariable int maND) {
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+		NguoiDung nguoiDung = nguoiDungService.findNguoiDungById(maND);
+		model.addAttribute("nguoiDung", nguoiDung);
+		List<SanPhamMua> dsSanPhamMua = sanPhamService.getSanPhamMua(maND);
+		model.addAttribute("dsSanPhamMua", dsSanPhamMua);
+		double tongTienHang = 0;
+		for (SanPhamMua sanPhamMua : dsSanPhamMua) {
+			tongTienHang += sanPhamMua.getThanhTien();
+		}
+		double giamGia = tongTienHang * 0.05;
+		double tongThanhToan = tongTienHang - tongTienHang * 0.05;
+		model.addAttribute("tongTienHang", tongTienHang);
+//		System.out.println(tongThanhToan);
+		model.addAttribute("giamGia", giamGia);
+		model.addAttribute("tongThanhToan", tongThanhToan);
+
 		return "user/checkout";
+	}
+
+	@RequestMapping(value = "/orders/success", method = RequestMethod.POST)
+	public String createHoaDon(PayLoadCreateOrder payLoadCreateOrder, Model model) {
+		System.out.println(payLoadCreateOrder.getDiaChi());
+		// 1 Lay user tu context security
+		Integer userId = 19;
+		// 1.1 lay chi tiet user
+		NguoiDung nguoiDung = nguoiDungService.findNguoiDungById(userId);
+		// 2 Lay thong tin gio hang tu user
+		List<ChiTietHoaDon> chiTietHoaDons = new ArrayList<ChiTietHoaDon>();
+		List<SanPhamMua> dsSanPhamMua = sanPhamService.getSanPhamMua(userId);
+		// có danh sách sản phẩm mua -> mã sp, số lượng , thành tiền
+
+		double tongTienHang = 0;
+		int tongSoLuong = 0;
+		for (SanPhamMua sanPhamMua : dsSanPhamMua) {
+			tongTienHang += sanPhamMua.getThanhTien();
+			tongSoLuong += sanPhamMua.getSoLuong();
+		}
+		double tongThanhToan = tongTienHang - tongTienHang * 0.05;
+		// 3 Tien hanh tao hoa don, tao chi tiet hoa don-> Luu thanh cong
+		Date ngayLHD = new Date();
+		Date ngayGiaoHang = new Date(ngayLHD.getTime() + (3 * 1000 * 60 * 60 * 24));
+		String trangThaiDonHang = "Chưa thanh toán";
+		HoaDon hoaDon = new HoaDon(ngayLHD, tongThanhToan, tongSoLuong, trangThaiDonHang, ngayGiaoHang,
+				payLoadCreateOrder.getDiaChi(), nguoiDung);
+		HoaDon hoadonSave = hoaDonService.addHoaDon(hoaDon);
+
+		dsSanPhamMua.forEach(e -> {
+			SanPham sanPham = sanPhamService.getSanPhamByIdSanPham(e.getMaSp());
+			ChiTietHoaDon cthd = new ChiTietHoaDon(hoadonSave, sanPham, e.getSoLuong(), e.getGiaSp());
+			ctHoaDonService.addChiTietHoaDon(cthd);
+			chiTietHoaDons.add(cthd);
+
+		});
+
+	
+		// 4 Xoa gio hang cua khach hang
+		gioHangService.deleteGioHangByIdNguoiDung(userId);
+		// 5 Tao trang chi tiet hoa don( truyen du lieu hoa don vua tao duoc qua trang
+		// do)
+		model.addAttribute("hoadonThanhToan", hoadonSave);
+
+		model.addAttribute("chiTietHoaDons", chiTietHoaDons);
+		model.addAttribute("tongTienHang", tongTienHang);
+		model.addAttribute("giamGia", tongTienHang * 0.05);
+		System.out.println(hoadonSave.toString());
+		return "user/detail-order";
 	}
 
 	@GetMapping("/access-denied")
