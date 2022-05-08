@@ -65,6 +65,7 @@ public class HomeController {
 		model.addAttribute("sanPhamMoi", sanPhamMoi);
 		
 		model.addAttribute("tenSanPham", "");
+		model.addAttribute("isCategoryPage", 0);
 
 		return "user/index";
 	}
@@ -79,7 +80,7 @@ public class HomeController {
 		List<ChiTietLoaiSP> ctLoaiSPList = new ArrayList<>();
 		List<LoaiSanPham> loaiSanPhamList = new ArrayList<>();
 		model.addAttribute("chucVuList", null);
-		model.addAttribute("danhGiaList", danhGiaService.getDanhGiasByIdSanPham(97));
+		model.addAttribute("danhGiaList", danhGiaService.getDanhGiasBySanPhamIdAndPageNumber(97, 1));
 		model.addAttribute("taiKhoanList", taiKhoanList);
 		model.addAttribute("nguoiDungList", nguoiDungList);
 		model.addAttribute("hoaDonList", hoaDonList);
@@ -102,7 +103,8 @@ public class HomeController {
 	public String showLoginPage(Model model) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-
+		model.addAttribute("isCategoryPage", 0);
+		
 		return "user/login";
 	}
 
@@ -110,6 +112,7 @@ public class HomeController {
 	public String showShoppingCartPage(Model model) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+		model.addAttribute("isCategoryPage", 0);
 		
 		List<SanPham> dsSanPham = new ArrayList<SanPham>();
 		model.addAttribute("dsSanPham", dsSanPham);
@@ -136,6 +139,8 @@ public class HomeController {
 		model.addAttribute("giamGia", giamGia);
 		model.addAttribute("tongThanhToan", tongThanhToan);
 
+		model.addAttribute("isCategoryPage", 0);
+		
 		return "user/checkout";
 	}
 

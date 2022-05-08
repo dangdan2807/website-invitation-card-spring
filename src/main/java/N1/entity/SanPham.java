@@ -93,8 +93,13 @@ public class SanPham implements Serializable {
         this.giamGia = giamGia;
         this.giaMua = giaMua;
     }
-
-    public String getMoTa() {
+    
+    public SanPham(int maSp) {
+		super();
+		this.maSp = maSp;
+	}
+    
+	public String getMoTa() {
         return moTa;
     }
 

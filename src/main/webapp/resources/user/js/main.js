@@ -81,7 +81,7 @@
         // select review star
         for (let index = 1; index <= 5; index++) {
             $(`.ul-star > li[data-val="${index}"]`).on('click', function () {
-                $('.review__xepHang').val(index);
+                $('#xepHang').val(index);
                 if ($(`.ul-star > li[data-val="${index}"] > i`).hasClass('active')) {
                     for (let i = index + 1; i <= 5; i++) {
                         $(`.ul-star > li[data-val="${i}"] > i`).removeClass('active');

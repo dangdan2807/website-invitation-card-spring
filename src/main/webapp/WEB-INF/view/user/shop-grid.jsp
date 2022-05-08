@@ -49,9 +49,20 @@
                         <div class="sidebar__item">
                             <h4>Loại Thiệp</h4>
                             <ul>
+                                <li>
+                                    <a href='<c:url value = "/san-pham"/>'
+                                        class='<c:if test="${selectedCategoryId == 0}">active</c:if>'
+                                    >
+                                        <span>Tất cả</span>
+                                    </a>
+                                </li>
                                 <c:forEach var="loaiSp" items="${dsLoaiSanPham}">
                                     <li>
-                                    	<a href='<c:url value = "/danh-muc?id=${loaiSp.maLSP}"/>'>${loaiSp.tenLSP}</a>
+                                    	<a href='<c:url value = "/danh-muc/id=${loaiSp.maLSP}"/>'
+                                            class='<c:if test="${selectedCategoryId == loaiSp.maLSP}">active</c:if>'
+                                        >
+                                        	<span>${loaiSp.tenLSP}</span>
+                                        </a>
                                     </li>
                                 </c:forEach>
                             </ul>
@@ -176,13 +187,13 @@
                     </div>
                     <div class="product__pagination">
                         <c:if test="${currentPage > 1}">
-                            <a onclick="pagingPage(${currentPage - 1});">
+                            <a class="pagination__link" onclick="pagingPage(${currentPage - 1});">
                                 <i class="fa fa-long-arrow-left"></i>
                             </a>
                         </c:if>
                         <c:forEach var="sp" items="${pagingSize}">
                             <c:if test="${((currentPage - sp) >= 1) && ((currentPage - sp) <= pageOfNumber)}">
-                                <a onclick="pagingPage(${currentPage - sp});"
+                                <a class="pagination__link" onclick="pagingPage(${currentPage - sp});"
                                     class='<c:if test="${currentPage == currentPage - sp}">active</c:if>'
                                 >
                                     ${currentPage - sp}
@@ -190,7 +201,7 @@
                             </c:if>
                         </c:forEach>
                         <c:if test="${currentPage < pageOfNumber}">
-                            <a onclick="pagingPage(${currentPage + 1});">
+                            <a class="pagination__link" onclick="pagingPage(${currentPage + 1});">
                                 <i class="fa fa-long-arrow-right"></i>
                             </a>
                         </c:if>

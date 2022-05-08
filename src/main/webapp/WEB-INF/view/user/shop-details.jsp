@@ -1,11 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ page import="org.springframework.web.servlet.tags.Param"%>
+
 <!DOCTYPE html>
 <html lang="vi">
 
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8" />	
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>${sanPham.tenSp}</title>
@@ -66,7 +71,7 @@
                                     <i class="fa fa-star-o"></i>
                                 </c:if>
                             </c:forEach>
-                            <span>(${fn:length(sanPham.dsDanhGia)} đánh giá)</span>
+                            <span>(${numberOfDanhGia} đánh giá)</span>
                         </div>
                         <div class="product__details__price">${sanPham.giaSP}</div>
                         <p>
@@ -80,7 +85,7 @@
                             </div>
                         </div>
                         <a href="#" class="primary-btn">THÊM VÀO GIỎ HÀNG</a>
-                        <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a>
+                        <!-- <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a> -->
                         <ul>
                             <li>
                                 <b>Chia sẻ</b>
@@ -102,7 +107,7 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab"
-                                    aria-selected="false">Đánh giá <span>(${fn:length(sanPham.dsDanhGia)})</span></a>
+                                    aria-selected="false">Đánh giá <span>(${numberOfDanhGia})</span></a>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -117,40 +122,45 @@
                             <div class="tab-pane" id="tabs-2" role="tabpanel">
                                 <div class="product__details__tab__desc">
                                     <div class="product__details__review">
-                                        <div class="review__select-star">
-                                            <div class="row">
-                                                <p class="col-lg-6 col-12" >Bạn cảm thấy sản phẩm này như thế nào? (chọn sao nhé):</p>
-                                                <ul class="col-lg-6 col-12 ul-star">
-                                                    <li data-val="1">
-                                                        <i class="fa fa-star active"></i>
-                                                    </li>
-                                                    <li data-val="2">
-                                                        <i class="fa fa-star active"></i>
-                                                    </li>
-                                                    <li data-val="3">
-                                                        <i class="fa fa-star active"></i>
-                                                    </li>
-                                                    <li data-val="4">
-                                                        <i class="fa fa-star active"></i>
-                                                    </li>
-                                                    <li data-val="5">
-                                                        <i class="fa fa-star active"></i>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="review__comment">
-                                            <div class="row">
-                                                <div class="review__textarea col-lg-12 col-12">
-                                                    <textarea 
-                                                        path="noiDung"
-                                                        class="review__textarea-context" 
-                                                        name="reviewContent" 
-                                                        placeholder="Mời bạn chia sẻ thêm một số cảm nhận về sản phẩm ..." ></textarea>
-                                                </div>
-                                                <a class="review__btn-submit" onclick="submitDanhGia();" >Gửi đánh giá ngay</a>
-                                            </div>
-                                        </div>
+                                    	<form:form method="POST" modelAttribute="danhGia" 
+                                    		action="${pageContext.request.contextPath}/san-pham/id=${sanPham.maSp}"
+                                    		accept-charset="UTF-8">
+                                    		<form:hidden path="xepHang" value="5" />
+	                                        <div class="review__select-star">
+	                                            <div class="row">
+	                                                <p class="col-lg-6 col-12" >Bạn cảm thấy sản phẩm này như thế nào? (chọn sao nhé):</p>
+	                                                <ul class="col-lg-6 col-12 ul-star">
+	                                                    <li data-val="1">
+	                                                        <i class="fa fa-star active"></i>
+	                                                    </li>
+	                                                    <li data-val="2">
+	                                                        <i class="fa fa-star active"></i>
+	                                                    </li>
+	                                                    <li data-val="3">
+	                                                        <i class="fa fa-star active"></i>
+	                                                    </li>
+	                                                    <li data-val="4">
+	                                                        <i class="fa fa-star active"></i>
+	                                                    </li>
+	                                                    <li data-val="5">
+	                                                        <i class="fa fa-star active"></i>
+	                                                    </li>
+	                                                </ul>
+	                                            </div>
+	                                        </div>
+	                                        <div class="review__comment">
+	                                            <div class="row">
+	                                                <div class="review__textarea col-lg-12 col-12">
+	                                                    <form:textarea 
+	                                                        path="noiDung"
+	                                                        class="review__textarea-context" 
+	                                                        name="reviewContent" 
+	                                                        placeholder="Mời bạn chia sẻ thêm một số cảm nhận về sản phẩm ..." ></form:textarea>
+	                                                </div>
+	                                                <input class="review__btn-submit" type="submit" value="Gửi đánh giá ngay" />
+	                                            </div>
+	                                        </div>
+                                       	</form:form>
                                     </div>
                                     <div class="product__details__comments">
                                         <c:forEach var="danhGia" items="${sanPham.dsDanhGia}">
@@ -178,6 +188,27 @@
                                             </div>
                                         </c:forEach>
                                     </div>    
+                                    <div class="comments__pagination">
+                                        <c:if test="${currentPageComment > 1}">
+                                            <a class="pagination__link" onclick="pagingPage(${currentPageComment - 1});">
+                                                <i class="fa fa-long-arrow-left"></i>
+                                            </a>
+                                        </c:if>
+                                        <c:forEach var="sp" items="${pagingSize}">
+                                            <c:if test="${((currentPageComment - sp) >= 1) && ((currentPageComment - sp) <= pageOfNumber)}">
+                                                <a onclick="pagingPage(${currentPageComment - sp});"
+                                                    class='pagination__link <c:if test="${currentPageComment == currentPageComment - sp}">active</c:if>'
+                                                >
+                                                    ${currentPageComment - sp}
+                                                </a>
+                                            </c:if>
+                                        </c:forEach>
+                                        <c:if test="${currentPageComment < pageOfNumber}">
+                                            <a class="pagination__link" onclick="pagingPage(${currentPageComment + 1});">
+                                                <i class="fa fa-long-arrow-right"></i>
+                                            </a>
+                                        </c:if>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -199,20 +230,22 @@
                 </div>
             </div>
             <div class="row">
-            	<c:forEach var="sanPham" items="${dsSanPhamLQ}" begin="0" end="5">
-	                <div class="col-lg-3 col-md-4 col-sm-6">
-	                    <div class="product__item"
-	                    	onclick=window.location.href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'
-	                    >
-	                        <div class="product__item__pic set-bg"
-	                            data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
-	                        </div>
-	                        <div class="product__item__text">
-	                            <h6><a href="<c:url value = "/san-pham/id=${sanPham.maSp}" />">${sanPham.tenSp}</a></h6>
-	                            <h5>${sanPham.giaSP}</h5>
-	                        </div>
-	                    </div>
-	                </div>
+                <c:forEach var="sanPham" items="${dsSanPhamLQ}" begin="0" end="5">
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="product__item"
+                            onclick=window.location.href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'
+                        >
+                            <div class="product__item__pic set-bg"
+                                data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
+                            </div>
+                            <div class="product__item__text">
+                                <h6>
+                                    <a href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'>${sanPham.tenSp}</a>
+                                </h6>
+                                <h5>${sanPham.giaSP}</h5>
+                            </div>
+                        </div>
+                    </div>
                 </c:forEach>
             </div>
         </div>
@@ -227,28 +260,31 @@
     <jsp:include page="./module/link-js.jsp"/>
 
     <script language="javascript">
-        function submitDanhGia(){
-            var xepHang = $('ul.ul-star li i.active').length;
-            var noiDung = $('textarea[name="reviewContent"]').val();
-            $.ajax({
-                url : "<c:url value = '/san-pham/id=${sanPham.maSp}' />",
-                type : "post",
-                dataType: "json",
-                data : {
-                    maDanhGia : 0,
-                    sanPham : { maSp: "${sanPham.maSp}"},
-                    nguoiDung : { maND: 1},
-                    noiDung : $("textarea[name='reviewContent']").val(),
-                    xepHang : $(".ul-star li.active").attr("data-val")
-                },
-                success : function (result){
-                    alert('Đánh giá thành công');
-                },
-                error : function (result){
-                    alert('Đánh giá thất bại');
-                }
-            });
+        function getUrl() {
+            var url = window.location.href;
+            if (!url.includes('?')) {
+                url += "?"
+            }
+            return url;
+		}
+
+        function pagingPage(page) {
+            var url = getUrl();
+
+            if (url.includes('comment-page')) {
+                url = url.replace(/comment-page=[\d]+/ig, 'comment-page=' + page);
+            } else {
+                url += '&comment-page=' + page;
+            }
+
+            window.location.href = url;
         }
+
+        $("button").click(function(){
+            $.get("demo_test.asp", function(data, status){
+                alert("Data: " + data + "\nStatus: " + status);
+            });
+        });
     </script>
 </body>
 

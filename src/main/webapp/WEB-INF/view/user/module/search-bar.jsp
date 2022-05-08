@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
     pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%-- <%@page import="org.springframework.web.servlet.tags.Param"%> --%>
-<%-- <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %> --%>
 
 <section class='hero <c:if test="${!param.showBanner}">hero-normal</c:if>'>
     <div class="container">
@@ -16,7 +14,7 @@
                     <ul>
                         <c:forEach var="loaiSp" items="${dsLoaiSanPham}">
                             <li>
-                                <a href='<c:url value = "/danh-muc?id=${loaiSp.maLSP}" />'>${loaiSp.tenLSP}</a>
+                                <a href='<c:url value = "/danh-muc/id=${loaiSp.maLSP}" />'>${loaiSp.tenLSP}</a>
                             </li>
                         </c:forEach>
                     </ul>
@@ -25,8 +23,12 @@
             <div class="col-lg-9">
                 <div class="hero__search">
                     <div class="hero__search__form">
-                        <form class="search__form" method="GET" action='${pageContext.request.contextPath}/san-pham/tim-kiem'
-                        >
+                    	<c:if test="${isCategoryPage == 0}">
+                        	<form class="search__form" method="GET" action='${pageContext.request.contextPath}/san-pham/tim-kiem'>
+                    	</c:if>
+                    	<c:if test="${isCategoryPage == 1}">
+                    		<form class="search__form" method="GET" action='${pageContext.request.contextPath}/danh-muc/id=${selectedCategoryId}/tim-kiem'>
+                    	</c:if>
                             <input class="search__form-input" type="text" name="ten-san-pham" placeholder="Bạn cần gì?" />
                             <button class="site-btn search__form-button" type="submit">TÌM</button>
                         </form>

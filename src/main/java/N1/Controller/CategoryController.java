@@ -1,11 +1,14 @@
 package N1.Controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import N1.Service.LoaiSanPhamService;
@@ -14,38 +17,71 @@ import N1.entity.LoaiSanPham;
 import N1.entity.SanPham;
 
 @Controller
-@RequestMapping({"/danh-muc", "/categories"})
+@RequestMapping({ "/danh-muc", "/categories" })
 public class CategoryController {
+	private final int pageSize = 15;
+
 	@Autowired
 	private LoaiSanPhamService loaiSanPhamService;
 	@Autowired
 	private SanPhamService sanPhamService;
-	
-    @RequestMapping("")
-	public String showCategoryPage(Model model, 
-			@RequestParam(name = "id", required = false, defaultValue = "1") int id,
+
+	@RequestMapping(value = { "/id={id}", "/id={id}/tim-kiem" }, method = RequestMethod.GET)
+	public String showCategoryPage(Model model, @PathVariable(name = "id", required = false) Integer id,
+			@RequestParam(name = "ten-san-pham", required = false, defaultValue = "") String tenSanPham,
 			@RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
-			@RequestParam(name = "page", required = false, defaultValue = "1") int currentPage) {
-		if (currentPage == 0 || currentPage <= 0) {
+			@RequestParam(name = "page", required = false, defaultValue = "1") Integer currentPage,
+			@RequestParam(name = "minPrice", required = false, defaultValue = "0") String minPriceStr,
+			@RequestParam(name = "maxPrice", required = false, defaultValue = "100000") String maxPriceStr) {
+
+		double minPrice = Double.parseDouble(minPriceStr.replaceAll("[/s.đ]", ""));
+		double maxPrice = Double.parseDouble(maxPriceStr.replaceAll("[/s.đ]", ""));
+		
+		if(id == null || id < 0) {
+			id = 0;
+		}
+
+		if (currentPage <= 0 || currentPage == null) {
 			currentPage = 1;
 		}
-		
+		if (minPrice <= 0.0) {
+			minPrice = 0.0;
+		}
+		if (maxPrice <= 0) {
+			maxPrice = 0.0;
+		}
+
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
-		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(currentPage);
+		List<SanPham> dsSanPham = new ArrayList<SanPham>();
+		int numberOfSanPham = 0;
+		if (id == 0) {
+			dsSanPham = sanPhamService.getDSSanPham(currentPage, sort, tenSanPham, minPrice, maxPrice);
+			numberOfSanPham = sanPhamService.getNumberOfSanPhamsByTenSpAndPrice(tenSanPham, minPrice, maxPrice);
+		} else {
+			dsSanPham = sanPhamService.getSanPhamsByCategoryId(currentPage, sort, tenSanPham, minPrice, maxPrice, id);
+			numberOfSanPham = sanPhamService.getNumberOfSanPhamsByCategoryId(tenSanPham, minPrice, maxPrice, id);
+		}
 		model.addAttribute("dsSanPham", dsSanPham);
 
-		int numberOfSanPham = sanPhamService.getNumberOfSanPhams();
+		
 		int pageOfNumber = 1;
-		if ((numberOfSanPham / 15) != 15) {
-			pageOfNumber = (numberOfSanPham / 15) + 1;
+		if ((numberOfSanPham % pageSize) != 0) {
+			pageOfNumber = (numberOfSanPham / pageSize) + 1;
+		} else {
+			pageOfNumber = (numberOfSanPham / pageSize);
 		}
 
+		model.addAttribute("isCategoryPage", 1);
+		model.addAttribute("selectedCategoryId", id);
 		model.addAttribute("slSanPham", numberOfSanPham);
 		model.addAttribute("pageOfNumber", pageOfNumber);
 		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("pageSize", new int[] {5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5});
+		model.addAttribute("sort", sort);
+		model.addAttribute("minPrice", minPrice);
+		model.addAttribute("maxPrice", maxPrice);
+		model.addAttribute("pagingSize", new int[] { 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5 });
 
 		List<SanPham> dsSanPhamMoi = sanPhamService.getLatestSanPhams(6);
 		model.addAttribute("dsSanPhamMoi", dsSanPhamMoi);

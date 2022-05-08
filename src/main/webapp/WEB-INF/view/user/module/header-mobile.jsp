@@ -73,12 +73,6 @@
             >
                 <a href='<c:url value = "/lien-he" />'>Liên Hệ</a>
 			</li>
-			<!-- <li><a href="#">Pages</a>
-                <ul class="header__menu__dropdown">
-                    <li><a href="/shop/shop-details">Shop Details</a></li>
-                    <li><a href="/shop/checkout">Thanh Toán</a></li>
-                </ul>
-            </li> -->
 		</ul>
 	</nav>
 	<div id="mobile-menu-wrap"></div>
