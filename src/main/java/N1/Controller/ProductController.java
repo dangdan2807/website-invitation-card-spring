@@ -1,6 +1,6 @@
 package N1.Controller;
 
-import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +54,6 @@ public class ProductController {
 
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		
 
 		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(currentPage, sort, tenSanPham, minPrice, maxPrice);
 		model.addAttribute("dsSanPham", dsSanPham);
@@ -96,11 +95,10 @@ public class ProductController {
 			currentPageComment = 1;
 		}
 
-		
 		model.addAttribute("isCategoryPage", 0);
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		
+
 		int numberOfDanhGia = danhGiaService.getNumberOfDanhGiaBySanPhamId(id);
 		int pageOfNumber = 1;
 		if ((numberOfDanhGia % pageCommentSize) != 0) {
@@ -147,16 +145,13 @@ public class ProductController {
 		danhGia.setNguoiDung(new NguoiDung(2));
 		danhGia.setSanPham(new SanPham(id));
 
-		try {
-			String path;
-			path = URLDecoder.decode(danhGia.getNoiDung(), "UTF-8");
-			System.out.println(path);
-		} catch (Exception e) {
-			// LOGGER.error("Error encoding parameter {}", e.getMessage(), e);
-		}
+		String noiDung = danhGia.getNoiDung();
+		byte[] bytes = noiDung.getBytes(StandardCharsets.ISO_8859_1);
+		noiDung = new String(bytes, StandardCharsets.UTF_8);
+		danhGia.setNoiDung(noiDung);
 
 		model.addAttribute("danhGia", new DanhGia());
-		 boolean resultSave = danhGiaService.addDanhGia(danhGia);
+		boolean resultSave = danhGiaService.addDanhGia(danhGia);
 		// if (resultSave) {
 		//
 		// } else {

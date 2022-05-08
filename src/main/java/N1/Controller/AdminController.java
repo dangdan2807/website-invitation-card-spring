@@ -3,41 +3,25 @@ package N1.Controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import N1.DAO.SanPhamDAO;
-import N1.Service.HoaDonService;
-import N1.Service.LoaiSanPhamService;
-import N1.Service.NguoiDungService;
-import N1.Service.SanPhamService;
-import N1.Service.SanPhamServiceImpl;
+import N1.Service.*;
 import N1.Service.ThongKeService;
 import N1.Service.ThongKeServiceImpl.LineChartObject;
 import N1.Service.ThongKeServiceImpl.LabelCount;
-import N1.entity.ChiTietLoaiSP;
-import N1.entity.HoaDon;
-import N1.entity.LoaiSanPham;
-import N1.entity.NguoiDung;
-import N1.entity.SanPham;
-import N1.entity.TaiKhoan;
+import N1.entity.*;
 import N1.utils.Datetime;
 
 @Controller

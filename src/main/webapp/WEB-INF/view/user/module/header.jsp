@@ -66,7 +66,7 @@
                             }
                             %>
                         >
-                            <a href='<c:url value = "/gio-hang" />'>Giỏ Hàng</a>
+                            <a href='<c:url value = "/user/gio-hang" />'>Giỏ Hàng</a>
                         </li>
                         
                         <li <% 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import N1.Dto.*;
+import N1.DTO.*;
 import N1.Service.*;
 import N1.entity.*;
 
