@@ -21,6 +21,17 @@
 <!-- Custom fonts for this template-->
 <jsp:include page="./common/link-css.jsp" />
 
+<style>
+	.chart{
+		max-height: 100%;
+	}
+
+	.doughnut-chart{
+		max-height: 100%;
+		margin: auto;
+	}
+</style>
+
 </head>
 
 <body id="page-top">
@@ -221,7 +232,7 @@
 								<div class="card-body">
 									<div class="chart-area">
 										<%-- <canvas id="myAreaChart"></canvas> --%>
-										<canvas id="chartDoanhThuVaLoiNhuan"></canvas>
+										<canvas class="chart" id="chartDoanhThuVaLoiNhuan"></canvas>
 									</div>
 								</div>
 							</div>
@@ -255,7 +266,7 @@
 								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-pie pt-4 pb-2">
-										<canvas id="chartDanhMucThiepBanRa"></canvas>
+										<canvas class="chart doughnut-chart" id="chartDanhMucThiepBanRa"></canvas>
 									</div>
 									<div class="mt-4 text-center small">
 										<span class="mr-2"> <i
@@ -300,7 +311,7 @@
 								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-area">
-										<canvas id="chartSoDonHang"></canvas>
+										<canvas class="chart" id="chartSoDonHang"></canvas>
 									</div>
 								</div>
 							</div>
@@ -333,7 +344,7 @@
 								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-pie pt-4 pb-2">
-										<canvas id="chartSoSanPhamBanRa"></canvas>
+										<canvas class="chart doughnut-chart" id="chartSoSanPhamBanRa"></canvas>
 									</div>
 									<div class="mt-4 text-center small">
 										<span class="mr-2"> <i
