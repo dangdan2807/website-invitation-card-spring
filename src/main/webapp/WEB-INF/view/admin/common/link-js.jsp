@@ -14,11 +14,14 @@
 <script src="<c:url value = '/resources/admin/js/sb-admin-2.min.js'/>"></script>
 
 <!-- Page level plugins -->
-<script src="<c:url value = '/resources/admin/vendor/chart.js/Chart.min.js'/>"></script>
+<%-- <script src="<c:url value = '/resources/admin/vendor/chart.js/Chart.min.js'/>"></script>
 
 <!-- Page level custom scripts -->
 <script src="<c:url value = '/resources/admin/js/demo/chart-area-demo.js'/>"></script>
-<script src="<c:url value = '/resources/admin/js/demo/chart-pie-demo.js'/>"></script>
+<script src="<c:url value = '/resources/admin/js/demo/chart-pie-demo.js'/>"></script> --%>
+<!-- 
+<script src="https://raw.githubusercontent.com/google/palette.js/master/palette.js"></script> -->
+<script src="<c:url value = '/resources/admin/vendor/chartjs/chart.min.js'/>"></script>
 
 <script>
 $(document).ready(function(){
@@ -34,5 +37,32 @@ $(document).ready(function(){
 		deleteModal.show();
 	});	
 });
+const formatNumber = (value) => {
+	return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+}
+
+const formatMoney = (value) => {
+    return formatNumber(value) + "đ";
+}
+
+const formatMoneyBySelect = function () {
+    var price = $(this).text();
+    $(this).text(formatNumber(price));
+}
+
+const formatPercentBySelect = function () {
+    var price = $(this).text();
+    $(this).text(formatNumber(price) + "%");
+}
+
+$(".money-format").each(formatMoneyBySelect);
+$(".persent-format").each(formatPercentBySelect);
+
+var dynamicColors = function() {
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    return "rgb(" + r + "," + g + "," + b + ")";
+}
 
 </script>

@@ -1,18 +1,19 @@
 package N1.Controller;
 
+import java.net.URLDecoder;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import N1.entity.*;
 import N1.Service.*;
@@ -21,6 +22,7 @@ import N1.Service.*;
 @RequestMapping({ "/san-pham", "/product" })
 public class ProductController {
 	private final int pageSize = 15;
+	private final int pageCommentSize = 5;
 
 	@Autowired
 	private LoaiSanPhamService loaiSanPhamService;
@@ -36,10 +38,10 @@ public class ProductController {
 			@RequestParam(name = "page", required = false, defaultValue = "1") Integer currentPage,
 			@RequestParam(name = "minPrice", required = false, defaultValue = "0") String minPriceStr,
 			@RequestParam(name = "maxPrice", required = false, defaultValue = "100000") String maxPriceStr) {
-		
+
 		double minPrice = Double.parseDouble(minPriceStr.replaceAll("[/s.đ]", ""));
 		double maxPrice = Double.parseDouble(maxPriceStr.replaceAll("[/s.đ]", ""));
-		
+
 		if (currentPage <= 0 || currentPage == null) {
 			currentPage = 1;
 		}
@@ -58,6 +60,7 @@ public class ProductController {
 		model.addAttribute("dsSanPham", dsSanPham);
 
 		int numberOfSanPham = sanPhamService.getNumberOfSanPhamsByTenSpAndPrice(tenSanPham, minPrice, maxPrice);
+
 		int pageOfNumber = 1;
 		if ((numberOfSanPham % pageSize) != 0) {
 			pageOfNumber = (numberOfSanPham / pageSize) + 1;
@@ -65,6 +68,8 @@ public class ProductController {
 			pageOfNumber = (numberOfSanPham / pageSize);
 		}
 
+		model.addAttribute("isCategoryPage", 0);
+		model.addAttribute("selectedCategoryId", 0);
 		model.addAttribute("slSanPham", numberOfSanPham);
 		model.addAttribute("pageOfNumber", pageOfNumber);
 		model.addAttribute("currentPage", currentPage);
@@ -83,15 +88,29 @@ public class ProductController {
 	}
 
 	@GetMapping("/id={theId}")
-	public String getProductById(Model model, @PathVariable(name = "theId", required = false) Integer id) {
+	public String getProductById(Model model, @PathVariable(name = "theId", required = false) Integer id,
+			@RequestParam(name = "comment-page", required = false, defaultValue = "1") Integer currentPageComment) {
 		if (id <= 0 || id == null)
 			id = 1;
+		if (currentPageComment <= 0 || currentPageComment == null) {
+			currentPageComment = 1;
+		}
 
+		
+		model.addAttribute("isCategoryPage", 0);
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+		
+		int numberOfDanhGia = danhGiaService.getNumberOfDanhGiaBySanPhamId(id);
+		int pageOfNumber = 1;
+		if ((numberOfDanhGia % pageCommentSize) != 0) {
+			pageOfNumber = (numberOfDanhGia / pageCommentSize) + 1;
+		} else {
+			pageOfNumber = (numberOfDanhGia / pageCommentSize);
+		}
 
 		SanPham sanPham = sanPhamService.getSanPhamByIdSanPham(id);
-		List<DanhGia> danhGias = danhGiaService.getDanhGiasByIdSanPham(id);
+		List<DanhGia> danhGias = danhGiaService.getDanhGiasBySanPhamIdAndPageNumber(id, currentPageComment);
 		sanPham.setDsDanhGia(danhGias);
 		model.addAttribute("sanPham", sanPham);
 
@@ -106,6 +125,11 @@ public class ProductController {
 		}
 		model.addAttribute("starSize", new int[] { 1, 2, 3, 4, 5 });
 		model.addAttribute("star", star);
+		model.addAttribute("pagingSize", new int[] { 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5 });
+		model.addAttribute("currentPageComment", currentPageComment);
+		model.addAttribute("numberOfDanhGia", numberOfDanhGia);
+		model.addAttribute("pageOfNumber", pageOfNumber);
+		model.addAttribute("danhGia", new DanhGia());
 
 		LoaiSanPham loaiSanPham = sanPham.getDsLoaiSP().get(0).getLoaiSanPham();
 		model.addAttribute("loaiSanPham", loaiSanPham);
@@ -118,8 +142,27 @@ public class ProductController {
 	}
 
 	@PostMapping("/id={theId}")
-	public HttpStatus addReviewProduct(Model model, @RequestBody DanhGia danhGia) {
-		System.out.println(danhGia.getNoiDung());
-		return HttpStatus.OK;
+	public String addReviewProductByProductId(Model model, @PathVariable(name = "theId", required = false) Integer id,
+			@ModelAttribute("danhGia") DanhGia danhGia, RedirectAttributes redirectAttributes) {
+		danhGia.setNguoiDung(new NguoiDung(2));
+		danhGia.setSanPham(new SanPham(id));
+
+		try {
+			String path;
+			path = URLDecoder.decode(danhGia.getNoiDung(), "UTF-8");
+			System.out.println(path);
+		} catch (Exception e) {
+			// LOGGER.error("Error encoding parameter {}", e.getMessage(), e);
+		}
+
+		model.addAttribute("danhGia", new DanhGia());
+		 boolean resultSave = danhGiaService.addDanhGia(danhGia);
+		// if (resultSave) {
+		//
+		// } else {
+		//
+		// }
+
+		return "redirect:/san-pham/id=" + id;
 	}
 }

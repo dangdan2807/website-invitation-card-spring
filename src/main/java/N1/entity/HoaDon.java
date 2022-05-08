@@ -1,6 +1,7 @@
 package N1.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,6 +56,7 @@ public class HoaDon implements Serializable {
     private NguoiDung nguoiDung;
 
     public HoaDon() {
+    	dsCTHoaDon = new ArrayList<ChiTietHoaDon>();
     }
 
     public HoaDon(int maHD, Date ngayLHD, double tongTien, double tongSoLuong, NguoiDung nguoiDung) {

@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="org.springframework.web.servlet.tags.Param"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,10 +16,21 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>SB Admin 2 - Dashboard</title>
+<title>Thống kê</title>
 
 <!-- Custom fonts for this template-->
 <jsp:include page="./common/link-css.jsp" />
+
+<style>
+	.chart{
+		max-height: 100%;
+	}
+
+	.doughnut-chart{
+		max-height: 100%;
+		margin: auto;
+	}
+</style>
 
 </head>
 
@@ -41,14 +55,54 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
-
 					<!-- Page Heading -->
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-						<a href="#"
-							class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-							class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+						<h1 class="h3 text-gray-800">Thống kê</h1>
+						<div style="display: flex;">
+							<!-- <a href="#"
+								class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+								class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+							<div>
+								<form:form action="${pageContext.request.contextPath}/admin"
+									method="GET"
+									style="display: flex; margin-left: 20px; align-items: center;">
+									<select class="form-control form-control-sm" id="dateRange"
+										name="dateType">
+										<option value="today" ${dateType == "today" ? "selected": ""}>Hôm
+											nay</option>
+										<option value="yesterday"
+											${dateType == "yesterday" ? "selected": ""}>Hôm qua</option>
+										<option value="one_week_ago"
+											${dateType == "one_week_ago" ? "selected": ""}>7
+											ngày qua</option>
+										<option value="one_month_ago"
+											${dateType == "one_month_ago" ? "selected": ""}>1
+											tháng qua</option>
+										<option value="one_year_ago"
+											${dateType == "one_year_ago" ? "selected": ""}>1 năm
+											qua</option>
+										<option value="custom"
+											${dateType == "custom" ? "selected": ""}>Tùy chỉnh</option>
+									</select>
+									<div style="display: flex; align-items: center;"
+										id="dateCustom">
+										<label style="margin-bottom: 0; margin-left: 10px">Từ</label>
+										<input type="date" class="form-control form-control-sm"
+											style="margin-left: 10px" name="from"
+											data-format="yyyy-MM-dd"
+											value="<fmt:formatDate value='${from}' pattern='yyyy-MM-dd' />" />
+										<label style="margin-bottom: 0; margin-left: 10px">Tới</label>
+										<input type="date" class="form-control form-control-sm"
+											style="margin-left: 10px" name="to" data-format="yyyy-MM-dd"
+											value="<fmt:formatDate value='${to}' pattern='yyyy-MM-dd' />" />
+									</div>
+									<input type="submit" value="Thống kê" class="btn btn-primary"
+										style="margin-left: 10px" />
+								</form:form>
+							</div>
+
+						</div>
 					</div>
 
 					<!-- Content Row -->
@@ -62,8 +116,9 @@
 										<div class="col mr-2">
 											<div
 												class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-												Earnings (Monthly)</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+												Doanh thu</div>
+											<div
+												class="h5 mb-0 font-weight-bold text-gray-800 money-format">${tongDoanhThu}</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -81,8 +136,9 @@
 										<div class="col mr-2">
 											<div
 												class="text-xs font-weight-bold text-success text-uppercase mb-1">
-												Earnings (Annual)</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+												Lợi nhuận</div>
+											<div
+												class="h5 mb-0 font-weight-bold text-gray-800 money-format">${tongLoiNhuan}</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -99,9 +155,10 @@
 									<div class="row no-gutters align-items-center">
 										<div class="col mr-2">
 											<div
-												class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-											</div>
-											<div class="row no-gutters align-items-center">
+												class="text-xs font-weight-bold text-info text-uppercase mb-1">Số
+												đơn hàng</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">${tongSoDonHang}</div>
+											<!-- <div class="row no-gutters align-items-center">
 												<div class="col-auto">
 													<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
 												</div>
@@ -112,7 +169,7 @@
 															aria-valuemax="100"></div>
 													</div>
 												</div>
-											</div>
+											</div> -->
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -130,8 +187,8 @@
 										<div class="col mr-2">
 											<div
 												class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-												Pending Requests</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+												Số thiệp bán</div>
+											<div class="h5 mb-0 font-weight-bold text-gray-800">${tongSoThiepBan}</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -152,8 +209,8 @@
 								<!-- Card Header - Dropdown -->
 								<div
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Earnings
-										Overview</h6>
+									<h6 class="m-0 font-weight-bold text-primary">Doanh thu và
+										lợi nhuận</h6>
 									<div class="dropdown no-arrow">
 										<a class="dropdown-toggle" href="#" role="button"
 											id="dropdownMenuLink" data-toggle="dropdown"
@@ -174,7 +231,8 @@
 								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-area">
-										<canvas id="myAreaChart"></canvas>
+										<%-- <canvas id="myAreaChart"></canvas> --%>
+										<canvas class="chart" id="chartDoanhThuVaLoiNhuan"></canvas>
 									</div>
 								</div>
 							</div>
@@ -186,8 +244,8 @@
 								<!-- Card Header - Dropdown -->
 								<div
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Revenue
-										Sources</h6>
+									<h6 class="m-0 font-weight-bold text-primary">Danh mục
+										thiệp bán ra</h6>
 									<div class="dropdown no-arrow">
 										<a class="dropdown-toggle" href="#" role="button"
 											id="dropdownMenuLink" data-toggle="dropdown"
@@ -208,7 +266,7 @@
 								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-pie pt-4 pb-2">
-										<canvas id="myPieChart"></canvas>
+										<canvas class="chart doughnut-chart" id="chartDanhMucThiepBanRa"></canvas>
 									</div>
 									<div class="mt-4 text-center small">
 										<span class="mr-2"> <i
@@ -224,173 +282,81 @@
 						</div>
 					</div>
 
-					<!-- Content Row -->
 					<div class="row">
 
-						<!-- Content Column -->
-						<div class="col-lg-6 mb-4">
-
-							<!-- Project Card Example -->
+						<!-- Area Chart -->
+						<div class="col-xl-8 col-lg-7">
 							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+								<!-- Card Header - Dropdown -->
+								<div
+									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+									<h6 class="m-0 font-weight-bold text-primary">Số đơn hàng</h6>
+									<div class="dropdown no-arrow">
+										<a class="dropdown-toggle" href="#" role="button"
+											id="dropdownMenuLink" data-toggle="dropdown"
+											aria-haspopup="true" aria-expanded="false"> <i
+											class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+										</a>
+										<div
+											class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+											aria-labelledby="dropdownMenuLink">
+											<div class="dropdown-header">Dropdown Header:</div>
+											<a class="dropdown-item" href="#">Action</a> <a
+												class="dropdown-item" href="#">Another action</a>
+											<div class="dropdown-divider"></div>
+											<a class="dropdown-item" href="#">Something else here</a>
+										</div>
+									</div>
 								</div>
+								<!-- Card Body -->
 								<div class="card-body">
-									<h4 class="small font-weight-bold">
-										Server Migration <span class="float-right">20%</span>
-									</h4>
-									<div class="progress mb-4">
-										<div class="progress-bar bg-danger" role="progressbar"
-											style="width: 20%" aria-valuenow="20" aria-valuemin="0"
-											aria-valuemax="100"></div>
-									</div>
-									<h4 class="small font-weight-bold">
-										Sales Tracking <span class="float-right">40%</span>
-									</h4>
-									<div class="progress mb-4">
-										<div class="progress-bar bg-warning" role="progressbar"
-											style="width: 40%" aria-valuenow="40" aria-valuemin="0"
-											aria-valuemax="100"></div>
-									</div>
-									<h4 class="small font-weight-bold">
-										Customer Database <span class="float-right">60%</span>
-									</h4>
-									<div class="progress mb-4">
-										<div class="progress-bar" role="progressbar"
-											style="width: 60%" aria-valuenow="60" aria-valuemin="0"
-											aria-valuemax="100"></div>
-									</div>
-									<h4 class="small font-weight-bold">
-										Payout Details <span class="float-right">80%</span>
-									</h4>
-									<div class="progress mb-4">
-										<div class="progress-bar bg-info" role="progressbar"
-											style="width: 80%" aria-valuenow="80" aria-valuemin="0"
-											aria-valuemax="100"></div>
-									</div>
-									<h4 class="small font-weight-bold">
-										Account Setup <span class="float-right">Complete!</span>
-									</h4>
-									<div class="progress">
-										<div class="progress-bar bg-success" role="progressbar"
-											style="width: 100%" aria-valuenow="100" aria-valuemin="0"
-											aria-valuemax="100"></div>
+									<div class="chart-area">
+										<canvas class="chart" id="chartSoDonHang"></canvas>
 									</div>
 								</div>
 							</div>
-
-							<!-- Color System -->
-							<div class="row">
-								<div class="col-lg-6 mb-4">
-									<div class="card bg-primary text-white shadow">
-										<div class="card-body">
-											Primary
-											<div class="text-white-50 small">#4e73df</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-6 mb-4">
-									<div class="card bg-success text-white shadow">
-										<div class="card-body">
-											Success
-											<div class="text-white-50 small">#1cc88a</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-6 mb-4">
-									<div class="card bg-info text-white shadow">
-										<div class="card-body">
-											Info
-											<div class="text-white-50 small">#36b9cc</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-6 mb-4">
-									<div class="card bg-warning text-white shadow">
-										<div class="card-body">
-											Warning
-											<div class="text-white-50 small">#f6c23e</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-6 mb-4">
-									<div class="card bg-danger text-white shadow">
-										<div class="card-body">
-											Danger
-											<div class="text-white-50 small">#e74a3b</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-6 mb-4">
-									<div class="card bg-secondary text-white shadow">
-										<div class="card-body">
-											Secondary
-											<div class="text-white-50 small">#858796</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-6 mb-4">
-									<div class="card bg-light text-black shadow">
-										<div class="card-body">
-											Light
-											<div class="text-black-50 small">#f8f9fc</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-lg-6 mb-4">
-									<div class="card bg-dark text-white shadow">
-										<div class="card-body">
-											Dark
-											<div class="text-white-50 small">#5a5c69</div>
-										</div>
-									</div>
-								</div>
-							</div>
-
 						</div>
 
-						<div class="col-lg-6 mb-4">
-
-							<!-- Illustrations -->
+						<!-- Pie Chart -->
+						<div class="col-xl-4 col-lg-5">
 							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">Illustrations</h6>
-								</div>
-								<div class="card-body">
-									<div class="text-center">
-										<img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
-											style="width: 25rem;"
-											src="<c:url value = '/resources/admin/img/undraw_posting_photo.svg'/>"
-											alt="...">
+								<!-- Card Header - Dropdown -->
+								<div
+									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+									<h6 class="m-0 font-weight-bold text-primary">Thiệp bán ra</h6>
+									<div class="dropdown no-arrow">
+										<a class="dropdown-toggle" href="#" role="button"
+											id="dropdownMenuLink" data-toggle="dropdown"
+											aria-haspopup="true" aria-expanded="false"> <i
+											class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+										</a>
+										<div
+											class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+											aria-labelledby="dropdownMenuLink">
+											<div class="dropdown-header">Dropdown Header:</div>
+											<a class="dropdown-item" href="#">Action</a> <a
+												class="dropdown-item" href="#">Another action</a>
+											<div class="dropdown-divider"></div>
+											<a class="dropdown-item" href="#">Something else here</a>
+										</div>
 									</div>
-									<p>
-										Add some quality, svg illustrations to your project courtesy
-										of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>,
-										a constantly updated collection of beautiful svg images that
-										you can use completely free and without attribution!
-									</p>
-									<a target="_blank" rel="nofollow" href="https://undraw.co/">Browse
-										Illustrations on unDraw &rarr;</a>
 								</div>
-							</div>
-
-							<!-- Approach -->
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">Development
-										Approach</h6>
-								</div>
+								<!-- Card Body -->
 								<div class="card-body">
-									<p>SB Admin 2 makes extensive use of Bootstrap 4 utility
-										classes in order to reduce CSS bloat and poor page
-										performance. Custom CSS classes are used to create custom
-										components and custom utility classes.</p>
-									<p class="mb-0">Before working with this theme, you should
-										become familiar with the Bootstrap framework, especially the
-										utility classes.</p>
+									<div class="chart-pie pt-4 pb-2">
+										<canvas class="chart doughnut-chart" id="chartSoSanPhamBanRa"></canvas>
+									</div>
+									<div class="mt-4 text-center small">
+										<span class="mr-2"> <i
+											class="fas fa-circle text-primary"></i> Direct
+										</span> <span class="mr-2"> <i
+											class="fas fa-circle text-success"></i> Social
+										</span> <span class="mr-2"> <i class="fas fa-circle text-info"></i>
+											Referral
+										</span>
+									</div>
 								</div>
 							</div>
-
 						</div>
 					</div>
 
@@ -408,6 +374,7 @@
 		<!-- End of Content Wrapper -->
 
 	</div>
+
 	<!-- End of Page Wrapper -->
 
 	<!-- Scroll to Top Button-->
@@ -420,6 +387,148 @@
 
 	<!-- Bootstrap core JavaScript-->
 	<jsp:include page="./common/link-js.jsp" />
+
+	<script>
+		$(document).ready(function() {
+			checkDateType();
+			chartDoanhThuVaLoiNhuan();
+			chartDanhMucThiepBanRa();
+			chartSoDonHang();
+			chartSoSanPhamBanRa();
+			
+			$("#dateRange").change(checkDateType);
+			
+			function checkDateType(){
+				var dateRange = $("#dateRange").val();
+				if(dateRange == "custom"){
+					$("#dateCustom").show();
+				}else{
+					$("#dateCustom").hide();
+				}
+			}
+			
+			function chartDoanhThuVaLoiNhuan(){
+				new Chart(document.getElementById("chartDoanhThuVaLoiNhuan"), {
+				  type: 'line',
+				  data: {
+				    labels: ${doanhThuLoiNhuan.datesToString()},
+				    datasets: [{ 
+				        data: ${doanhThuLoiNhuan.line1},
+				        label: "Lợi nhuận",
+				        borderColor: "#8e5ea2",
+				        fill: false
+				      },
+				      { 
+				        data: ${doanhThuLoiNhuan.line2},
+				        label: "Doanh thu",
+				        borderColor: "#3e95cd",
+				        fill: false
+				      }
+				    ]
+				  },
+				  options: {
+				    scales: {
+				        x: [{
+				            type: "time",
+				            time: {
+				            	unit: "day",
+				            	stepSize: 30
+				            }
+				        }],
+				        y: {
+				            min: 0
+				        }
+				    }
+				  }
+				});
+			}
+			
+			function chartDanhMucThiepBanRa(){
+				
+				var colors = Array();
+				for(var i=0; i<${soDanhMucBanRa.count.size()}; i++){
+					colors.push(dynamicColors());
+				}
+				
+				new Chart(document.getElementById("chartDanhMucThiepBanRa"), {
+				  type: 'doughnut',
+				  data: {
+				    labels: ${soDanhMucBanRa.labelToString()},
+				    datasets: [{ 
+				        data: ${soDanhMucBanRa.count},
+				        backgroundColor: colors
+				      }
+				    ]
+				  },
+				  options: {
+					  plugins:{   
+			             legend: {
+			                 display: false
+	                     },
+	                  }
+	               }
+				});
+			}
+			
+			function chartSoDonHang(){
+				new Chart(document.getElementById("chartSoDonHang"), {
+				  type: 'line',
+				  data: {
+				    labels: ${soDonHang.datesToString()},
+				    datasets: [{ 
+				        data: ${soDonHang.line1},
+				        label: "Số đơn hàng",
+				        borderColor: "#3e95cd",
+				        fill: false
+				      }
+				    ]
+				  },
+				  options: {
+				    scales: {
+				        x: [{
+				            type: "time",
+				            time: {
+				            	unit: "day",
+				            	stepSize: 30
+				            }
+				        }],
+				        y: {
+				            min: 0
+				        }
+				    }
+				  }
+				});
+			}
+			
+			function chartSoSanPhamBanRa(){
+				
+				var colors = Array();
+				for(var i=0; i<${soSanPhamBanRa.count.size()}; i++){
+					colors.push(dynamicColors());
+				}
+				
+				new Chart(document.getElementById("chartSoSanPhamBanRa"), {
+				  type: 'doughnut',
+				  data: {
+				    labels: ${soSanPhamBanRa.labelToString()},
+				    datasets: [{ 
+				        data: ${soSanPhamBanRa.count},
+				        backgroundColor: colors
+				      }
+				    ]
+				  },
+				  options: {
+					  plugins:{   
+			             legend: {
+			                 display: false
+	                     },
+	                  }
+	               }
+				});
+			}
+			
+		});
+	</script>
 </body>
 
 </html>

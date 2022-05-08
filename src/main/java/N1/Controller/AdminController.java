@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import N1.DAO.SanPhamDAO;
@@ -27,16 +29,23 @@ import N1.Service.LoaiSanPhamService;
 import N1.Service.NguoiDungService;
 import N1.Service.SanPhamService;
 import N1.Service.SanPhamServiceImpl;
+import N1.Service.ThongKeService;
+import N1.Service.ThongKeServiceImpl.LineChartObject;
+import N1.Service.ThongKeServiceImpl.LabelCount;
 import N1.entity.ChiTietLoaiSP;
 import N1.entity.HoaDon;
 import N1.entity.LoaiSanPham;
 import N1.entity.NguoiDung;
 import N1.entity.SanPham;
 import N1.entity.TaiKhoan;
+import N1.utils.Datetime;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+	@Autowired
+	private ThongKeService thongKeService;
+	
 	@Autowired
 	private SanPhamService sanPhamService;
 
@@ -49,8 +58,75 @@ public class AdminController {
 	@Autowired
 	private HoaDonService hoaDonService;	
 	
+	/**************************** Dashboard *******************************/
 	@GetMapping("")
-	public String home() {
+	public String dashboard(@RequestParam(name = "dateType", required = false) String dateType,
+			@RequestParam(name = "from", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from, 
+			@RequestParam(name = "to", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date to, Model model, HttpServletRequest request) {
+		String path = request.getServletPath();
+		
+		if(dateType == null)
+			dateType = "today";
+		
+		if(dateType.equals("today")) {
+			from = Datetime.getToday();
+			to = Datetime.getToday();
+		}
+		
+		if(dateType.equals("yesterday")) {
+			from = Datetime.yesterday();
+			to = Datetime.yesterday();
+		}
+		
+		if(dateType.equals("one_week_ago")) {
+			from = Datetime.oneWeekAgo();
+			to = Datetime.getToday();
+		}
+		
+		if(dateType.equals("one_month_ago")) {
+			from = Datetime.oneMonthAgo();
+			to = Datetime.getToday();
+		}
+		
+		if(dateType.equals("one_year_ago")) {
+			from = Datetime.oneYearAgo();
+			to = Datetime.getToday();
+		}
+		
+		if(from == null)
+			from = Datetime.getToday();
+			
+		if(to == null)
+			to = Datetime.getToday();
+		
+		long tongDoanhThu = thongKeService.tongDoanhThu(from, to);
+		long tongLoiNhuan = thongKeService.tongLoiNhuan(from, to);
+		long tongSoDonHang = thongKeService.tongSoDonHang(from, to);
+		long tongSoThiepBan = thongKeService.tongSoThiepBan(from, to);
+		LineChartObject doanhThuLoiNhuan = thongKeService.doanhThuVaLoiNhuan(from, to);
+		LabelCount soDanhMucBanRa = thongKeService.soDanhMucBanRa(from, to);
+		LineChartObject soDonHang = thongKeService.soDonHang(from, to);
+		LabelCount soSanPhamBanRa = thongKeService.soSanPhamBanRa(from, to);
+		model.addAttribute("path", path);
+		model.addAttribute("dateType", dateType);
+		model.addAttribute("from", from);
+		model.addAttribute("to", to);
+		model.addAttribute("tongDoanhThu", tongDoanhThu);
+		model.addAttribute("tongLoiNhuan", tongLoiNhuan);
+		model.addAttribute("tongSoDonHang", tongSoDonHang);
+		model.addAttribute("tongSoThiepBan", tongSoThiepBan);
+		// doanh thu va loi nhuan
+		model.addAttribute("doanhThuLoiNhuan", doanhThuLoiNhuan);
+		
+		// So danh muc ban ra
+		model.addAttribute("soDanhMucBanRa", soDanhMucBanRa);
+		
+		// thống kê đơn hàng
+		model.addAttribute("soDonHang", soDonHang);
+		
+		// So danh muc ban ra
+		model.addAttribute("soSanPhamBanRa", soSanPhamBanRa);
+		
 		return "admin/index";
 	}
 	
@@ -66,6 +142,7 @@ public class AdminController {
 		model.addAttribute("status", request.getParameter("status"));
 		
 		List<NguoiDung> users = nguoiDungService.findAll(page);
+		model.addAttribute("title", "Quản lý người dùng");
 		model.addAttribute("numberOfPage", nguoiDungService.getNumberOfPage());
 		model.addAttribute("currentPage", page);
 		model.addAttribute("path", path);
@@ -85,7 +162,7 @@ public class AdminController {
 		nguoiDung2.setDiaChi(nguoiDung.getDiaChi());
 		nguoiDung2.setHinhAnh(nguoiDung.getTenND());
 		
-//		nguoiDungService.save(nguoiDung2);
+		nguoiDungService.save(nguoiDung2);
 		
 		redirectAttributes.addAttribute("msg", "Cập nhật người dùng thành công");
 		redirectAttributes.addAttribute("status", 1);
@@ -101,11 +178,17 @@ public class AdminController {
 		if(page == null)
 			page = 1;
 		
+		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(page);
+		List<NguoiDung> users = nguoiDungService.findAll();
 		List<HoaDon> orders = hoaDonService.findAll(page);
+		model.addAttribute("title", "Quản lý hóa đơn");
 		model.addAttribute("numberOfPage", hoaDonService.getNumberOfPage());
 		model.addAttribute("currentPage", page);
 		model.addAttribute("path", path);
 		model.addAttribute("orders", orders);
+		model.addAttribute("users", users);
+		model.addAttribute("dsSanPham", dsSanPham);
+		model.addAttribute("order", new HoaDon());
 		return "admin/order";
 	}
 	
@@ -122,6 +205,7 @@ public class AdminController {
 		
 		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(page);
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+		model.addAttribute("title", "Quản lý thiệp");
 		model.addAttribute("dsSanPham", dsSanPham);
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		model.addAttribute("numberOfPage", sanPhamService.getNumberOfPage());
@@ -134,10 +218,12 @@ public class AdminController {
 	
 	@PostMapping("/product")
 	public String addOrUpdateProduct(@ModelAttribute("sanPham") SanPham sanPham, 
-			Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+			Model model, HttpServletRequest request, RedirectAttributes redirectAttributes, 
+			@RequestParam(value = "dsLoaiSanPham") List<Integer> dsLoaiSanPham) {
 		System.out.println("hi");
 		System.out.println(sanPham);
-		sanPhamService.save(sanPham);
+		System.out.println(dsLoaiSanPham);
+		
 		if(sanPham.getMaSp() == 0) {
 			redirectAttributes.addAttribute("msg", "Thêm sản phẩm thành công!");
 			redirectAttributes.addAttribute("status", 1);
@@ -145,6 +231,19 @@ public class AdminController {
 			redirectAttributes.addAttribute("msg", "Cập nhật sản phẩm thành công");
 			redirectAttributes.addAttribute("status", 1);
 		}
+		
+		List<ChiTietLoaiSP> ctlsp = new ArrayList<ChiTietLoaiSP>();
+		dsLoaiSanPham.forEach(lsp -> {
+			ctlsp.add(new ChiTietLoaiSP(new LoaiSanPham(lsp, null)));
+		});
+		sanPham.setDsLoaiSP(ctlsp);
+		try {
+			sanPhamService.save(sanPham);
+		}catch (Exception e) {
+			redirectAttributes.addAttribute("msg", "Có lỗi xảy ra");
+			redirectAttributes.addAttribute("status", 0);
+		}
+		
 			
 		return "redirect:/admin/product";
 	}
@@ -171,6 +270,7 @@ public class AdminController {
 		model.addAttribute("status", request.getParameter("status"));
 		
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll(page);
+		model.addAttribute("title", "Quản lý danh mục thiệp");
 		model.addAttribute("numberOfPage", loaiSanPhamService.getNumberOfPage());
 		model.addAttribute("currentPage", page);
 		model.addAttribute("path", path);

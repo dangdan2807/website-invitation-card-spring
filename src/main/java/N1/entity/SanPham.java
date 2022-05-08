@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -43,10 +44,10 @@ public class SanPham implements Serializable {
     @OneToMany(mappedBy = "sanPham")
     private List<ChiTietHoaDon> dsCTHoaDon;
 
-    @OneToMany(mappedBy = "sanPham", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<ChiTietLoaiSP> dsLoaiSP;
 
-    @OneToMany(mappedBy = "sanPham", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sanPham", cascade = CascadeType.REMOVE)
     private List<DanhGia> dsDanhGia;
 
     @OneToMany(mappedBy = "sanPham")
@@ -93,8 +94,13 @@ public class SanPham implements Serializable {
         this.giamGia = giamGia;
         this.giaMua = giaMua;
     }
-
-    public String getMoTa() {
+    
+    public SanPham(int maSp) {
+		super();
+		this.maSp = maSp;
+	}
+    
+	public String getMoTa() {
         return moTa;
     }
 
