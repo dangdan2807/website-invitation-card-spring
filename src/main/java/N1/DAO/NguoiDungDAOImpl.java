@@ -49,27 +49,29 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
        currenSession.saveOrUpdate(nguoiDung);
         return nguoiDung;
     }
+    
+    
 
     @Override
     public boolean updateNguoiDung(NguoiDung nguoiDung) {
         Session currentSession=sessionFactory.getCurrentSession();
         
-        String email=nguoiDung.getTaiKhoan().getTenDangNhap();
-        NguoiDung nguoiDungCapNhat=findNguoiDungByEmail(email);
-        if(nguoiDungCapNhat==null){
-            return false;
-        }
-        nguoiDungCapNhat.setDiaChi(nguoiDung.getDiaChi());
-        nguoiDungCapNhat.setTenND(nguoiDung.getTenND());
-        nguoiDungCapNhat.setSdt(nguoiDung.getSdt());
-
-        //xử lý tài khoản
-        TaiKhoan taiKhoanCapNhat=nguoiDungCapNhat.getTaiKhoan();
-        TaiKhoan taiKhoanCu=nguoiDung.getTaiKhoan();
-        // thay đổi matKhau
-        taiKhoanCapNhat.setMatKhau(taiKhoanCu.getMatKhau());
-        nguoiDungCapNhat.setTaiKhoan(taiKhoanCapNhat);
-        currentSession.saveOrUpdate(nguoiDungCapNhat);
+//        String email=nguoiDung.getTaiKhoan().getTenDangNhap();
+//        NguoiDung nguoiDungCapNhat=findNguoiDungByEmail(email);
+//        if(nguoiDungCapNhat==null){
+//            return false;
+//        }
+//        nguoiDungCapNhat.setDiaChi(nguoiDung.getDiaChi());
+//        nguoiDungCapNhat.setTenND(nguoiDung.getTenND());
+//        nguoiDungCapNhat.setSdt(nguoiDung.getSdt());
+//
+//        //xử lý tài khoản
+//        TaiKhoan taiKhoanCapNhat=nguoiDungCapNhat.getTaiKhoan();
+//        TaiKhoan taiKhoanCu=nguoiDung.getTaiKhoan();
+//        // thay đổi matKhau
+//        taiKhoanCapNhat.setMatKhau(taiKhoanCu.getMatKhau());
+//        nguoiDungCapNhat.setTaiKhoan(taiKhoanCapNhat);
+        currentSession.saveOrUpdate(nguoiDung);
         return true;
     }
 

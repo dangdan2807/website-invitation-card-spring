@@ -7,21 +7,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import N1.DAO.CTLoaiSPDAO;
+import N1.DAO.CTLoaiSPDAOImpl;
 import N1.DAO.SanPhamDAO;
+
 import N1.Dto.SanPhamMua;
+import N1.entity.ChiTietLoaiSP;
 import N1.entity.SanPham;
 
 @Service
 public class SanPhamServiceImpl implements SanPhamService {
 
-	@Autowired
-	private SanPhamDAO sanPhamDAO;
+    @Autowired
+    private SanPhamDAO sanPhamDAO;
+    
+    @Autowired
+    private CTLoaiSPDAO ctLoaiSPDAO;
 
-	@Override
-	@Transactional
-	public List<SanPham> getDSSanPham() {
-		return sanPhamDAO.getDSSanPham();
-	}
+    @Override
+    @Transactional
+    public List<SanPham> getDSSanPham() {
+        return sanPhamDAO.getDSSanPham();
+    }
 
 	@Override
 	@Transactional
@@ -129,6 +136,16 @@ public class SanPhamServiceImpl implements SanPhamService {
 	@Transactional
 	public void save(SanPham sanPham) {
 		sanPhamDAO.addSanPham(sanPham);
+		List<ChiTietLoaiSP> dsctlsp = ctLoaiSPDAO.getDSCTLSPByMaSP(sanPham.getMaSp());
+		System.out.println(dsctlsp);
+		dsctlsp.forEach(ctlsp -> {
+			ctlsp.setSanPham(sanPham);
+			ctLoaiSPDAO.delete(ctlsp);
+		});
+		sanPham.getDsLoaiSP().forEach(ctlsp -> {
+			ctlsp.setSanPham(sanPham);
+			ctLoaiSPDAO.save(ctlsp);
+		});
 	}
 
 	@Override

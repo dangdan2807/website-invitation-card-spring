@@ -15,8 +15,44 @@ public class ChiTietLoaiSPPK implements Serializable {
 
     public ChiTietLoaiSPPK() {
     }
+    
+    
+    
+    
 
-    @Override
+    public int getLoaiSanPham() {
+		return loaiSanPham;
+	}
+
+
+
+
+
+	public void setLoaiSanPham(int loaiSanPham) {
+		this.loaiSanPham = loaiSanPham;
+	}
+
+
+
+
+
+	public int getSanPham() {
+		return sanPham;
+	}
+
+
+
+
+
+	public void setSanPham(int sanPham) {
+		this.sanPham = sanPham;
+	}
+
+
+
+
+
+	@Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;

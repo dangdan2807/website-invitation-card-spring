@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="org.springframework.web.servlet.tags.Param"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +15,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>SB Admin 2 - Dashboard</title>
+<title>${title }</title>
 
 <!-- Custom fonts for this template-->
 <jsp:include page="./common/link-css.jsp" />
@@ -161,72 +163,73 @@
 						aria-label="">X</button>
 				</div>
 				<div class="modal-body">
-					<form id="product-form" method="GET">
-						<!-- sửa lại thành POST -->
+					<form:form id="form"
+						action="${pageContext.request.contextPath}/admin/order"
+						modelAttribute="order" method="POST">
 						<div class="mb-3 ">
 							<div id="search-autocomplete" class="form-outline">
-								<label class="form-label" for="form1">Tìm kiếm khách
-									hàng</label> <input class="form-control" list="datalistOptions"
-									id="exampleDataList" placeholder="Type to search...">
-								<datalist id="datalistOptions">
-									<option value="San Francisco">
-									<option value="New York">
-									<option value="Seattle">
-									<option value="Los Angeles">
-									<option value="Chicago">
+								<label class="form-label" for="maND">Tìm kiếm khách
+									hàng</label> 
+								<input class="form-control" list="userListOptions"
+									id="maND" placeholder="Type to search...">
+								<datalist id="userListOptions">
+									<c:forEach var="user" items="${users}" varStatus="loop">
+										<option value="${user.maND}">${user.tenND}-${user.sdt}</option>
+									</c:forEach>
+									
 								</datalist>
 							</div>
 
 						</div>
 						<div class="mb-3">
-							<label for="card-name" class="form-label">Mã khách hàng</label> <input
-								type="text" class="form-control" id="card-name"
-								aria-describedby="cardNameHelp" disabled>
-							<div id="cardNameHelp" class="form-text"></div>
+							<label for="tenND" class="form-label">Tên khách hàng</label>
+							<input type="text" class="form-control" id="tenND"
+								aria-describedby="tenNDHelp" disabled>
+							<div id="tenNDHelp" class="form-text"></div>
 						</div>
 						<div class="mb-3">
-							<label for="card-name" class="form-label">Tên khách hàng</label>
-							<input type="text" class="form-control" id="card-name"
-								aria-describedby="cardNameHelp" disabled>
-							<div id="cardNameHelp" class="form-text"></div>
+							<label for="sdt" class="form-label">Số điện thoại</label> 
+							<input
+								type="text" class="form-control" id="sdt"
+								aria-describedby="sdtHelp" disabled>
+							<div id="sdtHelp" class="form-text"></div>
 						</div>
 						<div class="mb-3">
-							<label for="price" class="form-label">Địa chỉ giao hàng</label> <input
-								type="number" class="form-control" id="price">
+							<label for="price" class="form-label">Địa chỉ giao hàng</label> 
+							<form:input path="diaChiGiaoHang" type="text" cssClass="form-control"/>
 						</div>
 						<div class="mb-3">
-							<label for="image" class="form-label">Ngày giao hàng</label> <input
-								type="date" class="form-control" id="image">
+							<label for="image" class="form-label">Ngày giao hàng</label> 
+							<form:input path="ngayGiaoHang" type="date" cssClass="form-control"/>
 						</div>
 						<div class="mb-3">
 							<label for="image" class="form-label">Trạng thái giao hàng</label>
-							<select class="form-select form-control" aria-label="Default select example">
+							<form:select path="trangThaiDonHang" cssClass="form-select form-control" aria-label="Default select example">
 								  <option selected>Đang xuất hàng</option>
 								  <option value="1">Đang giao hàng</option>
 								  <option value="2">Giao hàng hoàn tất</option>
 								  
-							</select>
+							</form:select>
 						</div>
 						<div class="card shadow mb-4">
 							<div class="card-header py-3 row" style="margin: 0">
 								<div class="col-6">
 									<div id="search-autocomplete" class="form-outline">
 										<label for="card-name" class="form-label">Tìm kiếm
-											thiệp</label> <input class="form-control" list="datalistProduct"
+											thiệp</label> 
+										<input class="form-control" list="datalistProduct"
 											id="exampleDataList"
-											placeholder="Nhập tên thiệp để thêm vào giỏ...">
+											placeholder="Nhập tên thiệp để thêm vào hóa đơn...">
 										<datalist id="datalistProduct">
-											<option value="San Francisco">
-											<option value="New York">
-											<option value="Seattle">
-											<option value="Los Angeles">
-											<option value="Chicago">
+											<c:forEach var="product" items="${dsSanPham}" varStatus="loop">
+												<option value="${product.tenSp}">${product.tenSp}</option>
+											</c:forEach>
 										</datalist>
 									</div>
 								</div>
 								<div class="col-3">
 									<label for="" class="form-label">Số lượng</label> <input
-										type="number" class="form-control" value="100" />
+										type="number" class="form-control" value="100" min="1"/>
 								</div>
 								<div class="col-3" style="display: flex; align-items: flex-end;">
 									<button class="btn btn-primary">Thêm sản phẩm</button>
@@ -246,18 +249,12 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Thiệp cưới hiện đại</td>
-											<td><input type="number" class="form-control"
-												value="100" /></td>
-											<td>10.000đ</td>
-											<td>100.000đ</td>
-											<td class="text-center">
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr>
-										<tr>
+										
+										<%-- <c:forEach var="cthd" items="order.dsCTHoaDon" varStatus="loop">
+											<form:input path="cthd[0].sanPham.tenSp"/>
+										</c:forEach> --%>
+										
+										<!-- <tr>
 											<td>2</td>
 											<td>Thiệp cưới hiện đại</td>
 											<td><input type="number" class="form-control"
@@ -267,7 +264,7 @@
 											<td class="text-center">
 												<button class="btn btn-danger btn-delete">Xóa</button>
 											</td>
-										</tr>
+										</tr> -->
 									</tbody>
 								</table>
 							</div>
@@ -279,7 +276,7 @@
 									100.000đ
 								</div>
 							</div>
-					</form>
+					</form:form>
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button"
