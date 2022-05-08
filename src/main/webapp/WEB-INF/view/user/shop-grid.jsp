@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html>
 <html lang="vi">
@@ -50,7 +51,7 @@
                             <ul>
                                 <c:forEach var="loaiSp" items="${dsLoaiSanPham}">
                                     <li>
-                                    	<a href='<c:url value = '/san-pham/id=${loaiSp.maLSP}'/>'>${loaiSp.tenLSP}</a>
+                                    	<a href='<c:url value = "/danh-muc?id=${loaiSp.maLSP}"/>'>${loaiSp.tenLSP}</a>
                                     </li>
                                 </c:forEach>
                             </ul>
@@ -59,7 +60,7 @@
                             <h4>Giá</h4>
                             <div class="price-range-wrap">
                                 <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
-                                    data-min="0" data-max="1000">
+                                    data-min="0" data-max="100">
                                     <div class="ui-slider-range ui-corner-all ui-widget-header"></div>
                                     <span tabindex="0"
                                         class="ui-slider-handle ui-corner-all ui-state-default"></span>
@@ -68,9 +69,14 @@
                                 </div>
                                 <div class="range-slider">
                                     <div class="price-input">
-                                        <input type="text" id="minamount" />
-                                        <input type="text" id="maxamount" />
+                                        <input name="minPrice" type="text" id="minamount" />
+                                        <input name="maxPrice" type="text" id="maxamount" />
                                     </div>
+                                </div>
+                                <div class="sidebar__item__btn">
+                                	<button 
+                                		class="site-btn sidebar__item__btn-submit"
+                                	>Tìm</button>
                                 </div>
                             </div>
                         </div>
@@ -113,10 +119,6 @@
                                             <div class="product__discount__item__pic set-bg"
                                                 data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
                                                 <div class="product__discount__percent">-${sanPham.giamGia}</div>
-                                                <!-- <ul class="product__item__pic__hover">
-                                                    <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                                    <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                                                </ul> -->
                                             </div>
                                             <div class="product__discount__item__text">
                                                 <h5><a href="<c:url value = '/san-pham/id=${sanPham.maSp}'/>">${sanPham.tenSp}</a></h5>
@@ -136,9 +138,13 @@
                             <div class="col-lg-4 col-md-5">
                                 <div class="filter__sort">
                                     <span>Sắp xếp</span>
-                                    <select>
-                                        <option value="asc">Giá: Thấp đến Cao</option>
-                                        <option value="desc">Giá: Cao đến Thấp</option>
+                                    <select name="sort">
+                                       	<option value="asc" 
+                                       		<c:if test="${sort == 'asc'}">selected</c:if>
+                                       	>Giá: Thấp đến Cao</option>
+                                        <option value="desc"
+                                        	<c:if test="${sort == 'desc'}">selected</c:if>
+                                        >Giá: Cao đến Thấp</option>
                                     </select>
                                 </div>
                             </div>
@@ -148,43 +154,45 @@
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-3">
-                                <!-- <div class="filter__option">
-                                    <span class="icon_grid-2x2"></span>
-                                    <span class="icon_ul"></span>
-                                </div> -->
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                    	<c:forEach var="sanPham" items="${dsSanPham}">
-	                        <div class="col-lg-4 col-md-6 col-sm-6">
-	                            <div class="product__item"
+                        <c:forEach var="sanPham" items="${dsSanPham}">
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item"
                                 onclick=window.location.href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'
                                 >
-	                                <div class="product__item__pic set-bg"
-	                                    data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
-	                                    <!-- <ul class="product__item__pic__hover">
-	                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
-	                                        <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-	                                    </ul> -->
-	                                </div>
-	                                <div class="product__item__text">
-	                                    <h6><a href="#">${sanPham.tenSp}</a></h6>
-	                                    <h5>${sanPham.giaSP}</h5>
-	                                </div>
-	                            </div>
-	                        </div>
+                                    <div class="product__item__pic set-bg"
+                                        data-setbg="<c:url value = '${sanPham.hinhAnh}' />">
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6><a href='<c:url value = "/san-pham/id=${sanPham.maSp}" />'>${sanPham.tenSp}</a></h6>
+                                        <h5>${sanPham.giaSP}</h5>
+                                    </div>
+                                </div>
+                            </div>
                         </c:forEach>
                     </div>
                     <div class="product__pagination">
-                    	<c:if test="${pageOfNumber > 1}">
-	                        <a href="#"><i class="fa fa-long-arrow-left"></i></a>
-                    	</c:if>
-	                    <c:forEach var="sp" items="${dsSanPham}" begin="1" end="${pageOfNumber}" varStatus="myIndex">
-	                        <a href='<c:url value="/san-pham/page=${myIndex.index}" />'>${myIndex.index}</a>
-	                    </c:forEach>
-                        <c:if test="${pageOfNumber > 1}">
-	                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                        <c:if test="${currentPage > 1}">
+                            <a onclick="pagingPage(${currentPage - 1});">
+                                <i class="fa fa-long-arrow-left"></i>
+                            </a>
+                        </c:if>
+                        <c:forEach var="sp" items="${pagingSize}">
+                            <c:if test="${((currentPage - sp) >= 1) && ((currentPage - sp) <= pageOfNumber)}">
+                                <a onclick="pagingPage(${currentPage - sp});"
+                                    class='<c:if test="${currentPage == currentPage - sp}">active</c:if>'
+                                >
+                                    ${currentPage - sp}
+                                </a>
+                            </c:if>
+                        </c:forEach>
+                        <c:if test="${currentPage < pageOfNumber}">
+                            <a onclick="pagingPage(${currentPage + 1});">
+                                <i class="fa fa-long-arrow-right"></i>
+                            </a>
                         </c:if>
                     </div>
                 </div>
@@ -199,6 +207,59 @@
 
     <!-- Js Plugins -->
     <jsp:include page="./module/link-js.jsp" />
+    <script type="text/javascript">
+        function getUrl() {
+            var url = window.location.href;
+            if (!url.includes('?')) {
+                url += "?"
+            }
+            return url;
+		}
+
+        function pagingPage(page) {
+            var url = getUrl();
+
+            if (url.includes('page')) {
+                url = url.replace(/page=[\d]+/ig, 'page=' + page);
+            } else {
+                url += '&page=' + page;
+            }
+
+            window.location.href = url;
+        }
+
+        $('button.sidebar__item__btn-submit').click(function() {
+            let minPrice = $('#minamount').val().replaceAll(/[/s.đ]/ig, '');
+            let maxPrice = $('#maxamount').val().replaceAll(/[/s.đ]/ig, '');
+            var url = getUrl();
+
+            if (url.includes('minPrice')) {
+                url = url.replace(/minPrice=[\d]+[đ]*/ig, 'minPrice=' + minPrice);
+            } else {
+                url += '&minPrice=' + minPrice;
+            }
+
+            if (url.includes('maxPrice')) {
+                url = url.replace(/maxPrice=[\d]+[đ]*/ig, 'maxPrice=' + maxPrice);
+            } else {
+                url += '&maxPrice=' + maxPrice;
+            }
+
+            window.location.href = url;
+        });
+
+        $('.filter__sort select[name="sort"]').change(function() {
+            var sort = $(this).val();
+            var url = getUrl();
+
+            if (url.includes('sort')) {
+                url = url.replace(/sort=[a-zA-z]+/ig, 'sort=' + sort);
+            } else {
+                url += '&sort=' + sort;
+            }
+            window.location.href = url;
+        });
+    </script>
 </body>
 
 </html>

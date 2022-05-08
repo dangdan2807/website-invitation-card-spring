@@ -18,8 +18,6 @@ public interface SanPhamDAO {
 
 	public SanPham getSanPhamByIdSanPham(int sanPhamId);
 
-	public List<SanPham> getSanPhamByTenSanPham(String tenSP);
-
 	public SanPham getLatestSanPham();
 
 	public List<SanPham> getLatestSanPhams(int quantity);
@@ -30,4 +28,24 @@ public interface SanPhamDAO {
 	
 	public int getNumberOfSanPhams();
 	public List<SanPhamMua> getSanPhamMua(int maNguoiDung);
+
+	public List<SanPham> getDSSanPham(int page, String sort, String tenSanPham, double minPrice, double maxPrice);
+
+	public List<SanPham> getSanPhamsByTenSanPham(String tenSP);
+
+	public List<SanPham> getSanPhamsByTenSanPhamAndPage(String tenSP, int page, String sort);
+	
+	public int getNumberOfSanPhamsByTenSp(String tenSanPham);
+	
+	public int getNumberOfSanPhamsByTenSpAndPrice(String tenSanPham, double minPrice, double maxPrice);
+	
+	public List<SanPham> getReviewSanPhams(int numOfLines);
+
+    public void delete(int maSp);
+    
+    public List<SanPham> getFeaturedSanPhams(int numOfLines);
+    
+    public List<SanPham> getSanPhamsByCategoryId(int categoryId, int numOfLines);
+    
+    public List<SanPham> getRandomSanPhamsByCategoryId(int categoryId, int numOfLines, int currentSanPhamId);
 }

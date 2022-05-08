@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="org.springframework.web.servlet.tags.Param"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,19 +48,25 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
+					<c:if test="${status != null}">
+						<div class="alert alert-${status == 1 ? "success": "warning"} alert-dismissible fade show"
+							role="alert">
+							<strong>Thông báo</strong> ${msg}
+							<button type="button" class="close" data-dismiss="alert"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
 
+					</c:if>
 					<!-- Page Heading -->
 					<h1 class="h3 mb-2 text-gray-800">Quản lý thiệp mời</h1>
-					<!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
-                        For more information about DataTables, please visit the <a target="_blank"
-                            href="https://datatables.net">official DataTables documentation</a>.</p> -->
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 row" style="margin: 0">
 							<div class="col-4">
-								<button class="btn btn-primary" data-toggle="modal"
-									data-target="#productModal">Thêm thiệp mời</button>
+								<button class="btn btn-primary btn-open-modal">Thêm thiệp mời</button>
 							</div>
 							
 							<div class="col-8" style="text-align: right">
@@ -77,7 +85,7 @@
 											<th>Giá nhập</th>
 											<th>Giá bán</th>
 											<th>Giảm giá</th>
-											<th>Giá mới</th>
+											<th>Giá sau khuyến mãi</th>
 											<th>Loại thiệp</th>
 											<th class="text-center">Hành động</th>
 										</tr>
@@ -90,13 +98,16 @@
 											<th>Giá nhập</th>
 											<th>Giá bán</th>
 											<th>Giảm giá</th>
-											<th>Giá mới</th>
+											<th>Giá sau khuyến mãi</th>
 											<th>Loại thiệp</th>
 											<th class="text-center">Hành động</th>
 										</tr>
 									</tfoot>
 									<tbody>
 										<c:forEach var="sanPham" items="${dsSanPham}" varStatus="loop">
+											<c:url var="deleteLink" value="./delete-product">
+												<c:param name="maSp" value="${sanPham.maSp}" />
+											</c:url>
 											<tr>
 												<td>${loop.index+1}</td>
 												<td>${sanPham.maSp}</td>
@@ -104,7 +115,7 @@
 												<td>${sanPham.giaMua}</td>
 												<td>${sanPham.giaSP}</td>
 												<td>${sanPham.giamGia}</td>
-												<td>${sanPham.giaSP*sanPham.giamGia/100}</td>
+												<td>${sanPham.giaSP*(100-sanPham.giamGia)/100}</td>
 												<td>
 													<c:forEach var="loaiSp" items="${sanPham.dsLoaiSP}">
 														${loaiSp.loaiSanPham.tenLSP}
@@ -112,8 +123,14 @@
 													</c:forEach>
 												</td>
 												<td class="text-center">
-													<button class="btn btn-warning btn-edit">Sửa</button>
-													<button class="btn btn-danger btn-delete">Xóa</button>
+													<button class="btn btn-warning btn-edit"
+														data-maSp="${sanPham.maSp}" data-tenSp="${sanPham.tenSp}" 
+														data-moTa="${sanPham.moTa}" data-giaMua="${sanPham.giaMua}" 
+														data-giaSP="${sanPham.giaSP}" data-giamGia="${sanPham.giamGia}"
+														data-hinhAnh="${sanPham.hinhAnh}" data-dsLoaiSP="${sanPham.toStringLoaiSp()}">Sửa</button>
+													<button class="btn btn-danger btn-delete" 
+														data-msg="sản phẩm với mã là ${sanPham.maSp}" 
+														data-href="${deleteLink }">Xóa</button>
 												</td>
 											</tr>
 										</c:forEach>
@@ -123,8 +140,7 @@
 						</div>
 						<div class="card-footer py-3 row" style="margin: 0">
 							<div class="col-4">
-								<button class="btn btn-primary" data-toggle="modal"
-									data-target="#productModal">Thêm thiệp mời</button>
+								<button class="btn btn-primary btn-open-modal">Thêm thiệp mời</button>
 							</div>
 							<div class="col-8" style="text-align: right">
 								<jsp:include page="common/page.jsp"></jsp:include>
@@ -164,65 +180,70 @@
 						aria-label="">X</button>
 				</div>
 				<div class="modal-body">
-					<form id="product-form" method="GET">
+					<form:form id="form"
+						action="${pageContext.request.contextPath}/admin/product"
+						modelAttribute="sanPham" method="POST">
 						<!-- sửa lại thành POST -->
 						<div class="mb-3">
-							<label for="card-name" class="form-label">Tên thiệp</label> <input
-								type="text" class="form-control" id="card-name"
-								aria-describedby="cardNameHelp">
-							<div id="cardNameHelp" class="form-text"></div>
+							<form:label path="maSp" cssClass="form-label">Mã thiệp</form:label>
+							<form:input path="maSp" type="text" cssClass="form-control"
+								readonly="true" />
+							<form:errors path="maSp" cssClass="form-text" />
 						</div>
 						<div class="mb-3">
-							<label for="card-name" class="form-label">Mô tả</label>
-							<!-- <input type="text" class="form-control" id="card-name"
-								aria-describedby="cardNameHelp"> -->
-							<textarea class="form-control"></textarea>
-							<div id="cardNameHelp" class="form-text"></div>
+							<form:label path="tenSp" cssClass="form-label">Tên thiệp</form:label>
+							<form:input path="tenSp" type="text" cssClass="form-control" />
+							<form:errors path="tenSp" cssClass="form-text" />
+						</div>
+						<div class="mb-3">
+							<form:label path="moTa" cssClass="form-label">Mô tả</form:label>
+							<form:input path="moTa" type="text" cssClass="form-control" />
+							<form:errors path="moTa" cssClass="form-text" />
 						</div>
 						<div class="row">
 							<div class="mb-3 col-6">
-								<label for="price-buy" class="form-label">Giá nhập</label> <input
-									type="number" class="form-control" id="price">
+								<form:label path="giaMua" cssClass="form-label">Giá nhập</form:label>
+								<form:input path="giaMua" type="text" cssClass="form-control" />
+								<form:errors path="giaMua" cssClass="form-text" />
 							</div>
 							<div class="mb-3 col-6">
-								<label for="price-sell" class="form-label">Giá bán</label> <input
-									type="number" class="form-control" id="price">
+								<form:label path="giaSP" cssClass="form-label">Giá bán</form:label>
+								<form:input path="giaSP" type="text" cssClass="form-control" />
+								<form:errors path="giaSP" cssClass="form-text" />
 							</div>
 						</div>
 						<div class="row">
 							<div class="mb-3 col-6">
-								<label for="price-sell" class="form-label">Khuyến mãi</label> <input
-									type="number" class="form-control" id="price">
+								<form:label path="giamGia" cssClass="form-label">Khuyến mãi</form:label>
+								<form:input path="giamGia" type="text" cssClass="form-control" />
+								<form:errors path="giamGia" cssClass="form-text" />
 							</div>
 							<div class="mb-3 col-6">
-								<label for="price-sell" class="form-label">Giá mới</label> <input
+								<label for="real-price" class="form-label">Giá sau khuyến mãi</label> <input
 									type="number" class="form-control" id="price" disabled>
 							</div>
 						</div>
 						<div class="mb-3">
-							<label for="image" class="form-label">Hình ảnh</label> <input
-								type="text" class="form-control" id="image">
+							<form:label path="hinhAnh" cssClass="form-label">Hình ảnh</form:label>
+							<form:input path="hinhAnh" type="text" cssClass="form-control" />
+							<form:errors path="hinhAnh" cssClass="form-text" />
 						</div>
 						<div class="mb-3">
-							<label for="image" class="form-label">Loại thiệp</label> <select
-								class="form-select form-control" multiple
-								aria-label="multiple select example"
-								aria-describedby="categoryHelp">
-								<option selected>Thiệp cưới</option>
-								<option value="1">Thiệp tốt nghiệp</option>
-								<option value="2">Thiệp sinh nhật</option>
-							</select>
+							<label for="image" class="form-label">Loại thiệp</label> 
+							<%-- <form:select path="dsLoaiSP" items="${dsLoaiSanPham}" cssClass="form-control"
+								  itemValue="maLSP" itemLabel="tenLSP"/> --%>
+							
 							<div id="categoryHelp" class="form-text help-text">Bấm ctrl
 								để chọn nhiều mục</div>
 						</div>
 
-					</form>
+					</form:form>
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button"
 						data-dismiss="modal">Hủy</button>
-					<a class="btn btn-primary"
-						onclick="document.querySelector('form#product-form').submit();">Thêm</a>
+					<a class="btn btn-primary btn-form"
+						onclick="document.querySelector('form#form').submit();">Thêm</a>
 				</div>
 			</div>
 		</div>
@@ -241,9 +262,50 @@
 							.getElementById('productModal'), {
 						keyboard : false
 					});
+					
 					$(".btn-edit").click(function() {
+						$(".btn-form").text("Sửa");
+						$("#maSp").attr('value',
+								$(this).attr("data-maSp"));
+						$("#tenSp").attr('value',
+								$(this).attr("data-tenSp"));
+						$("#moTa").attr('value',
+								$(this).attr("data-moTa"));
+						$("#giaMua").attr('value',
+								$(this).attr("data-giaMua"));
+						$("#giaSP").attr('value',
+								$(this).attr("data-giaSP"));
+						$("#giamGia").attr('value',
+								$(this).attr("data-giamGia"));
+						$("#hinhAnh").attr('value',
+								$(this).attr("data-hinhAnh"));
+						
+						var loaiSp = $(this).attr("data-dsLoaiSP").split(",");
+						$dslsp = $("#dsLoaiSP>option");
+						$dslsp.each(function() {
+							  console.log($(this));
+							  console.log(loaiSp.includes($(this).attr("value")));
+							  if(loaiSp.includes($(this).attr("value"))){
+								  $(this).attr("selected", "true");
+							  }
+						});
 						modal.show();
 					});
+
+					$(".btn-open-modal").click(function() {
+						$(".btn-form").text("Thêm");
+						$("#maSp").attr('value', '0');
+						$("#tenSp").attr('value', '');
+						$("#moTa").attr('value', '');
+						$("#giaMua").attr('value', '');
+						$("#giaSP").attr('value', '');
+						$("#giamGia").attr('value', '');
+						$("#hinhAnh").attr('value', '');
+						modal.show();
+					});
+					
+					
+					
 				});
 	</script>
 </body>

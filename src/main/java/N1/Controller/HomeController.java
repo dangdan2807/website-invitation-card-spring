@@ -41,12 +41,15 @@ public class HomeController {
 	@Autowired
 	private CTHoaDonService ctHoaDonService;
 
+	@Autowired
+	private DanhGiaService danhGiaService;
+	
 	@RequestMapping({ "/", "/trang-chu", "/home" })
 	public String showHomePage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
-		List<SanPham> dsSanPham = sanPhamService.getLatestSanPhams(8);
+		List<SanPham> dsSanPham = sanPhamService.getFeaturedSanPhams(8);
 		model.addAttribute("dsSanPhamNoiBat", dsSanPham);
 
 		List<SanPham> dsSanPhamMoi = sanPhamService.getLatestSanPhams(6);
@@ -55,11 +58,13 @@ public class HomeController {
 		List<SanPham> dsSanPhamTot = sanPhamService.getRatedTopSanPhams(6);
 		model.addAttribute("dsSanPhamTot", dsSanPhamTot);
 
-//		List<SanPham> dsDanhGiaSp = dsSanPham.subList(6, 12);
-//		model.addAttribute("dsDanhGiaSp", dsDanhGiaSp);
-//
+		List<SanPham> dsDanhGiaSp = sanPhamService.getReviewSanPhams(6);
+		model.addAttribute("dsDanhGiaSp", dsDanhGiaSp);
+
 		SanPham sanPhamMoi = sanPhamService.getLatestSanPham();
 		model.addAttribute("sanPhamMoi", sanPhamMoi);
+		
+		model.addAttribute("tenSanPham", "");
 
 		return "user/index";
 	}
@@ -74,6 +79,7 @@ public class HomeController {
 		List<ChiTietLoaiSP> ctLoaiSPList = new ArrayList<>();
 		List<LoaiSanPham> loaiSanPhamList = new ArrayList<>();
 		model.addAttribute("chucVuList", null);
+		model.addAttribute("danhGiaList", danhGiaService.getDanhGiasByIdSanPham(97));
 		model.addAttribute("taiKhoanList", taiKhoanList);
 		model.addAttribute("nguoiDungList", nguoiDungList);
 		model.addAttribute("hoaDonList", hoaDonList);
@@ -86,15 +92,15 @@ public class HomeController {
 
 	@GetMapping({ "/lien-he", "/contact" })
 	public String showContractPage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-
+		
 		return "user/contact";
 	}
 
 	@GetMapping({ "/dang-nhap", "/login" })
 	public String showLoginPage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
 		return "user/login";
@@ -102,9 +108,9 @@ public class HomeController {
 
 	@RequestMapping({ "/gio-hang", "/cart" })
 	public String showShoppingCartPage(Model model) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-
+		
 		List<SanPham> dsSanPham = new ArrayList<SanPham>();
 		model.addAttribute("dsSanPham", dsSanPham);
 
@@ -113,7 +119,7 @@ public class HomeController {
 
 	@RequestMapping({ "/thanh-toan/{maND}", "/checkout/{maND}" })
 	public String showCheckoutPage(Model model, @PathVariable int maND) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.getDSLoaiSanPham();
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		NguoiDung nguoiDung = nguoiDungService.findNguoiDungById(maND);
 		model.addAttribute("nguoiDung", nguoiDung);
@@ -187,3 +193,4 @@ public class HomeController {
 		return "user/access-denied";
 	}
 }
+

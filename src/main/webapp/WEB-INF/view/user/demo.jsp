@@ -19,6 +19,14 @@
         </c:forEach>
     </ul>
     <hr />
+    
+    <p>Đánh giá</p>
+    <ul>
+        <c:forEach var="danhGia" items="${danhGiaList}">
+            <li>${danhGia.sanPham.tenSp}</li>
+        </c:forEach>
+    </ul>
+    <hr />
 
     <p>Tài khoản</p>
     <ul>

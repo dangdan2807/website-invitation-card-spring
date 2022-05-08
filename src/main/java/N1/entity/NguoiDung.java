@@ -119,4 +119,13 @@ public class NguoiDung implements Serializable {
         this.taiKhoan = taiKhoan;
     }
 
+	public String getHinhAnh() {
+		return hinhAnh;
+	}
+
+	public void setHinhAnh(String hinhAnh) {
+		this.hinhAnh = hinhAnh;
+	}
+
+    
 }

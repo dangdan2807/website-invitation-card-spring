@@ -3,6 +3,7 @@ package N1.entity;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,7 +46,7 @@ public class SanPham implements Serializable {
     @OneToMany(mappedBy = "sanPham", fetch = FetchType.EAGER)
     private List<ChiTietLoaiSP> dsLoaiSP;
 
-    @OneToMany(mappedBy = "sanPham")
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.LAZY)
     private List<DanhGia> dsDanhGia;
 
     @OneToMany(mappedBy = "sanPham")
@@ -175,5 +176,22 @@ public class SanPham implements Serializable {
 	public void setDsDanhGia(List<DanhGia> dsDanhGia) {
 		this.dsDanhGia = dsDanhGia;
 	}
+	
+	public String toStringLoaiSp() {
+		AtomicReference<String> rs = new AtomicReference<String>("");
+		dsLoaiSP.forEach(loaiSp -> {
+			if(!rs.get().equals(""))
+				rs.set(rs.get()+",");
+			rs.set(rs.get()+loaiSp.getLoaiSanPham().getMaLSP());
+		});
+		return rs.get();
+	}
+
+	@Override
+	public String toString() {
+		return "SanPham [maSp=" + maSp + ", tenSp=" + tenSp + ", hinhAnh=" + hinhAnh + ", moTa=" + moTa + ", giaSP="
+				+ giaSP + ", giamGia=" + giamGia + ", giaMua=" + giaMua + "]";
+	}
     
+	
 }

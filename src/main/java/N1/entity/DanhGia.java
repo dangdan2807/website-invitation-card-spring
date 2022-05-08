@@ -14,6 +14,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "DanhGia")
@@ -22,7 +27,7 @@ public class DanhGia implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int maDanhGia;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "maND", columnDefinition = "INT")
 	private NguoiDung nguoiDung;
 
@@ -31,6 +36,8 @@ public class DanhGia implements Serializable {
 	private SanPham sanPham;
 
 	@Column(name = "noiDung", nullable = false, columnDefinition = "TEXT DEFAULT(N'')")
+	@NotNull(message = "Nội dung không được để trống")
+	@NotBlank(message = "Nội dung không được để trống")
 	private String noiDung;
 
 	@Temporal(value = TemporalType.TIMESTAMP)
@@ -38,6 +45,8 @@ public class DanhGia implements Serializable {
 	private Date thoiGian;
 
 	@Column(name = "xepHang", nullable = false, columnDefinition = "INT DEFAULT(0) CHECK(xepHang >= 0 OR xepHang <= 5)")
+	@Min(value = 1)
+	@Max(value = 5)
 	private int xepHang;
 
 	public DanhGia() {

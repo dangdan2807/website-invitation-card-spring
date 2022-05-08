@@ -12,17 +12,41 @@ public interface SanPhamService {
 
 	public List<SanPham> getDSSanPham(int page);
 
+	public List<SanPham> getDSSanPham(int page, String sort, String tenSanPham, double minPrice, double maxPrice);
+	
+	public SanPham getSanPhamByIdSanPham(int sanPhamId);
+
+	public List<SanPham> getSanPhamsByTenSanPham(String tenSP);
+	
+	public List<SanPham> getSanPhamsByTenSanPhamAndPage(String tenSP, int page, String sort);
+
 	public int getNumberOfPage();
+
+	public void save(SanPham sanPham);
+
+	public void delete(int maSp);
 
 	public SanPham getLatestSanPham();
 
-	public List<SanPham> getLatestSanPhams(int quantity);
-	
-	public List<SanPham> getRatedTopSanPhams(int quantity);
-	
-	public List<SanPham> getDiscountSanPhams(int quantity);
-	
+	public List<SanPham> getLatestSanPhams(int numOfLines);
+
+	public List<SanPham> getRatedTopSanPhams(int numOfLines);
+
+	public List<SanPham> getDiscountSanPhams(int numOfLines);
+
 	public int getNumberOfSanPhams();
-	public SanPham getSanPhamByIdSanPham(int sanPhamId);
+	
+	public int getNumberOfSanPhamsByTenSp(String tenSanPham);
+	
+	public int getNumberOfSanPhamsByTenSpAndPrice(String tenSanPham, double minPrice, double maxPrice);
+
+	public List<SanPham> getReviewSanPhams(int numOfLines);
+	
+	public List<SanPham> getFeaturedSanPhams(int numOfLines);
+	
+	public List<SanPham> getSanPhamsByCategoryId(int categoryId, int numOfLines);
+
 	public List<SanPhamMua> getSanPhamMua(int maNguoiDung);
+
+	public List<SanPham> getRandomSanPhamsByCategoryId(int categoryId, int numOfLines, int currentSanPhamId);
 }

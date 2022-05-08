@@ -37,21 +37,6 @@
     </jsp:include>
 
     <!-- Breadcrumb Section Begin -->
-    <section class="breadcrumb-section set-bg" data-setbg="<c:url value = '/resources/user/img/breadcrumb.jpg' />">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="breadcrumb__text">
-                        <h2>Liên hệ chúng tôi</h2>
-                        <div class="breadcrumb__option">
-                            <a href='<c:url value = "/trang-chu" />'>Trang chủ</a>
-                            <span>Liên hệ chúng tôi</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <!-- Breadcrumb Section End -->
 
     <!-- Contact Section Begin -->

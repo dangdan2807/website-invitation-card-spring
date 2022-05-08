@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import N1.entity.HoaDon;
+import N1.entity.LoaiSanPham;
 import N1.entity.NguoiDung;
 
 @Repository
@@ -20,6 +21,8 @@ public class HoaDonDAOImpl implements HoaDonDAO {
     @Autowired
     private SessionFactory sessionFactory;
 
+    private final int pageSize = 20;
+    
     @Override
     @SuppressWarnings("unchecked")
     public List<HoaDon> getDSHoaDon() {
@@ -45,6 +48,28 @@ public class HoaDonDAOImpl implements HoaDonDAO {
         return dataList;
     }
 
+
+	@Override
+	public List<HoaDon> findAll() {
+    	Session currentSession = sessionFactory.getCurrentSession();
+        Query<HoaDon> query = currentSession.createQuery("from HoaDon", HoaDon.class);
+        return query.getResultList();
+	}
+
+	@Override
+	public List<HoaDon> findAll(int page) {
+    	Session currentSession = sessionFactory.getCurrentSession();
+        Query<HoaDon> query = currentSession.createQuery("from HoaDon", HoaDon.class);
+        query.setHibernateFirstResult((page-1)*pageSize);
+        query.setMaxResults(pageSize);
+        return query.getResultList();
+	}
+
+	@Override
+	public int getNumberOfPage() {
+		return (findAll().size() + pageSize - 1)/pageSize;
+	}
+	
     @Override
     public List<HoaDon> getHoaDonMoiNhat() {
         List<HoaDon> hoaDons = new ArrayList<HoaDon>();

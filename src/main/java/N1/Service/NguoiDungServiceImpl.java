@@ -11,19 +11,42 @@ import N1.entity.NguoiDung;
 
 @Service
 public class NguoiDungServiceImpl implements NguoiDungService {
-    @Autowired
-    private NguoiDungDAO nguoiDungDAO;
-
-    @Override
-    @Transactional
-    public List<NguoiDung> getDSNguoiDung() {
-        return nguoiDungDAO.getDSNguoiDung();
-    }
+	@Autowired
+	private NguoiDungDAO nguoiDungDAO;
 
 	@Override
-	public NguoiDung findNguoiDungById(int id) {
-		
-		return nguoiDungDAO.findNguoiDungById(id) ;
+	@Transactional
+	public List<NguoiDung> findAll() {
+		return nguoiDungDAO.findAll();
 	}
+
+	@Override
+	@Transactional
+	public List<NguoiDung> findAll(int page) {
+		// TODO Auto-generated method stub
+		return nguoiDungDAO.findAll(page);
+	}
+
+	@Override
+	@Transactional
+	public int getNumberOfPage() {
+		// TODO Auto-generated method stub
+		return nguoiDungDAO.getNumberOfPage();
+	}
+
+	@Override
+	@Transactional
+	public void save(NguoiDung nguoiDung) {
+		nguoiDungDAO.updateNguoiDung(nguoiDung);
+	}
+
+	@Override
+	@Transactional
+	public NguoiDung findNguoiDungById(int id) {
+		// TODO Auto-generated method stub
+		return nguoiDungDAO.findNguoiDungById(id);
+	}
+
+	
 
 }
