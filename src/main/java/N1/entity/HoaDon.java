@@ -75,7 +75,19 @@ public class HoaDon implements Serializable {
         this.diaChiGiaoHang = diaChiGiaoHang;
     }
 
-    public int getMaHD() {
+    public HoaDon(Date ngayLHD, double tongTien, double tongSoLuong, String trangThaiDonHang, Date ngayGiaoHang,
+			String diaChiGiaoHang, NguoiDung nguoiDung) {
+		super();
+		this.ngayLHD = ngayLHD;
+		this.tongTien = tongTien;
+		this.tongSoLuong = tongSoLuong;
+		this.trangThaiDonHang = trangThaiDonHang;
+		this.ngayGiaoHang = ngayGiaoHang;
+		this.diaChiGiaoHang = diaChiGiaoHang;
+		this.nguoiDung = nguoiDung;
+	}
+
+	public int getMaHD() {
         return maHD;
     }
 

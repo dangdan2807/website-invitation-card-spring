@@ -1,6 +1,6 @@
 /target/
 pom
-src/main/resources/persistence-mssql.properties
+src/main/resources/*.properties
 
 *.java.hsp
 *.sonarj
@@ -48,3 +48,5 @@ atlassian-ide-plugin.xml
 
 # VS Code
 .vscode/
+src/main/resources/persistence-mssql.properties
+src/main/resources/security-persistence-mssql.properties

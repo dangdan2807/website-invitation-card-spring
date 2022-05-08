@@ -11,29 +11,35 @@ import N1.DAO.HoaDonDAO;
 
 @Service
 public class HoaDonServiceImpl implements HoaDonService {
-    @Autowired
-    private HoaDonDAO hoaDonDAO;
-
-    @Override
-    @Transactional
-    public List<HoaDon> getDSHoaDon() {
-        return hoaDonDAO.getDSHoaDon();
-    }
+	@Autowired
+	private HoaDonDAO hoaDonDAO;
 
 	@Override
-    @Transactional
+	@Transactional
+	public List<HoaDon> getDSHoaDon() {
+		return hoaDonDAO.getDSHoaDon();
+	}
+
+	@Override
+	@Transactional
+	public HoaDon addHoaDon(HoaDon hoaDon) {
+
+		return hoaDonDAO.addHoaDon(hoaDon);
+	}
+
+	@Transactional
 	public List<HoaDon> findAll() {
 		return hoaDonDAO.findAll();
 	}
 
 	@Override
-    @Transactional
+	@Transactional
 	public List<HoaDon> findAll(int page) {
 		return hoaDonDAO.findAll(page);
 	}
 
 	@Override
-    @Transactional
+	@Transactional
 	public int getNumberOfPage() {
 		return hoaDonDAO.getNumberOfPage();
 	}

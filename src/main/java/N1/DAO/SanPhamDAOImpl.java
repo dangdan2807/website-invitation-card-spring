@@ -1,5 +1,6 @@
 package N1.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -8,6 +9,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import N1.Dto.SanPhamMua;
 import N1.entity.SanPham;
 
 @Repository
@@ -24,7 +26,7 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 	}
 
 	@Override
-	public List<SanPham> getDSSanPham(int page, String sort, String tenSanPham, double minPrice, double maxPrice) {
+	public List<SanPham> getDSSanPham(int pageNumber, String sort, String tenSanPham, double minPrice, double maxPrice) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		String queryStr = "select * from SanPham sp"
 				+ " where dbo.fuConvertToUnsign(sp.tenSp) like dbo.fuConvertToUnsign(N'%" + tenSanPham + "%')"
@@ -32,16 +34,35 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 				+ " order by sp.giaSP " + sort;
 		Query<SanPham> results = currentSession.createNativeQuery(queryStr, SanPham.class);
 		
-		results.setHibernateFirstResult((page - 1) * pageSize);
+		results.setHibernateFirstResult((pageNumber - 1) * pageSize);
+		results.setMaxResults(pageSize);
+		return results.getResultList();
+	}
+	
+	@Override
+	public List<SanPham> getSanPhamsByCategoryId(int pageNumber, String sort, String tenSanPham, double minPrice,
+			double maxPrice, int categoryId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		String queryStr = "select * from SanPham sp"
+				+ " where dbo.fuConvertToUnsign(sp.tenSp) like dbo.fuConvertToUnsign(N'%" + tenSanPham + "%')"
+				+ " and sp.giaSP between " + minPrice + " and " + maxPrice
+				+ " and sp.maSp in ("
+					+ " select ctlsp.maSp from LoaiSanPham lsp, ChiTietLoaiSP ctlsp"
+					+ " where lsp.maLSP = ctlsp.maLSP"
+					+ " and lsp.maLSP = " + categoryId + " )"				
+				+ " order by sp.giaSP " + sort;
+		Query<SanPham> results = currentSession.createNativeQuery(queryStr, SanPham.class);
+		
+		results.setHibernateFirstResult((pageNumber - 1) * pageSize);
 		results.setMaxResults(pageSize);
 		return results.getResultList();
 	}
 
 	@Override
-	public List<SanPham> getDSSanPham(int page) {
+	public List<SanPham> getDSSanPham(int pageNumber) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		Query<SanPham> query = currentSession.createQuery("from SanPham", SanPham.class);
-		query.setHibernateFirstResult((page - 1) * pageSize);
+		query.setHibernateFirstResult((pageNumber - 1) * pageSize);
 		query.setMaxResults(pageSize);
 		return query.getResultList();
 	}
@@ -92,17 +113,17 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 	}
 	
 	@Override
-	public List<SanPham> getSanPhamsByTenSanPhamAndPage(String tenSP, int page, String sort) {
+	public List<SanPham> getSanPhamsByTenSanPhamAndPage(String tenSP, int pageNumber, String sort) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		String query = " SELECT * FROM SanPham "
 				+ " where dbo.fuConvertToUnsign(tenSp) like dbo.fuConvertToUnsign(N'%" + tenSP + "%')" 
 				+ " order by giaSP " + sort;
 		Query<SanPham> results = currentSession.createNativeQuery(query, SanPham.class);
-		results.setHibernateFirstResult((page - 1) * pageSize);
+		results.setHibernateFirstResult((pageNumber - 1) * pageSize);
 		results.setMaxResults(pageSize);
 		return results.getResultList();
 	}
-
+	
 	@Override
 	public SanPham getLatestSanPham() {
 		Session currentSession = sessionFactory.getCurrentSession();
@@ -149,7 +170,26 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 		int result = (int) currentSession.createNativeQuery(query).getSingleResult();
 		return result;
 	}
-	
+
+	@Override
+	public List<SanPhamMua> getSanPhamMua(int maNguoiDung) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		String query="select sp.maSp, sp.tenSp,sp.giaSP,gh.soLuong from SanPham sp join GioHang gh on sp.maSp=gh.maSp where gh.maND="+maNguoiDung;
+		List<Object []> objects=currentSession.createNativeQuery(query).getResultList();
+		
+	        List<SanPhamMua> sanPhamMuas = new ArrayList<>();
+
+	        objects.stream().forEach(o -> {
+	            int maSp = Integer.parseInt(o[0].toString());
+	            String tenSp = o[1].toString();
+	            double giaSp = Double.parseDouble(o[2].toString());
+	            int soLuong = Integer.parseInt(o[3].toString());
+
+	           SanPhamMua sanPhamMua=new SanPhamMua(maSp, tenSp, giaSp, soLuong);
+	           sanPhamMuas.add(sanPhamMua);
+	        });
+		return sanPhamMuas;
+		}
 	@Override
 	public int getNumberOfSanPhamsByTenSp(String tenSanPham) {
 		Session currentSession = sessionFactory.getCurrentSession();
@@ -166,6 +206,20 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 				+ " where dbo.fuConvertToUnsign(tenSp) like dbo.fuConvertToUnsign(N'%" + tenSanPham + "%')"
 				+ " and giaSP between " + minPrice + " and " + maxPrice;
 		int result = (int) currentSession.createNativeQuery(query).getSingleResult();
+		return result;
+	}
+	
+	@Override
+	public int getNumberOfSanPhamsByCategoryId(String tenSanPham, double minPrice, double maxPrice, int categoryId) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		String queryStr = "select count(*) from SanPham sp"
+				+ " where dbo.fuConvertToUnsign(sp.tenSp) like dbo.fuConvertToUnsign(N'%" + tenSanPham + "%')"
+				+ " and sp.giaSP between " + minPrice + " and " + maxPrice
+				+ " and sp.maSp in ("
+					+ " select ctlsp.maSp from LoaiSanPham lsp, ChiTietLoaiSP ctlsp"
+					+ " where lsp.maLSP = ctlsp.maLSP"
+					+ " and lsp.maLSP = " + categoryId + " )";
+		int result = (int) currentSession.createNativeQuery(queryStr).getSingleResult();
 		return result;
 	}
 

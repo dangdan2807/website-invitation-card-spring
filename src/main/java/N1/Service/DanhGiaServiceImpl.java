@@ -16,13 +16,25 @@ public class DanhGiaServiceImpl implements DanhGiaService {
 
 	@Override
 	@Transactional
-	public List<DanhGia> getDanhGiasByIdSanPham(int idSanPham) {
-		return danhGiaDAO.getDanhGiasByIdSanPham(idSanPham);
+	public List<DanhGia> getDanhGiasBySanPhamIdAndPageNumber(int idSanPham, int pageNumber) {
+		return danhGiaDAO.getDanhGiasByIdSanPhamAndPageNumber(idSanPham, pageNumber);
 	}
 
 	@Override
 	@Transactional
 	public List<DanhGia> getDsDanhGias() {
 		return danhGiaDAO.getDsDanhGias();
+	}
+
+	@Override
+	@Transactional
+	public int getNumberOfDanhGiaBySanPhamId(int sanPhamId) {
+		return danhGiaDAO.getNumberOfDanhGiaBySanPhamId(sanPhamId);
+	}
+
+	@Override
+	@Transactional
+	public boolean addDanhGia(DanhGia danhGia) {
+		return danhGiaDAO.addDanhGia(danhGia);
 	}
 }

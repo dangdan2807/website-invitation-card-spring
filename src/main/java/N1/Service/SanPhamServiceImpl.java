@@ -1,5 +1,6 @@
 package N1.Service;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import N1.DAO.CTLoaiSPDAO;
 import N1.DAO.CTLoaiSPDAOImpl;
 import N1.DAO.SanPhamDAO;
+
+import N1.Dto.SanPhamMua;
 import N1.entity.ChiTietLoaiSP;
 import N1.entity.SanPham;
 
@@ -38,7 +41,14 @@ public class SanPhamServiceImpl implements SanPhamService {
 	public List<SanPham> getDSSanPham(int page, String sort, String tenSanPham, double minPrice, double maxPrice) {
 		return sanPhamDAO.getDSSanPham(page, sort, tenSanPham, minPrice, maxPrice);
 	}
-	
+
+	@Override
+	@Transactional
+	public List<SanPham> getSanPhamsByCategoryId(int page, String sort, String tenSanPham, double minPrice,
+			double maxPrice, int categoryId) {
+		return sanPhamDAO.getSanPhamsByCategoryId(page, sort, tenSanPham, minPrice, maxPrice, categoryId);
+	}
+
 	@Override
 	@Transactional
 	public SanPham getSanPhamByIdSanPham(int sanPhamId) {
@@ -56,7 +66,7 @@ public class SanPhamServiceImpl implements SanPhamService {
 	public List<SanPham> getSanPhamsByTenSanPhamAndPage(String tenSP, int page, String sort) {
 		return sanPhamDAO.getSanPhamsByTenSanPhamAndPage(tenSP, page, sort);
 	}
-	
+
 	@Override
 	@Transactional
 	public int getNumberOfSanPhamsByTenSpAndPrice(String tenSanPham, double minPrice, double maxPrice) {
@@ -98,11 +108,23 @@ public class SanPhamServiceImpl implements SanPhamService {
 	public int getNumberOfSanPhams() {
 		return sanPhamDAO.getNumberOfSanPhams();
 	}
+
+	@Override
+	@Transactional
+	public List<SanPhamMua> getSanPhamMua( int maNguoiDung) {
+		return sanPhamDAO.getSanPhamMua(maNguoiDung);
+	}
 	
 	@Override
 	@Transactional
 	public int getNumberOfSanPhamsByTenSp(String tenSanPham) {
 		return sanPhamDAO.getNumberOfSanPhamsByTenSp(tenSanPham);
+	}
+	
+	@Override
+	@Transactional
+	public int getNumberOfSanPhamsByCategoryId(String tenSanPham, double minPrice, double maxPrice, int categoryId) {
+		return sanPhamDAO.getNumberOfSanPhamsByCategoryId(tenSanPham, minPrice, maxPrice, categoryId);
 	}
 
 	@Override
@@ -131,19 +153,19 @@ public class SanPhamServiceImpl implements SanPhamService {
 	public void delete(int maSp) {
 		sanPhamDAO.delete(maSp);
 	}
-	
+
 	@Override
 	@Transactional
 	public List<SanPham> getFeaturedSanPhams(int numOfLines) {
 		return sanPhamDAO.getFeaturedSanPhams(numOfLines);
 	}
-	
+
 	@Override
 	@Transactional
 	public List<SanPham> getSanPhamsByCategoryId(int categoryId, int numOfLines) {
 		return sanPhamDAO.getSanPhamsByCategoryId(categoryId, numOfLines);
 	}
-	
+
 	@Override
 	@Transactional
 	public List<SanPham> getRandomSanPhamsByCategoryId(int categoryId, int numOfLines, int currentSanPhamId) {

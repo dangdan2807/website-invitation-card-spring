@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import N1.entity.HoaDon;
 import N1.entity.LoaiSanPham;
@@ -119,6 +120,7 @@ public class HoaDonDAOImpl implements HoaDonDAO {
     }
 
     @Override
+    @Transactional
     public HoaDon addHoaDon(HoaDon hoaDon) {
         Session currentSession = sessionFactory.getCurrentSession();
         currentSession.saveOrUpdate(hoaDon);
@@ -126,6 +128,7 @@ public class HoaDonDAOImpl implements HoaDonDAO {
     }
 
     @Override
+    @Transactional
     public HoaDon findHoaDonById(int maHD) {
         Session currentSession = sessionFactory.getCurrentSession();
         HoaDon hoaDon = currentSession.find(HoaDon.class, maHD);

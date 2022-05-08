@@ -11,13 +11,20 @@ import N1.entity.ChiTietHoaDon;
 
 @Service
 public class CTHoaDonServiceImpl implements CTHoaDonService {
-    @Autowired
-    private CTHoaDonDAO ctHoaDonDAO;
-    
-    @Override
-    @Transactional
-    public List<ChiTietHoaDon> getDSCTHoaDon() {
-        return ctHoaDonDAO.getDSCTHoaDon();
-    }
+	@Autowired
+	private CTHoaDonDAO ctHoaDonDAO;
+
+	@Override
+	@Transactional
+	public List<ChiTietHoaDon> getDSCTHoaDon() {
+		return ctHoaDonDAO.getDSCTHoaDon();
+	}
+
+	@Override
+	@Transactional
+	public ChiTietHoaDon addChiTietHoaDon(ChiTietHoaDon chiTietHoaDon) {
+		
+		return ctHoaDonDAO.addChiTietHoaDon(chiTietHoaDon);
+	}
 
 }
