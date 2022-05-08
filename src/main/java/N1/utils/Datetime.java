@@ -3,8 +3,11 @@ package N1.utils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Datetime {
@@ -54,5 +57,52 @@ public class Datetime {
         }
         return null;
 
+    }
+    
+    public static List<Date> getDaysBetweenDates(Date startdate, Date enddate)
+    {
+        List<Date> dates = new ArrayList<>();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(startdate);
+
+        while (!calendar.getTime().after(enddate))
+        {
+            Date result = calendar.getTime();
+            dates.add(result);
+            calendar.add(Calendar.DATE, 1);
+        }
+        return dates;
+    }
+    
+    public static Date yesterday()
+    {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(getToday());
+        calendar.add(Calendar.DATE, -1);
+        return calendar.getTime();
+    }
+    
+    public static Date oneWeekAgo()
+    {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(getToday());
+        calendar.add(Calendar.DATE, -7);
+        return calendar.getTime();
+    }
+    
+    public static Date oneMonthAgo()
+    {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(getToday());
+        calendar.add(Calendar.DATE, -30);
+        return calendar.getTime();
+    }
+    
+    public static Date oneYearAgo()
+    {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(getToday());
+        calendar.add(Calendar.DATE, -365);
+        return calendar.getTime();
     }
 }

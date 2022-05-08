@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,12 +30,15 @@ import N1.Service.NguoiDungService;
 import N1.Service.SanPhamService;
 import N1.Service.SanPhamServiceImpl;
 import N1.Service.ThongKeService;
+import N1.Service.ThongKeServiceImpl.LineChartObject;
+import N1.Service.ThongKeServiceImpl.LabelCount;
 import N1.entity.ChiTietLoaiSP;
 import N1.entity.HoaDon;
 import N1.entity.LoaiSanPham;
 import N1.entity.NguoiDung;
 import N1.entity.SanPham;
 import N1.entity.TaiKhoan;
+import N1.utils.Datetime;
 
 @Controller
 @RequestMapping("/admin")
@@ -56,17 +60,73 @@ public class AdminController {
 	
 	/**************************** Dashboard *******************************/
 	@GetMapping("")
-	public String dashboard(Model model, HttpServletRequest request) {
+	public String dashboard(@RequestParam(name = "dateType", required = false) String dateType,
+			@RequestParam(name = "from", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from, 
+			@RequestParam(name = "to", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date to, Model model, HttpServletRequest request) {
 		String path = request.getServletPath();
-		long tongDoanhThu = thongKeService.tongDoanhThu(new Date(2022-1900, 3, 26), new Date(2022-1900, 3, 26));
-		long tongLoiNhuan = thongKeService.tongLoiNhuan(new Date(2022-1900, 3, 26), new Date(2022-1900, 3, 26));
-		long tongSoDonHang = thongKeService.tongSoDonHang(new Date(2022-1900, 3, 26), new Date(2022-1900, 3, 26));
-		long tongSoThiepBan = thongKeService.tongSoThiepBan(new Date(2022-1900, 3, 26), new Date(2022-1900, 3, 26));
+		
+		if(dateType == null)
+			dateType = "today";
+		
+		if(dateType.equals("today")) {
+			from = Datetime.getToday();
+			to = Datetime.getToday();
+		}
+		
+		if(dateType.equals("yesterday")) {
+			from = Datetime.yesterday();
+			to = Datetime.yesterday();
+		}
+		
+		if(dateType.equals("one_week_ago")) {
+			from = Datetime.oneWeekAgo();
+			to = Datetime.getToday();
+		}
+		
+		if(dateType.equals("one_month_ago")) {
+			from = Datetime.oneMonthAgo();
+			to = Datetime.getToday();
+		}
+		
+		if(dateType.equals("one_year_ago")) {
+			from = Datetime.oneYearAgo();
+			to = Datetime.getToday();
+		}
+		
+		if(from == null)
+			from = Datetime.getToday();
+			
+		if(to == null)
+			to = Datetime.getToday();
+		
+		long tongDoanhThu = thongKeService.tongDoanhThu(from, to);
+		long tongLoiNhuan = thongKeService.tongLoiNhuan(from, to);
+		long tongSoDonHang = thongKeService.tongSoDonHang(from, to);
+		long tongSoThiepBan = thongKeService.tongSoThiepBan(from, to);
+		LineChartObject doanhThuLoiNhuan = thongKeService.doanhThuVaLoiNhuan(from, to);
+		LabelCount soDanhMucBanRa = thongKeService.soDanhMucBanRa(from, to);
+		LineChartObject soDonHang = thongKeService.soDonHang(from, to);
+		LabelCount soSanPhamBanRa = thongKeService.soSanPhamBanRa(from, to);
+		model.addAttribute("path", path);
+		model.addAttribute("dateType", dateType);
+		model.addAttribute("from", from);
+		model.addAttribute("to", to);
 		model.addAttribute("tongDoanhThu", tongDoanhThu);
 		model.addAttribute("tongLoiNhuan", tongLoiNhuan);
 		model.addAttribute("tongSoDonHang", tongSoDonHang);
 		model.addAttribute("tongSoThiepBan", tongSoThiepBan);
-		model.addAttribute("path", path);
+		// doanh thu va loi nhuan
+		model.addAttribute("doanhThuLoiNhuan", doanhThuLoiNhuan);
+		
+		// So danh muc ban ra
+		model.addAttribute("soDanhMucBanRa", soDanhMucBanRa);
+		
+		// thống kê đơn hàng
+		model.addAttribute("soDonHang", soDonHang);
+		
+		// So danh muc ban ra
+		model.addAttribute("soSanPhamBanRa", soSanPhamBanRa);
+		
 		return "admin/index";
 	}
 	

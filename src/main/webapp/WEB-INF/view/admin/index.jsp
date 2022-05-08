@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="org.springframework.web.servlet.tags.Param"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,26 +44,51 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
-
 					<!-- Page Heading -->
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">Thống kê</h1>
+						<h1 class="h3 text-gray-800">Thống kê</h1>
 						<div style="display: flex;">
 							<!-- <a href="#"
 								class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
 								class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
-							<div style="display:flex; margin-left: 20px;align-items: center;">
-								<select class="form-control form-control-sm">
-									<option>Hôm nay</option>
-									<option>Hôm qua</option>
-									<option>7 ngày qua</option>
-									<option>1 tháng qua</option>
-									<option>1 năm qua</option>
-									<option>Tùy chỉnh</option>
-								</select>
-								<input type="date" class="form-control form-control-sm" style="margin-left: 10px"/>
-								<input type="button" value="Thống kê" class="btn btn-primary" style="margin-left: 10px"/>
+							<div>
+								<form:form action="${pageContext.request.contextPath}/admin"
+									method="GET"
+									style="display: flex; margin-left: 20px; align-items: center;">
+									<select class="form-control form-control-sm" id="dateRange"
+										name="dateType">
+										<option value="today" ${dateType == "today" ? "selected": ""}>Hôm
+											nay</option>
+										<option value="yesterday"
+											${dateType == "yesterday" ? "selected": ""}>Hôm qua</option>
+										<option value="one_week_ago"
+											${dateType == "one_week_ago" ? "selected": ""}>7
+											ngày qua</option>
+										<option value="one_month_ago"
+											${dateType == "one_month_ago" ? "selected": ""}>1
+											tháng qua</option>
+										<option value="one_year_ago"
+											${dateType == "one_year_ago" ? "selected": ""}>1 năm
+											qua</option>
+										<option value="custom"
+											${dateType == "custom" ? "selected": ""}>Tùy chỉnh</option>
+									</select>
+									<div style="display: flex; align-items: center;"
+										id="dateCustom">
+										<label style="margin-bottom: 0; margin-left: 10px">Từ</label>
+										<input type="date" class="form-control form-control-sm"
+											style="margin-left: 10px" name="from"
+											data-format="yyyy-MM-dd"
+											value="<fmt:formatDate value='${from}' pattern='yyyy-MM-dd' />" />
+										<label style="margin-bottom: 0; margin-left: 10px">Tới</label>
+										<input type="date" class="form-control form-control-sm"
+											style="margin-left: 10px" name="to" data-format="yyyy-MM-dd"
+											value="<fmt:formatDate value='${to}' pattern='yyyy-MM-dd' />" />
+									</div>
+									<input type="submit" value="Thống kê" class="btn btn-primary"
+										style="margin-left: 10px" />
+								</form:form>
 							</div>
 
 						</div>
@@ -78,7 +106,8 @@
 											<div
 												class="text-xs font-weight-bold text-primary text-uppercase mb-1">
 												Doanh thu</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800 money-format">${tongDoanhThu}</div>
+											<div
+												class="h5 mb-0 font-weight-bold text-gray-800 money-format">${tongDoanhThu}</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -97,7 +126,8 @@
 											<div
 												class="text-xs font-weight-bold text-success text-uppercase mb-1">
 												Lợi nhuận</div>
-											<div class="h5 mb-0 font-weight-bold text-gray-800 money-format">${tongLoiNhuan}</div>
+											<div
+												class="h5 mb-0 font-weight-bold text-gray-800 money-format">${tongLoiNhuan}</div>
 										</div>
 										<div class="col-auto">
 											<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -190,7 +220,8 @@
 								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-area">
-										<canvas id="myAreaChart"></canvas>
+										<%-- <canvas id="myAreaChart"></canvas> --%>
+										<canvas id="chartDoanhThuVaLoiNhuan"></canvas>
 									</div>
 								</div>
 							</div>
@@ -224,7 +255,7 @@
 								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-pie pt-4 pb-2">
-										<canvas id="myPieChart"></canvas>
+										<canvas id="chartDanhMucThiepBanRa"></canvas>
 									</div>
 									<div class="mt-4 text-center small">
 										<span class="mr-2"> <i
@@ -248,7 +279,7 @@
 								<!-- Card Header - Dropdown -->
 								<div
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Đơn hàng</h6>
+									<h6 class="m-0 font-weight-bold text-primary">Số đơn hàng</h6>
 									<div class="dropdown no-arrow">
 										<a class="dropdown-toggle" href="#" role="button"
 											id="dropdownMenuLink" data-toggle="dropdown"
@@ -269,7 +300,7 @@
 								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-area">
-										<canvas id="myAreaChart"></canvas>
+										<canvas id="chartSoDonHang"></canvas>
 									</div>
 								</div>
 							</div>
@@ -302,7 +333,7 @@
 								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-pie pt-4 pb-2">
-										<canvas id="myPieChart"></canvas>
+										<canvas id="chartSoSanPhamBanRa"></canvas>
 									</div>
 									<div class="mt-4 text-center small">
 										<span class="mr-2"> <i
@@ -332,6 +363,7 @@
 		<!-- End of Content Wrapper -->
 
 	</div>
+
 	<!-- End of Page Wrapper -->
 
 	<!-- Scroll to Top Button-->
@@ -344,6 +376,148 @@
 
 	<!-- Bootstrap core JavaScript-->
 	<jsp:include page="./common/link-js.jsp" />
+
+	<script>
+		$(document).ready(function() {
+			checkDateType();
+			chartDoanhThuVaLoiNhuan();
+			chartDanhMucThiepBanRa();
+			chartSoDonHang();
+			chartSoSanPhamBanRa();
+			
+			$("#dateRange").change(checkDateType);
+			
+			function checkDateType(){
+				var dateRange = $("#dateRange").val();
+				if(dateRange == "custom"){
+					$("#dateCustom").show();
+				}else{
+					$("#dateCustom").hide();
+				}
+			}
+			
+			function chartDoanhThuVaLoiNhuan(){
+				new Chart(document.getElementById("chartDoanhThuVaLoiNhuan"), {
+				  type: 'line',
+				  data: {
+				    labels: ${doanhThuLoiNhuan.datesToString()},
+				    datasets: [{ 
+				        data: ${doanhThuLoiNhuan.line1},
+				        label: "Lợi nhuận",
+				        borderColor: "#8e5ea2",
+				        fill: false
+				      },
+				      { 
+				        data: ${doanhThuLoiNhuan.line2},
+				        label: "Doanh thu",
+				        borderColor: "#3e95cd",
+				        fill: false
+				      }
+				    ]
+				  },
+				  options: {
+				    scales: {
+				        x: [{
+				            type: "time",
+				            time: {
+				            	unit: "day",
+				            	stepSize: 30
+				            }
+				        }],
+				        y: {
+				            min: 0
+				        }
+				    }
+				  }
+				});
+			}
+			
+			function chartDanhMucThiepBanRa(){
+				
+				var colors = Array();
+				for(var i=0; i<${soDanhMucBanRa.count.size()}; i++){
+					colors.push(dynamicColors());
+				}
+				
+				new Chart(document.getElementById("chartDanhMucThiepBanRa"), {
+				  type: 'doughnut',
+				  data: {
+				    labels: ${soDanhMucBanRa.labelToString()},
+				    datasets: [{ 
+				        data: ${soDanhMucBanRa.count},
+				        backgroundColor: colors
+				      }
+				    ]
+				  },
+				  options: {
+					  plugins:{   
+			             legend: {
+			                 display: false
+	                     },
+	                  }
+	               }
+				});
+			}
+			
+			function chartSoDonHang(){
+				new Chart(document.getElementById("chartSoDonHang"), {
+				  type: 'line',
+				  data: {
+				    labels: ${soDonHang.datesToString()},
+				    datasets: [{ 
+				        data: ${soDonHang.line1},
+				        label: "Số đơn hàng",
+				        borderColor: "#3e95cd",
+				        fill: false
+				      }
+				    ]
+				  },
+				  options: {
+				    scales: {
+				        x: [{
+				            type: "time",
+				            time: {
+				            	unit: "day",
+				            	stepSize: 30
+				            }
+				        }],
+				        y: {
+				            min: 0
+				        }
+				    }
+				  }
+				});
+			}
+			
+			function chartSoSanPhamBanRa(){
+				
+				var colors = Array();
+				for(var i=0; i<${soSanPhamBanRa.count.size()}; i++){
+					colors.push(dynamicColors());
+				}
+				
+				new Chart(document.getElementById("chartSoSanPhamBanRa"), {
+				  type: 'doughnut',
+				  data: {
+				    labels: ${soSanPhamBanRa.labelToString()},
+				    datasets: [{ 
+				        data: ${soSanPhamBanRa.count},
+				        backgroundColor: colors
+				      }
+				    ]
+				  },
+				  options: {
+					  plugins:{   
+			             legend: {
+			                 display: false
+	                     },
+	                  }
+	               }
+				});
+			}
+			
+		});
+	</script>
 </body>
 
 </html>
