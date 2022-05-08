@@ -1,5 +1,6 @@
 package N1.Controller;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -110,7 +111,6 @@ public class HomeController {
 	public String showShoppingCartPage(Model model) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		
 		List<SanPham> dsSanPham = new ArrayList<SanPham>();
 		model.addAttribute("dsSanPham", dsSanPham);
 
@@ -130,9 +130,8 @@ public class HomeController {
 			tongTienHang += sanPhamMua.getThanhTien();
 		}
 		double giamGia = tongTienHang * 0.05;
-		double tongThanhToan = tongTienHang - tongTienHang * 0.05;
+		double tongThanhToan = tongTienHang - giamGia;
 		model.addAttribute("tongTienHang", tongTienHang);
-//		System.out.println(tongThanhToan);
 		model.addAttribute("giamGia", giamGia);
 		model.addAttribute("tongThanhToan", tongThanhToan);
 
@@ -141,7 +140,9 @@ public class HomeController {
 
 	@RequestMapping(value = "/orders/success", method = RequestMethod.POST)
 	public String createHoaDon(PayLoadCreateOrder payLoadCreateOrder, Model model) {
-		System.out.println(payLoadCreateOrder.getDiaChi());
+		String diaChi=payLoadCreateOrder.getDiaChi();
+				byte[] bytes = diaChi.getBytes(StandardCharsets.ISO_8859_1);
+				diaChi = new String(bytes, StandardCharsets.UTF_8);
 		// 1 Lay user tu context security
 		Integer userId = 19;
 		// 1.1 lay chi tiet user
@@ -163,7 +164,7 @@ public class HomeController {
 		Date ngayGiaoHang = new Date(ngayLHD.getTime() + (3 * 1000 * 60 * 60 * 24));
 		String trangThaiDonHang = "Chưa thanh toán";
 		HoaDon hoaDon = new HoaDon(ngayLHD, tongThanhToan, tongSoLuong, trangThaiDonHang, ngayGiaoHang,
-				payLoadCreateOrder.getDiaChi(), nguoiDung);
+				diaChi, nguoiDung);
 		HoaDon hoadonSave = hoaDonService.addHoaDon(hoaDon);
 
 		dsSanPhamMua.forEach(e -> {
@@ -173,18 +174,14 @@ public class HomeController {
 			chiTietHoaDons.add(cthd);
 
 		});
-
-	
 		// 4 Xoa gio hang cua khach hang
 		gioHangService.deleteGioHangByIdNguoiDung(userId);
 		// 5 Tao trang chi tiet hoa don( truyen du lieu hoa don vua tao duoc qua trang
 		// do)
 		model.addAttribute("hoadonThanhToan", hoadonSave);
-
 		model.addAttribute("chiTietHoaDons", chiTietHoaDons);
 		model.addAttribute("tongTienHang", tongTienHang);
 		model.addAttribute("giamGia", tongTienHang * 0.05);
-		System.out.println(hoadonSave.toString());
 		return "user/detail-order";
 	}
 

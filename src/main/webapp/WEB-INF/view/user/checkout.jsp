@@ -42,7 +42,6 @@
 			return;
 		event.currentTarget.submit();
 	}
-	
 </script>
 </head>
 
@@ -86,7 +85,8 @@
 			<div class="checkout__form">
 
 				<form:form id="form-create-order"
-					action="/N1_DeTai39_WebsiteBanThiep/orders/success" method="post" onsubmit="return submicForm()">
+					action="/N1_DeTai39_WebsiteBanThiep/orders/success" method="post"
+					onsubmit="return submicForm()">
 					<div class="row">
 						<div class="col-lg-8 col-md-6">
 							<div class="row">
@@ -128,8 +128,9 @@
 									Địa chỉ<span>*</span>
 								</p>
 								<input id="input_address" name="diaChi" path="diaChi"
-									type="text" placeholder="Địa chỉ của bạn ..."
-									class="checkout__input__add" onkeyUp="validateAdressNotNull()" />
+									style="font-family: 'Roboto', sans-serif;" type="text"
+									placeholder="Địa chỉ của bạn ..." class="checkout__input__add"
+									onkeyUp="validateAdressNotNull()" />
 							</div>
 							<div class="checkout__input">
 								<p>
