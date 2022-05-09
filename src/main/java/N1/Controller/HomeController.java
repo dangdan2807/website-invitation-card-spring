@@ -1,6 +1,8 @@
 package N1.Controller;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -23,7 +25,7 @@ public class HomeController {
 	private LoaiSanPhamService loaiSanPhamService;
 
 	@Autowired
-	private DanhGiaService danhGiaService;
+	private DanhGiaService danhGiaService;	
 	
 	@RequestMapping({ "/", "/trang-chu", "/home" })
 	public String showHomePage(Model model) {
@@ -85,7 +87,6 @@ public class HomeController {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		model.addAttribute("isCategoryPage", 0);
-		
 		return "user/login";
 	}
 

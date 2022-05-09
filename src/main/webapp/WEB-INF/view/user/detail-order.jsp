@@ -11,7 +11,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Chi Tiết Hóa Đơn</title>
 
 <jsp:include page="./module/link-css.jsp" />
@@ -23,6 +23,30 @@
 	font-family: 'Roboto', sans-serif;
 	font-size: 13px;
 }
+
+.thong-bao {
+	position: fixed;
+	top: -100px;
+	left: 50%;
+	width: 250px;
+	height: 100px;
+	border: 1px solid #326e51;
+	z-index: 1000;
+	transform: translateX(-50%);
+	background-color: #CFEADD;
+	border-radius: 7px;
+    display: flex;
+    align-items: center;
+     animation-name: appear-noti;
+  animation-duration: 2s;
+    
+}
+
+@keyframes appear-noti {
+  0%   {top: -50px;}
+  100% {top:20px;}
+}
+.thong-bao p {text-align: center; width: 100%;color: #326E52}
 
 table {
 	border: solid 1px #e5e5e5;
@@ -97,7 +121,12 @@ img {
 <body>
 	<div>
 
+		<div class="thong-bao">
+					<p>Bạn đã đặt hàng thành công
+				<span class="icon-check ml-2">	<i class="fa fa-check-circle" aria-hidden="true"></i></span>
+			</p>
 
+		</div>
 
 		<!-- Humberger Begin -->
 		<jsp:include page="./module/header-mobile.jsp">
@@ -254,16 +283,15 @@ img {
 				</div>
 
 				<div class="text-center">
-					<c:url var="homeUrl" value="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/">
-					<c:param name="maHD" value="${hoadonThanhToan.getMaHD() }"></c:param>
+					<c:url var="backUrl"
+						value="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/">
+						<c:param name="maND"
+							value="${hoadonThanhToan.getNguoiDung().getMaND() }"></c:param>
 					</c:url>
-					<a href="${homeUrl}" style="color: #326e51;background-color: transparent;">
-					<i class="fa fa-caret-left"></i>
-					
-					Quay lại</a> 
-
-
-
+					<a href="${backUrl}"
+						style="color: #326e51; background-color: transparent;"> <i
+						class="fa fa-caret-left"></i> Quay lại
+					</a>
 				</div>
 
 			</div>

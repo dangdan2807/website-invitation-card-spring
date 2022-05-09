@@ -1,5 +1,6 @@
 package N1.Controller;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import N1.Dto.*;
+import N1.DTO.*;
 import N1.Service.*;
 import N1.entity.*;
 
@@ -63,7 +64,6 @@ public class UserController {
 		double giamGia = tongTienHang * 0.05;
 		double tongThanhToan = tongTienHang - tongTienHang * 0.05;
 		model.addAttribute("tongTienHang", tongTienHang);
-//		System.out.println(tongThanhToan);
 		model.addAttribute("giamGia", giamGia);
 		model.addAttribute("tongThanhToan", tongThanhToan);
 
@@ -74,7 +74,9 @@ public class UserController {
 
 	@RequestMapping(value = "/orders/success", method = RequestMethod.POST)
 	public String createHoaDon(PayLoadCreateOrder payLoadCreateOrder, Model model) {
-		System.out.println(payLoadCreateOrder.getDiaChi());
+		String diaChi=payLoadCreateOrder.getDiaChi();
+				byte[] bytes = diaChi.getBytes(StandardCharsets.ISO_8859_1);
+				diaChi = new String(bytes, StandardCharsets.UTF_8);
 		// 1 Lay user tu context security
 		Integer userId = 19;
 		// 1.1 lay chi tiet user
@@ -96,7 +98,7 @@ public class UserController {
 		Date ngayGiaoHang = new Date(ngayLHD.getTime() + (3 * 1000 * 60 * 60 * 24));
 		String trangThaiDonHang = "Chưa thanh toán";
 		HoaDon hoaDon = new HoaDon(ngayLHD, tongThanhToan, tongSoLuong, trangThaiDonHang, ngayGiaoHang,
-				payLoadCreateOrder.getDiaChi(), nguoiDung);
+				diaChi, nguoiDung);
 		HoaDon hoadonSave = hoaDonService.addHoaDon(hoaDon);
 
 		dsSanPhamMua.forEach(e -> {
@@ -104,16 +106,13 @@ public class UserController {
 			ChiTietHoaDon cthd = new ChiTietHoaDon(hoadonSave, sanPham, e.getSoLuong(), e.getGiaSp());
 			ctHoaDonService.addChiTietHoaDon(cthd);
 			chiTietHoaDons.add(cthd);
-
 		});
 
-	
 		// 4 Xoa gio hang cua khach hang
 		gioHangService.deleteGioHangByIdNguoiDung(userId);
 		// 5 Tao trang chi tiet hoa don( truyen du lieu hoa don vua tao duoc qua trang
 		// do)
 		model.addAttribute("hoadonThanhToan", hoadonSave);
-
 		model.addAttribute("chiTietHoaDons", chiTietHoaDons);
 		model.addAttribute("tongTienHang", tongTienHang);
 		model.addAttribute("giamGia", tongTienHang * 0.05);
