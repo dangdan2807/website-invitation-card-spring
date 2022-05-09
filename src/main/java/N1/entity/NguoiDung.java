@@ -127,5 +127,11 @@ public class NguoiDung implements Serializable {
 		this.hinhAnh = hinhAnh;
 	}
 
+	@Override
+	public String toString() {
+		return "NguoiDung [maND=" + maND + ", tenND=" + tenND + ", diaChi=" + diaChi + ", sdt=" + sdt + ", hinhAnh="
+				+ hinhAnh + "]";
+	}
+
     
 }

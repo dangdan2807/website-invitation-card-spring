@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import N1.entity.HoaDon;
 import N1.entity.LoaiSanPham;
 import N1.entity.NguoiDung;
+import N1.entity.SanPham;
 
 @Repository
 public class HoaDonDAOImpl implements HoaDonDAO {
@@ -134,4 +135,11 @@ public class HoaDonDAOImpl implements HoaDonDAO {
         HoaDon hoaDon = currentSession.find(HoaDon.class, maHD);
         return hoaDon;
     }
+
+
+	@Override
+	public void delete(int maHD) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		currentSession.delete(currentSession.find(HoaDon.class, maHD));
+	}
 }
