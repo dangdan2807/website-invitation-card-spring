@@ -147,9 +147,9 @@ public class AdminController {
 		
 		NguoiDung nguoiDung2 = nguoiDungService.findNguoiDungById(nguoiDung.getMaND());
 		nguoiDung2.setTenND(nguoiDung.getTenND());
-		nguoiDung2.setSdt(nguoiDung.getTenND());
+		nguoiDung2.setSdt(nguoiDung.getSdt());
 		nguoiDung2.setDiaChi(nguoiDung.getDiaChi());
-		nguoiDung2.setHinhAnh(nguoiDung.getTenND());
+		nguoiDung2.setHinhAnh(nguoiDung.getHinhAnh());
 		System.out.println(nguoiDung2.getTaiKhoan());
 		nguoiDungService.save(nguoiDung2);
 		
