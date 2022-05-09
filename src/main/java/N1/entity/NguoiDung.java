@@ -36,7 +36,7 @@ public class NguoiDung implements Serializable {
     private String hinhAnh;
 
     @OneToOne
-    @JoinColumn(name = "email", nullable = false, unique = true, columnDefinition = "VARCHAR(255) DEFAULT('')")
+    @JoinColumn(name = "maTaiKhoan", nullable = false, unique = true, columnDefinition = "INT")
     private TaiKhoan taiKhoan;
 
     @OneToMany(mappedBy = "nguoiDung", fetch = FetchType.LAZY)

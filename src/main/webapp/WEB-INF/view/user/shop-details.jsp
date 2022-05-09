@@ -5,7 +5,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page import="org.springframework.web.servlet.tags.Param"%>
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="vi">
 
 <head>
@@ -48,6 +48,17 @@
     <section class="product-details spad">
         <div class="container">
             <div class="row">
+                <div class="col-lg-12 col-12">
+                    <c:if test="${status == 1 || status == 0}">
+                        <div class="alert alert-${status == 1 ? 'success': 'warning'} alert-dismissible fade show" role="alert">
+                            <strong>Thông báo:</strong> ${msg}
+                            <button type="button" class="close" data-dismiss="alert"
+                                aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </c:if>
+                </div>	
                 <div class="col-lg-6 col-md-6">
                     <div class="product__details__pic">
                         <div class="product__details__pic__item">
@@ -80,12 +91,17 @@
                         <div class="product__details__quantity">
                             <div class="quantity">
                                 <div class="pro-qty">
-                                    <input type="text" value="1" />
+                                    <input id="input-soLuong" type="text" value="1" />
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="primary-btn">THÊM VÀO GIỎ HÀNG</a>
-                        <!-- <a href="#" class="heart-icon"><span class="icon_heart_alt"></span></a> -->
+                        <form:form method="POST" 
+                            modelAttribute="gioHang"
+                            action="${pageContext.request.contextPath}/san-pham/id=${sanPham.maSp}/them-vao-gio-hang"
+                            accept-charset="UTF-8">
+                            <form:hidden path="soLuong" value="1"/>
+                            <input type="submit" class="primary-btn product__details__add-cart-btn" value="THÊM VÀO GIỎ HÀNG" />
+                        </form:form>
                         <ul>
                             <li>
                                 <b>Chia sẻ</b>
@@ -122,45 +138,47 @@
                             <div class="tab-pane" id="tabs-2" role="tabpanel">
                                 <div class="product__details__tab__desc">
                                     <div class="product__details__review">
-                                    	<form:form method="POST" modelAttribute="danhGia" 
-                                    		action="${pageContext.request.contextPath}/san-pham/id=${sanPham.maSp}"
-                                    		accept-charset="UTF-8">
-                                    		<form:hidden path="xepHang" value="5" />
-	                                        <div class="review__select-star">
-	                                            <div class="row">
-	                                                <p class="col-lg-6 col-12" >Bạn cảm thấy sản phẩm này như thế nào? (chọn sao nhé):</p>
-	                                                <ul class="col-lg-6 col-12 ul-star">
-	                                                    <li data-val="1">
-	                                                        <i class="fa fa-star active"></i>
-	                                                    </li>
-	                                                    <li data-val="2">
-	                                                        <i class="fa fa-star active"></i>
-	                                                    </li>
-	                                                    <li data-val="3">
-	                                                        <i class="fa fa-star active"></i>
-	                                                    </li>
-	                                                    <li data-val="4">
-	                                                        <i class="fa fa-star active"></i>
-	                                                    </li>
-	                                                    <li data-val="5">
-	                                                        <i class="fa fa-star active"></i>
-	                                                    </li>
-	                                                </ul>
-	                                            </div>
-	                                        </div>
-	                                        <div class="review__comment">
-	                                            <div class="row">
-	                                                <div class="review__textarea col-lg-12 col-12">
-	                                                    <form:textarea 
-	                                                        path="noiDung"
-	                                                        class="review__textarea-context" 
-	                                                        name="reviewContent" 
-	                                                        placeholder="Mời bạn chia sẻ thêm một số cảm nhận về sản phẩm ..." ></form:textarea>
-	                                                </div>
-	                                                <input class="review__btn-submit" type="submit" value="Gửi đánh giá ngay" />
-	                                            </div>
-	                                        </div>
-                                       	</form:form>
+                                        <form:form method="POST" 
+                                        	modelAttribute="danhGia"
+                                            action="${pageContext.request.contextPath}/san-pham/id=${sanPham.maSp}/them-danh-gia"
+                                            accept-charset="UTF-8">
+                                            <form:hidden path="xepHang" value="5"/>
+                                            <div class="review__select-star">
+                                                <div class="row">
+                                                    <p class="col-lg-6 col-12" >Bạn cảm thấy sản phẩm này như thế nào? (chọn sao nhé):</p>
+                                                    <ul class="col-lg-6 col-12 ul-star">
+                                                        <li data-val="1">
+                                                            <i class="fa fa-star active"></i>
+                                                        </li>
+                                                        <li data-val="2">
+                                                            <i class="fa fa-star active"></i>
+                                                        </li>
+                                                        <li data-val="3">
+                                                            <i class="fa fa-star active"></i>
+                                                        </li>
+                                                        <li data-val="4">
+                                                            <i class="fa fa-star active"></i>
+                                                        </li>
+                                                        <li data-val="5">
+                                                            <i class="fa fa-star active"></i>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="review__comment">
+                                                <div class="row">
+                                                    <div class="review__textarea col-lg-12 col-12">
+                                                        <form:textarea 
+                                                            path="noiDung"
+                                                            class="review__textarea-context" 
+                                                            placeholder="Mời bạn chia sẻ thêm một số cảm nhận về sản phẩm ..." ></form:textarea>
+                                                    </div>
+                                                    <input class="review__btn-submit btn btn-primary" type="submit" value="Gửi đánh giá ngay"
+                                                        data-toggle="modal" data-target="#exampleModal" />
+                                                </div>
+                                            </div>
+<%--                                             <form:input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> --%>
+                                        </form:form>
                                     </div>
                                     <div class="product__details__comments">
                                         <c:forEach var="danhGia" items="${sanPham.dsDanhGia}">
@@ -280,10 +298,15 @@
             window.location.href = url;
         }
 
-        $("button").click(function(){
-            $.get("demo_test.asp", function(data, status){
-                alert("Data: " + data + "\nStatus: " + status);
-            });
+        $('.pro-qty').on('click', '.qtybtn', function () {
+            var $button = $(this);
+            var oldValue = $button.parent().find('input').val();
+            $('#soLuong').val(oldValue);
+        });
+
+        $('#input-soLuong').change(function () {
+            var soLuong = $(this).val();
+            $('#soLuong').val(soLuong);
         });
     </script>
 </body>
