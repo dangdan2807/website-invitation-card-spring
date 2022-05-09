@@ -4,6 +4,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -171,24 +173,26 @@ public class ProductController {
 			@PathVariable(name = "theId", required = false) Integer sanPhamId,
 			@ModelAttribute("danhGia") DanhGia danhGia, 
 			RedirectAttributes redirectAttributes) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String currentPrincipalName = authentication.getName();
+		System.out.println(currentPrincipalName);
 		danhGia.setNguoiDung(new NguoiDung(2));
 		danhGia.setSanPham(new SanPham(sanPhamId));
 
 		String noiDung = danhGia.getNoiDung();
-
 		byte[] bytes = noiDung.getBytes(StandardCharsets.ISO_8859_1);
 		noiDung = new String(bytes, StandardCharsets.UTF_8);
-		System.out.println(noiDung);
-
+		danhGia.setNoiDung(noiDung);
+		
 		model.addAttribute("danhGia", new DanhGia());
-		boolean resultSave = danhGiaService.addDanhGia(danhGia);
-		if (resultSave) {
-			redirectAttributes.addAttribute("msg", "Danh gia san pham thanh cong");
-			redirectAttributes.addAttribute("status", 1);
-		} else {
-			redirectAttributes.addAttribute("msg", "Danh gia san pham that bai");
-			redirectAttributes.addAttribute("status", 0);
-		}
+//		boolean resultSave = danhGiaService.addDanhGia(danhGia);
+//		if (resultSave) {
+//			redirectAttributes.addAttribute("msg", "Danh gia san pham thanh cong");
+//			redirectAttributes.addAttribute("status", 1);
+//		} else {
+//			redirectAttributes.addAttribute("msg", "Danh gia san pham that bai");
+//			redirectAttributes.addAttribute("status", 0);
+//		}
 
 		return "redirect:/san-pham/id=" + sanPhamId;
 	}
