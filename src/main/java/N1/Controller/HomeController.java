@@ -78,6 +78,7 @@ public class HomeController {
 	public String showContractPage(Model model) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+		model.addAttribute("isCategoryPage", 0);
 		
 		return "user/contact";
 	}

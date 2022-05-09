@@ -189,7 +189,8 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 	           sanPhamMuas.add(sanPhamMua);
 	        });
 		return sanPhamMuas;
-		}
+	}
+	
 	@Override
 	public int getNumberOfSanPhamsByTenSp(String tenSanPham) {
 		Session currentSession = sessionFactory.getCurrentSession();
