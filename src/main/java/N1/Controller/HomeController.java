@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import N1.DAO.HoaDonDAO;
 import N1.Service.*;
 import N1.entity.*;
 
@@ -26,6 +27,15 @@ public class HomeController {
 
 	@Autowired
 	private DanhGiaService danhGiaService;	
+	
+	@Autowired
+	private HoaDonService hoaDonService;
+	
+	@Autowired
+	private NguoiDungService nguoiDungService;
+	
+	@Autowired
+	private TaiKhoanService taiKhoanService;
 	
 	@RequestMapping({ "/", "/trang-chu", "/home" })
 	public String showHomePage(Model model) {
@@ -49,21 +59,26 @@ public class HomeController {
 		
 		model.addAttribute("tenSanPham", "");
 		model.addAttribute("isCategoryPage", 0);
-
+		
 		return "user/index";
 	}
 
 	@RequestMapping({ "/demo" })
 	public String showDemoPage(Model model) {
 		List<TaiKhoan> taiKhoanList = new ArrayList<>();
-		List<NguoiDung> nguoiDungList = new ArrayList<>();
-		List<HoaDon> hoaDonList = new ArrayList<>();
+//		NguoiDung nguoiDung = nguoiDungService.findNguoiDungById(1);
+		List<NguoiDung> nguoiDungList = new ArrayList<NguoiDung>();
+//		nguoiDungList.add(nguoiDung);
+//				nguoiDungService.findNguoiDungById(1);
+		List<HoaDon> hoaDonList = hoaDonService.findHoaDonByUserId(10);
+//		List<HoaDon> hoaDonList = new ArrayList<HoaDon>();
 		List<ChiTietHoaDon> ctHoaDonList = new ArrayList<>();
 		List<SanPham> sanPhamList = sanPhamService.getRatedTopSanPhams(6);
 		List<ChiTietLoaiSP> ctLoaiSPList = new ArrayList<>();
 		List<LoaiSanPham> loaiSanPhamList = new ArrayList<>();
+		
 		model.addAttribute("chucVuList", null);
-		model.addAttribute("danhGiaList", danhGiaService.getDanhGiasBySanPhamIdAndPageNumber(97, 1));
+		model.addAttribute("danhGiaList", null);
 		model.addAttribute("taiKhoanList", taiKhoanList);
 		model.addAttribute("nguoiDungList", nguoiDungList);
 		model.addAttribute("hoaDonList", hoaDonList);

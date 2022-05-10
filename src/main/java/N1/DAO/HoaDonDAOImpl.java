@@ -23,54 +23,36 @@ public class HoaDonDAOImpl implements HoaDonDAO {
     private SessionFactory sessionFactory;
 
     private final int pageSize = 20;
-    
+
     @Override
-    @SuppressWarnings("unchecked")
     public List<HoaDon> getDSHoaDon() {
         Session currentSession = sessionFactory.getCurrentSession();
-        String queryStr = "SELECT hd.maHD, hd.ngayLHD, hd.tongSoLuong, hd.tongTien, hd.maKH "
-                + "FROM HoaDon hd, NguoiDung nd "
-                + "WHERE hd.maKH = nd.maND";
-        List<Object[]> results = currentSession.createNativeQuery(queryStr).getResultList();
-        List<HoaDon> dataList = new ArrayList<>();
-
-        results.stream().forEach(item -> {
-            int maHD = Integer.parseInt(item[0].toString());
-            Date ngayLHD = (Date) item[1];
-            int tongSoLuong = Integer.parseInt(item[2].toString());
-            double tongTien = Double.parseDouble(item[3].toString());
-            int maND = Integer.parseInt(item[4].toString());
-
-            NguoiDung nguoiDung = new NguoiDung(maND);
-            HoaDon hoaDon = new HoaDon(maHD, ngayLHD, tongTien, tongSoLuong, nguoiDung);
-            dataList.add(hoaDon);
-        });
-
-        return dataList;
+        String queryStr = "SELECT * FROM HoaDon hd";
+        List<HoaDon> results = currentSession.createNativeQuery(queryStr, HoaDon.class).getResultList();
+        return results;
     }
 
-
-	@Override
-	public List<HoaDon> findAll() {
-    	Session currentSession = sessionFactory.getCurrentSession();
+    @Override
+    public List<HoaDon> findAll() {
+        Session currentSession = sessionFactory.getCurrentSession();
         Query<HoaDon> query = currentSession.createQuery("from HoaDon", HoaDon.class);
         return query.getResultList();
-	}
+    }
 
-	@Override
-	public List<HoaDon> findAll(int page) {
-    	Session currentSession = sessionFactory.getCurrentSession();
+    @Override
+    public List<HoaDon> findAll(int page) {
+        Session currentSession = sessionFactory.getCurrentSession();
         Query<HoaDon> query = currentSession.createQuery("from HoaDon", HoaDon.class);
-        query.setHibernateFirstResult((page-1)*pageSize);
+        query.setHibernateFirstResult((page - 1) * pageSize);
         query.setMaxResults(pageSize);
         return query.getResultList();
-	}
+    }
 
-	@Override
-	public int getNumberOfPage() {
-		return (findAll().size() + pageSize - 1)/pageSize;
-	}
-	
+    @Override
+    public int getNumberOfPage() {
+        return (findAll().size() + pageSize - 1) / pageSize;
+    }
+
     @Override
     public List<HoaDon> getHoaDonMoiNhat() {
         List<HoaDon> hoaDons = new ArrayList<HoaDon>();
@@ -136,35 +118,18 @@ public class HoaDonDAOImpl implements HoaDonDAO {
         return hoaDon;
     }
 
+    @Override
+    public void delete(int maHD) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        currentSession.delete(currentSession.find(HoaDon.class, maHD));
+    }
 
-	@Override
-	public void delete(int maHD) {
-		Session currentSession = sessionFactory.getCurrentSession();
-		currentSession.delete(currentSession.find(HoaDon.class, maHD));
-	}
-	
-	@Transactional
-	public List<HoaDon> findHoaDonByUserId(int maND) {
-		 Session currentSession = sessionFactory.getCurrentSession();
-	        String query = " SELECT hd.* FROM HoaDon hd JOIN NguoiDung nd ON hd.maKH=nd.maND"
-	                + "  where nd.maND=" + maND;
-	        List<Object[]> results = currentSession.createNativeQuery(query).getResultList();
-	        List<HoaDon> hoaDons=new ArrayList<HoaDon>();
-	        
-	        results.stream().forEach(item->{
-	        	 int maHD = Integer.parseInt(item[0].toString());
-	        	 String diaChiGiaoHang=item[1].toString();
-	        	 Date ngayGiaoHang=(Date)item[2];
-	        	 Date ngayLapHoaDon=(Date) item [3];
-	        	 int tongSoLuong=Integer.parseInt(item[4].toString());
-	        	 double tongTien=Double.parseDouble(item[5].toString());
-	        	 String trangThaiGiaoHang=item[6].toString();
-	        	 NguoiDung nguoiDung=new NguoiDung(maND);
-	        	 HoaDon hoaDon=new HoaDon(maHD, ngayLapHoaDon, tongTien, tongSoLuong, nguoiDung);
-	        	 hoaDons.add(hoaDon);
-	        	
-	        });
-	      
-	        return hoaDons;
-	}
+    @Transactional
+    public List<HoaDon> findHoaDonByUserId(int maND) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        String query = "select * from HoaDon hd where hd.maKH =" + maND;
+        Query<HoaDon> results = currentSession.createNativeQuery(query, HoaDon.class);
+        return results.getResultList();
+
+    }
 }

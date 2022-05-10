@@ -1,4 +1,4 @@
-package N1.Dto;
+package N1.DTO;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

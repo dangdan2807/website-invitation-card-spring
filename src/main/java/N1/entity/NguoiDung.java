@@ -26,7 +26,7 @@ public class NguoiDung implements Serializable {
     @Column(name = "tenND", nullable = false, columnDefinition = "NVARCHAR(125)")
     private String tenND;
 
-    @Column(name = "diaChi", columnDefinition = "TEXT DEFAULT('')")
+    @Column(name = "diaChi", columnDefinition = "NTEXT DEFAULT('')")
     private String diaChi;
 
     @Column(name = "sdt", columnDefinition = "VARCHAR(10) DEFAULT('')")
