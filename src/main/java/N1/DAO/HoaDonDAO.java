@@ -16,4 +16,5 @@ public interface HoaDonDAO {
     public HoaDon findHoaDonById(int maHD);
     public void delete(int maHD);
     public HoaDon addHoaDon(HoaDon hoaDon);
+    public List<HoaDon> findHoaDonByUserId(int maND);
 }

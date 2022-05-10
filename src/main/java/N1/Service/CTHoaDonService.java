@@ -8,4 +8,5 @@ public interface CTHoaDonService {
     public List<ChiTietHoaDon> getDSCTHoaDon();
     public ChiTietHoaDon addChiTietHoaDon(ChiTietHoaDon chiTietHoaDon);
     public List<ChiTietHoaDon> getChiTietHoaDonByMaHD(int maHD);
+    public List<ChiTietHoaDon> getDSCTHoaDonByMaHD(int mHD);
 }

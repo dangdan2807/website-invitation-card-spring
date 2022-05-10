@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import N1.DTO.ThongKeDTO;
+import N1.Dto.ThongKeDTO;
 import N1.utils.Datetime;
 
 @Service
