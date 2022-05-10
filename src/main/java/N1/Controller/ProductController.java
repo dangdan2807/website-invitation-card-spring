@@ -1,15 +1,16 @@
 package N1.Controller;
 
-import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +31,8 @@ public class ProductController {
 	private SanPhamService sanPhamService;
 	@Autowired
 	private DanhGiaService danhGiaService;
+	@Autowired
+	private GioHangService gioHangService;
 
 	@RequestMapping(value = { "", "/tim-kiem" }, method = RequestMethod.GET)
 	public String showProductPage(Model model,
@@ -54,7 +57,6 @@ public class ProductController {
 
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		
 
 		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(currentPage, sort, tenSanPham, minPrice, maxPrice);
 		model.addAttribute("dsSanPham", dsSanPham);
@@ -87,20 +89,22 @@ public class ProductController {
 		return "user/shop-grid";
 	}
 
-	@GetMapping("/id={theId}")
-	public String getProductById(Model model, @PathVariable(name = "theId", required = false) Integer id,
-			@RequestParam(name = "comment-page", required = false, defaultValue = "1") Integer currentPageComment) {
+	@RequestMapping(value = "/id={theId}", method = RequestMethod.GET, produces = "text/x-www-form-urlencoded; charset=UTF-8")
+	public String getProductById(Model model, 
+			@PathVariable(name = "theId", required = false) Integer id,
+			@RequestParam(name = "comment-page", required = false, defaultValue = "1") Integer currentPageComment,
+			@RequestParam(name = "msg", required = false, defaultValue = "") String msg,
+			@RequestParam(name = "status", required = false, defaultValue = "-1") Integer status) {
 		if (id <= 0 || id == null)
 			id = 1;
 		if (currentPageComment <= 0 || currentPageComment == null) {
 			currentPageComment = 1;
 		}
 
-		
 		model.addAttribute("isCategoryPage", 0);
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		
+
 		int numberOfDanhGia = danhGiaService.getNumberOfDanhGiaBySanPhamId(id);
 		int pageOfNumber = 1;
 		if ((numberOfDanhGia % pageCommentSize) != 0) {
@@ -129,7 +133,10 @@ public class ProductController {
 		model.addAttribute("currentPageComment", currentPageComment);
 		model.addAttribute("numberOfDanhGia", numberOfDanhGia);
 		model.addAttribute("pageOfNumber", pageOfNumber);
+		model.addAttribute("msg", msg);
+		model.addAttribute("status", status);
 		model.addAttribute("danhGia", new DanhGia());
+		model.addAttribute("gioHang", new GioHang());
 
 		LoaiSanPham loaiSanPham = sanPham.getDsLoaiSP().get(0).getLoaiSanPham();
 		model.addAttribute("loaiSanPham", loaiSanPham);
@@ -140,29 +147,53 @@ public class ProductController {
 
 		return "user/shop-details";
 	}
+	
+	@RequestMapping(value = "/id={theId}/them-vao-gio-hang", method = RequestMethod.POST)
+	public String addProductToCart(Model model, 
+			@PathVariable(name = "theId", required = false) Integer sanPhamId,
+			@ModelAttribute("gioHang") GioHang gioHang, 
+			RedirectAttributes redirectAttributes) {
+		gioHang.setNguoiDung(new NguoiDung(2));
+		gioHang.setSanPham(new SanPham(sanPhamId));
 
-	@PostMapping("/id={theId}")
-	public String addReviewProductByProductId(Model model, @PathVariable(name = "theId", required = false) Integer id,
-			@ModelAttribute("danhGia") DanhGia danhGia, RedirectAttributes redirectAttributes) {
-		danhGia.setNguoiDung(new NguoiDung(2));
-		danhGia.setSanPham(new SanPham(id));
-
-		try {
-			String path;
-			path = URLDecoder.decode(danhGia.getNoiDung(), "UTF-8");
-			System.out.println(path);
-		} catch (Exception e) {
-			// LOGGER.error("Error encoding parameter {}", e.getMessage(), e);
+		boolean resultSave = gioHangService.saveGioHang(gioHang);
+		if (resultSave) {
+			redirectAttributes.addAttribute("msg", "Them san pham vao gio hang thanh cong");
+			redirectAttributes.addAttribute("status", 1);
+		} else {
+			redirectAttributes.addAttribute("msg", "Them san pham vao gio hang that bai");
+			redirectAttributes.addAttribute("status", 0);
 		}
 
-		model.addAttribute("danhGia", new DanhGia());
-		 boolean resultSave = danhGiaService.addDanhGia(danhGia);
-		// if (resultSave) {
-		//
-		// } else {
-		//
-		// }
+		return "redirect:/san-pham/id=" + sanPhamId;
+	}
 
-		return "redirect:/san-pham/id=" + id;
+	@RequestMapping(value = "/id={theId}/them-danh-gia", method = RequestMethod.POST)
+	public String addReviewProductByProductId(Model model, 
+			@PathVariable(name = "theId", required = false) Integer sanPhamId,
+			@ModelAttribute("danhGia") DanhGia danhGia, 
+			RedirectAttributes redirectAttributes) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String currentPrincipalName = authentication.getName();
+		System.out.println(currentPrincipalName);
+		danhGia.setNguoiDung(new NguoiDung(2));
+		danhGia.setSanPham(new SanPham(sanPhamId));
+
+		String noiDung = danhGia.getNoiDung();
+		byte[] bytes = noiDung.getBytes(StandardCharsets.ISO_8859_1);
+		noiDung = new String(bytes, StandardCharsets.UTF_8);
+		danhGia.setNoiDung(noiDung);
+		
+		model.addAttribute("danhGia", new DanhGia());
+//		boolean resultSave = danhGiaService.addDanhGia(danhGia);
+//		if (resultSave) {
+//			redirectAttributes.addAttribute("msg", "Danh gia san pham thanh cong");
+//			redirectAttributes.addAttribute("status", 1);
+//		} else {
+//			redirectAttributes.addAttribute("msg", "Danh gia san pham that bai");
+//			redirectAttributes.addAttribute("status", 0);
+//		}
+
+		return "redirect:/san-pham/id=" + sanPhamId;
 	}
 }

@@ -1,19 +1,14 @@
 package N1.Service;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import N1.DAO.CTLoaiSPDAO;
-import N1.DAO.CTLoaiSPDAOImpl;
-import N1.DAO.SanPhamDAO;
-
-import N1.Dto.SanPhamMua;
-import N1.entity.ChiTietLoaiSP;
-import N1.entity.SanPham;
+import N1.DAO.*;
+import N1.DTO.SanPhamMua;
+import N1.entity.*;
 
 @Service
 public class SanPhamServiceImpl implements SanPhamService {
