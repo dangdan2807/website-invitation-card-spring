@@ -32,13 +32,19 @@ $(document).ready(function(){
 	});
 	
 	$(".btn-delete").click(function() {
-		$("#deleteTitleModal").text("Bạn có chắc chắn muốn xóa "+$(this).attr("data-msg")+"?");
+		$("#contentModal").text("Bạn có chắc chắn muốn xóa "+$(this).attr("data-msg")+"?");
 		$(".btn-delete-modal").attr("href", $(this).attr("data-href"));
 		deleteModal.show();
 	});	
 });
 const formatNumber = (value) => {
 	return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+}
+
+const formatNumberPersent = (value) => {
+    return new Intl.NumberFormat(
+        'vi-Vn',
+        { maximumSignificantDigits: 3 }).format(value);
 }
 
 const formatMoney = (value) => {
@@ -52,7 +58,7 @@ const formatMoneyBySelect = function () {
 
 const formatPercentBySelect = function () {
     var price = $(this).text();
-    $(this).text(formatNumber(price) + "%");
+    $(this).text(formatNumberPersent(price) + "%");
 }
 
 $(".money-format").each(formatMoneyBySelect);

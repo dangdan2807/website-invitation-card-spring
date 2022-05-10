@@ -212,7 +212,8 @@ public class AdminController {
 		List<ChiTietHoaDon> dscthd = new ArrayList<ChiTietHoaDon>();
 		for(int i=0; i<dscthdmaSp.size(); i++) {
 			SanPham sanPham = sanPhamService.getSanPhamByIdSanPham(dscthdmaSp.get(i));
-			dscthd.add(new ChiTietHoaDon(hoaDon, sanPham, dscthdsoLuong.get(i), sanPham.getGiaSP()));
+			System.out.println(sanPham.getGiaSauGiamGia());
+			dscthd.add(new ChiTietHoaDon(hoaDon, sanPham, dscthdsoLuong.get(i), sanPham.getGiaSauGiamGia()));
 		}
 		hoaDon.setDsCTHoaDon(dscthd);
 		if(hoaDon.getMaHD() == 0)

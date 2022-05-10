@@ -253,7 +253,7 @@
 										<datalist id="datalistProduct">
 											<c:forEach var="product" items="${dsSanPham}" varStatus="loop">
 												<option value="${product.tenSp}" data-maSp="${product.maSp}" 
-													data-giaSp="${product.giaSP}" data-tenSp="${product.tenSp}">${product.tenSp}</option>
+													data-giaSp="${product.getGiaSauGiamGia()}" data-tenSp="${product.tenSp}">${product.tenSp}</option>
 											</c:forEach>
 										</datalist>
 									</div>
@@ -288,8 +288,8 @@
 												<td>${cthd.sanPham.tenSp}</td>
 												<td><input value="${cthd.soLuong}" 
 													type="number" class="form-control" name="dscthdsoLuong"/></td>
-												<td class="money-format tdGiaSp" data-giaSp="${cthd.sanPham.giaSP}">${cthd.sanPham.giaSP}</td>
-												<td class="money-format thanhTien">${cthd.sanPham.giaSP * cthd.soLuong}</td>
+												<td class="money-format tdGiaSp" data-giaSp="${cthd.giaBan}">${cthd.giaBan}</td>
+												<td class="money-format thanhTien">${cthd.giaBan * cthd.soLuong}</td>
 												<td class="text-center">
 													<a class="btn btn-danger btn-delete-item">Xóa</a>
 												</td>
