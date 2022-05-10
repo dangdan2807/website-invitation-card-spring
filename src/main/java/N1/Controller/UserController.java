@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import N1.DTO.*;
+import N1.Dto.*;
 import N1.Service.*;
 import N1.entity.*;
 
@@ -124,7 +124,9 @@ public class UserController {
 	@RequestMapping(value = "/show-order")
 	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD,Model model) {
 		// Tìm hóa đơn theo mã hóa đơn
+		System.out.println("maHD"+ maHD);
 		HoaDon hoaDon=hoaDonService.findHoaDonById(maHD);
+		System.out.println(hoaDon.toString());
 		List<ChiTietHoaDon> cthds=new ArrayList<ChiTietHoaDon>();
 		cthds=ctHoaDonService.getDSCTHoaDonByMaHD(hoaDon.getMaHD());
 		double tongTienHang=0;
@@ -135,8 +137,9 @@ public class UserController {
 		model.addAttribute("chiTietHoaDons", cthds);
 		model.addAttribute("tongTienHang", tongTienHang);
 		model.addAttribute("giamGia", tongTienHang * 0.05);
+		
 		model.addAttribute("isCategoryPage", 0);
-		return "user/detail-order";
+		return "user/show-my-order";
 	}
 	
 	@RequestMapping(value = "/order/history")

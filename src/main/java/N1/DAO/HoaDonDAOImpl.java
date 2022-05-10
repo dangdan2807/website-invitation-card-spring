@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import N1.Dto.HoaDonDto;
 import N1.entity.HoaDon;
 import N1.entity.LoaiSanPham;
 import N1.entity.NguoiDung;
@@ -131,35 +132,22 @@ public class HoaDonDAOImpl implements HoaDonDAO {
     @Transactional
     public HoaDon findHoaDonById(int maHD) {
         Session currentSession = sessionFactory.getCurrentSession();
-        HoaDon hoaDon = currentSession.find(HoaDon.class, maHD);
-        return hoaDon;
+        String query="select * from HoaDon where maHD ="+maHD;
+        Query<HoaDon> results = currentSession.createNativeQuery(query, HoaDon.class);
+        return results.getSingleResult();
     }
 
 
-	@Override
-	@Transactional
-	public List<HoaDon> findHoaDonByUserId(int maND) {
-		 Session currentSession = sessionFactory.getCurrentSession();
-	        String query = " SELECT hd.* FROM HoaDon hd JOIN NguoiDung nd ON hd.maKH=nd.maND"
-	                + "  where nd.maND=" + maND;
-	        List<Object[]> results = currentSession.createNativeQuery(query).getResultList();
-	        List<HoaDon> hoaDons=new ArrayList<HoaDon>();
-	        
-	        results.stream().forEach(item->{
-	        	 int maHD = Integer.parseInt(item[0].toString());
-	        	 String diaChiGiaoHang=item[1].toString();
-	        	 Date ngayGiaoHang=(Date)item[2];
-	        	 Date ngayLapHoaDon=(Date) item [3];
-	        	 int tongSoLuong=Integer.parseInt(item[4].toString());
-	        	 double tongTien=Double.parseDouble(item[5].toString());
-	        	 String trangThaiGiaoHang=item[6].toString();
-	        	 NguoiDung nguoiDung=new NguoiDung(maND);
-	        	 HoaDon hoaDon=new HoaDon(maHD, ngayLapHoaDon, tongTien, tongSoLuong, nguoiDung);
-	        	 hoaDons.add(hoaDon);
-	        	
-	        });
-	      
-	        return hoaDons;
-		
-	}
+	 @Override
+ 	@Transactional
+ 	public List<HoaDon> findHoaDonByUserId(int maND) {
+ 		 Session currentSession = sessionFactory.getCurrentSession();
+// 	        String query = "select * from HoaDon hd where hd.maKH =" + maND;
+// 	        Query<HoaDon> results = currentSession.createNativeQuery(query, HoaDon.class);
+ 	        
+ 	        
+	        String query = "select * from HoaDon hd where hd.maKH =" + maND;
+	        Query<HoaDon> results = currentSession.createNativeQuery(query, HoaDon.class);
+	        return results.getResultList(); 		
+ 	}
 }

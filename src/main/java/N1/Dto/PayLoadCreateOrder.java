@@ -1,4 +1,4 @@
-package N1.DTO;
+package N1.Dto;
 
 public class PayLoadCreateOrder {
 private String diaChi;

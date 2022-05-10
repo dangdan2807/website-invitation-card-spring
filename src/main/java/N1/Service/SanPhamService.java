@@ -2,7 +2,7 @@ package N1.Service;
 
 import java.util.List;
 
-import N1.DTO.SanPhamMua;
+import N1.Dto.SanPhamMua;
 import N1.entity.SanPham;
 
 public interface SanPhamService {

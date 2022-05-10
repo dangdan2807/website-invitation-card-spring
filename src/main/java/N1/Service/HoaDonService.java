@@ -2,6 +2,7 @@ package N1.Service;
 
 import java.util.List;
 
+import N1.Dto.HoaDonDto;
 import N1.entity.HoaDon;
 
 public interface HoaDonService {

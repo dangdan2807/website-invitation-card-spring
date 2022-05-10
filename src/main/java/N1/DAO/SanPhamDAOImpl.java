@@ -9,7 +9,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import N1.DTO.SanPhamMua;
+import N1.Dto.SanPhamMua;
 import N1.entity.SanPham;
 
 @Repository

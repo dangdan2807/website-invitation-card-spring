@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,14 +48,14 @@ public class HoaDon implements Serializable {
 
     @Column(name = "diaChiGiaoHang", columnDefinition = "TEXT DEFAULT('')")
     private String diaChiGiaoHang;
-
-    @OneToMany(mappedBy = "hoaDon")
+    
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.EAGER)
     private List<ChiTietHoaDon> dsCTHoaDon;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "maKH", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name = "maKH", nullable = false, columnDefinition = "INT")
     private NguoiDung nguoiDung;
-
+    
     public HoaDon() {
     	dsCTHoaDon = new ArrayList<ChiTietHoaDon>();
     }

@@ -49,10 +49,6 @@
 	top: 8px;
 }
 
-img {
-	width: 80px;
-	height: 80px;
-}
 </style>
 </head>
 
@@ -128,7 +124,7 @@ img {
 									<div class="row"
 										style="width: 89%; margin: auto; align-items: center;">
 										<div class="col-lg-2 " style="width: 70px">
-											<img alt="" src="${chitiethoadon.getSanPham().getHinhAnh() }">
+											<img style="width: 80px;" alt="" src="${chitiethoadon.getSanPham().getHinhAnh() }">
 										</div>
 										<div class="col-lg-4">
 											Tên sản phẩm:
