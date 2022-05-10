@@ -12,9 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import N1.Dto.HoaDonDto;
+
 import N1.entity.HoaDon;
-import N1.entity.LoaiSanPham;
 import N1.entity.NguoiDung;
 
 @Repository
@@ -48,7 +47,6 @@ public class HoaDonDAOImpl implements HoaDonDAO {
 
         return dataList;
     }
-
 
 	@Override
 	public List<HoaDon> findAll() {
@@ -142,10 +140,6 @@ public class HoaDonDAOImpl implements HoaDonDAO {
  	@Transactional
  	public List<HoaDon> findHoaDonByUserId(int maND) {
  		 Session currentSession = sessionFactory.getCurrentSession();
-// 	        String query = "select * from HoaDon hd where hd.maKH =" + maND;
-// 	        Query<HoaDon> results = currentSession.createNativeQuery(query, HoaDon.class);
- 	        
- 	        
 	        String query = "select * from HoaDon hd where hd.maKH =" + maND;
 	        Query<HoaDon> results = currentSession.createNativeQuery(query, HoaDon.class);
 	        return results.getResultList(); 		

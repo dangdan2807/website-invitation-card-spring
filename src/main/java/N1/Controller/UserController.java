@@ -50,7 +50,7 @@ public class UserController {
 		return "user/shopping-cart";
 	}
 
-	@RequestMapping({ "/thanh-toan/{maND}", "/checkout/{maND}" })
+    @RequestMapping({ "/thanh-toan/{maND}", "/checkout/{maND}" })
 	public String showCheckoutPage(Model model, @PathVariable int maND) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
@@ -58,9 +58,9 @@ public class UserController {
 		model.addAttribute("nguoiDung", nguoiDung);
 		
 		List<SanPhamMua> dsSanPhamMua = sanPhamService.getSanPhamMua(maND);
-		
+		int soLuong=dsSanPhamMua.size();
 		model.addAttribute("dsSanPhamMua", dsSanPhamMua);
-		
+		model.addAttribute("soLuong", soLuong);
 		double tongTienHang = 0;
 		for (SanPhamMua sanPhamMua : dsSanPhamMua) {
 			tongTienHang += sanPhamMua.getThanhTien();
@@ -70,7 +70,6 @@ public class UserController {
 		model.addAttribute("tongTienHang", tongTienHang);
 		model.addAttribute("giamGia", giamGia);
 		model.addAttribute("tongThanhToan", tongThanhToan);
-
 		model.addAttribute("isCategoryPage", 0);
 		
 		return "user/checkout";
@@ -78,6 +77,8 @@ public class UserController {
 
 	@RequestMapping(value = "/orders/success", method = RequestMethod.POST)
 	public String createHoaDon(@RequestParam("maND") int userId,PayLoadCreateOrder payLoadCreateOrder, Model model) {
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		String diaChi=payLoadCreateOrder.getDiaChi();
 				byte[] bytes = diaChi.getBytes(StandardCharsets.ISO_8859_1);
 				diaChi = new String(bytes, StandardCharsets.UTF_8);
@@ -88,7 +89,6 @@ public class UserController {
 		List<ChiTietHoaDon> chiTietHoaDons = new ArrayList<ChiTietHoaDon>();
 		List<SanPhamMua> dsSanPhamMua = sanPhamService.getSanPhamMua(userId);
 		// có danh sách sản phẩm mua -> mã sp, số lượng , thành tiền
-
 		double tongTienHang = 0;
 		int tongSoLuong = 0;
 		for (SanPhamMua sanPhamMua : dsSanPhamMua) {
@@ -103,7 +103,6 @@ public class UserController {
 		HoaDon hoaDon = new HoaDon(ngayLHD, tongThanhToan, tongSoLuong, trangThaiDonHang, ngayGiaoHang,
 				diaChi, nguoiDung);
 		HoaDon hoadonSave = hoaDonService.addHoaDon(hoaDon);
-
 		dsSanPhamMua.forEach(e -> {
 			SanPham sanPham = sanPhamService.getSanPhamByIdSanPham(e.getMaSp());
 			ChiTietHoaDon cthd = new ChiTietHoaDon(hoadonSave, sanPham, e.getSoLuong(), e.getGiaSp());
@@ -123,6 +122,8 @@ public class UserController {
 	}
 	@RequestMapping(value = "/show-order")
 	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD,Model model) {
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		// Tìm hóa đơn theo mã hóa đơn
 		System.out.println("maHD"+ maHD);
 		HoaDon hoaDon=hoaDonService.findHoaDonById(maHD);
@@ -144,6 +145,8 @@ public class UserController {
 	
 	@RequestMapping(value = "/order/history")
 	public String showHoaDonByNguoiDung( @RequestParam("maND") int userId,Model model) {
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		List<HoaDon> hoaDons=hoaDonService.findHoaDonByUserId(userId);
 		hoaDons.forEach(e->{
 		List<ChiTietHoaDon> cthds=new ArrayList<ChiTietHoaDon>();

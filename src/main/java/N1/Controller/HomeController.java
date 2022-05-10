@@ -1,17 +1,14 @@
 package N1.Controller;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import N1.Dto.SanPhamMua;
 import N1.Service.*;
 import N1.entity.*;
 
@@ -25,8 +22,8 @@ public class HomeController {
 	private LoaiSanPhamService loaiSanPhamService;
 
 	@Autowired
-	private DanhGiaService danhGiaService;	
-	
+	private DanhGiaService danhGiaService;
+
 	@RequestMapping({ "/", "/trang-chu", "/home" })
 	public String showHomePage(Model model) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
@@ -46,9 +43,20 @@ public class HomeController {
 
 		SanPham sanPhamMoi = sanPhamService.getLatestSanPham();
 		model.addAttribute("sanPhamMoi", sanPhamMoi);
-		
+
 		model.addAttribute("tenSanPham", "");
 		model.addAttribute("isCategoryPage", 0);
+
+		// Mặc định userId=1
+		List<SanPhamMua> dsSanPhamMua = sanPhamService.getSanPhamMua(1);
+		int soLuong = dsSanPhamMua.size();
+
+		double tongTienHang = 0;
+		for (SanPhamMua sanPhamMua : dsSanPhamMua) {
+			tongTienHang += sanPhamMua.getThanhTien();
+		}
+		model.addAttribute("soLuong", soLuong);
+		model.addAttribute("tongTienHang", tongTienHang);
 
 		return "user/index";
 	}
@@ -79,7 +87,7 @@ public class HomeController {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		model.addAttribute("isCategoryPage", 0);
-		
+
 		return "user/contact";
 	}
 //
@@ -96,4 +104,3 @@ public class HomeController {
 		return "user/access-denied";
 	}
 }
-
