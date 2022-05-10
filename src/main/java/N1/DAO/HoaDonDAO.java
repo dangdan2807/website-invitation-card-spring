@@ -14,5 +14,7 @@ public interface HoaDonDAO {
     public List<HoaDon> findHoaDonByDate(Date ngayLapHoaDon);
     public List<HoaDon> findHoaDonBySDTKhachHang(String soDienThoai);
     public HoaDon findHoaDonById(int maHD);
+    public void delete(int maHD);
     public HoaDon addHoaDon(HoaDon hoaDon);
+    public List<HoaDon> findHoaDonByUserId(int maND);
 }

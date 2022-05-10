@@ -19,9 +19,13 @@
     const formatNumber = function(value) {
         return new Intl.NumberFormat(
             'vi-Vn',
-            { maximumSignificantDigits: 3 }).format(value);
+            { maximumSignificantDigits: 2 }).format(value);
     }
     
+    const formatNumberBySelect = function() {
+        var price = $(this).text();
+        $(this).text(formatNumber(price));
+    }
     const formatMoney = function(value) {
         return formatNumber(value) + "đ";
     }
@@ -71,6 +75,9 @@
         $('.checkout__order > ul > li > span').each(formatMoneyBySelect);
         $('.checkout__order__subtotal > span').each(formatMoneyBySelect);
         $('.checkout__order__total > span').each(formatMoneyBySelect);
+
+        // format số
+        $('.product__details__text .product__details__rating > span:first-child()').each(formatNumberBySelect);
         
         // format phần trăm
         $('.product__discount__percent').each(formatPercentBySelect);
@@ -287,11 +294,13 @@
         var $button = $(this);
         var oldValue = $button.parent().find('input').val();
         if ($button.hasClass('inc')) {
-            var newVal = parseFloat(oldValue) + 1;
+            // uck
+            var newVal = parseInt(oldValue) + 1;
         } else {
             // Don't allow decrementing below zero
             if (oldValue > 1) {
-                var newVal = parseFloat(oldValue) - 1;
+                // uck
+                var newVal = parseInt(oldValue) - 1;
             } else {
                 // uck
                 newVal = 1;

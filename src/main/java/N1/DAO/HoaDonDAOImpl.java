@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import N1.entity.HoaDon;
 import N1.entity.LoaiSanPham;
 import N1.entity.NguoiDung;
+import N1.entity.SanPham;
 
 @Repository
 public class HoaDonDAOImpl implements HoaDonDAO {
@@ -134,4 +135,36 @@ public class HoaDonDAOImpl implements HoaDonDAO {
         HoaDon hoaDon = currentSession.find(HoaDon.class, maHD);
         return hoaDon;
     }
+
+
+	@Override
+	public void delete(int maHD) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		currentSession.delete(currentSession.find(HoaDon.class, maHD));
+	}
+	
+	@Transactional
+	public List<HoaDon> findHoaDonByUserId(int maND) {
+		 Session currentSession = sessionFactory.getCurrentSession();
+	        String query = " SELECT hd.* FROM HoaDon hd JOIN NguoiDung nd ON hd.maKH=nd.maND"
+	                + "  where nd.maND=" + maND;
+	        List<Object[]> results = currentSession.createNativeQuery(query).getResultList();
+	        List<HoaDon> hoaDons=new ArrayList<HoaDon>();
+	        
+	        results.stream().forEach(item->{
+	        	 int maHD = Integer.parseInt(item[0].toString());
+	        	 String diaChiGiaoHang=item[1].toString();
+	        	 Date ngayGiaoHang=(Date)item[2];
+	        	 Date ngayLapHoaDon=(Date) item [3];
+	        	 int tongSoLuong=Integer.parseInt(item[4].toString());
+	        	 double tongTien=Double.parseDouble(item[5].toString());
+	        	 String trangThaiGiaoHang=item[6].toString();
+	        	 NguoiDung nguoiDung=new NguoiDung(maND);
+	        	 HoaDon hoaDon=new HoaDon(maHD, ngayLapHoaDon, tongTien, tongSoLuong, nguoiDung);
+	        	 hoaDons.add(hoaDon);
+	        	
+	        });
+	      
+	        return hoaDons;
+	}
 }

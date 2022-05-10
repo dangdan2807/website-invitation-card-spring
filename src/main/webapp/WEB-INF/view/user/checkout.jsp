@@ -42,7 +42,6 @@
 			return;
 		event.currentTarget.submit();
 	}
-	
 </script>
 </head>
 
@@ -73,126 +72,135 @@
 	<!-- Breadcrumb Section End -->
 
 	<!-- Checkout Section Begin -->
-	<section class="checkout spad">
-		<div class="container">
-			<!-- <div class="row">
-                <div class="col-lg-12">
-                    <h6>
-                        <span class="icon_tag_alt"></span> Bạn có mã giảm giá?
-                        <a href="#">Tại đây</a> nhập mã của bạn
-                    </h6>
-                </div>
-            </div> -->
-			<div class="checkout__form">
 
-				<form:form id="form-create-order"
-					action="/N1_DeTai39_WebsiteBanThiep/orders/success" method="post" onsubmit="return submicForm()">
-					<div class="row">
-						<div class="col-lg-8 col-md-6">
-							<div class="row">
-								<div class="col-lg-6">
-									<div class="checkout__input">
-										<p>
-											Tên<span>*</span>
-										</p>
-										<input type="text" readonly="readonly"
-											value="${fn:substring(nguoiDung.tenND,fn:split(nguoiDung.tenND, ' ')[0].length() + 1, 500)}" />
-									</div>
-								</div>
-								<div class="col-lg-6">
-									<div class="checkout__input">
-										<p>
-											Họ<span>*</span>
-										</p>
-										<input type="text" readonly="readonly"
-											value="${fn:split(nguoiDung.tenND, ' ')[0]}" />
-									</div>
-								</div>
-							</div>
-							<div class="checkout__input">
-								<p>
-									Số điện thoại<span>*</span>
-								</p>
-								<input type="text" readonly="readonly" name="sdt"
-									value="${nguoiDung.sdt }" />
-							</div>
-							<div class="checkout__input">
-								<p>
-									Email<span>*</span>
-								</p>
-								<input type="text" readonly="readonly" name="taiKhoan"
-									value="${nguoiDung.taiKhoan.tenDangNhap }" />
-							</div>
-							<div class="checkout__input">
-								<p>
-									Địa chỉ<span>*</span>
-								</p>
-								<input id="input_address" name="diaChi" path="diaChi"
-									type="text" placeholder="Địa chỉ của bạn ..."
-									class="checkout__input__add" onkeyUp="validateAdressNotNull()" />
-							</div>
-							<div class="checkout__input">
-								<p>
-									Ghi chú đơn hàng<span>*</span>
-								</p>
-								<input type="text"
-									placeholder="Ghi chú về đơn hàng của bạn, Ví dụ như ghi chú đặc biệt cho đơn hàng" />
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-6">
-							<div class="checkout__order">
-								<h4>Đơn hàng của bạn</h4>
-								<table style="width: 100%" class="tb-hoadon">
-									<tr>
-										<th class="tb-header">Sản phẩm</th>
-										<th class="tb-header">Giá thành</th>
-										<th class="tb-header">Số lượng</th>
-										<th class="tb-header">Thành tiền</th>
-									</tr>
-									<c:forEach var="sanPhamMua" items="${dsSanPhamMua }">
-										<tr>
-											<td>${sanPhamMua.tenSp}</td>
-											<td><fmt:formatNumber value="${sanPhamMua.giaSp}"
-													type="currency" currencySymbol="" />đ</td>
-											<td>${sanPhamMua.soLuong}</td>
-											<td><fmt:formatNumber value="${sanPhamMua.thanhTien}"
-													type="currency" currencySymbol="" />đ</td>
-
-										</tr>
-									</c:forEach>
-
-
-								</table>
-
-								<div class="checkout__order__subtotal">
-									Tổng tiền hàng <span> <c:out value="${tongTienHang}"></c:out></span>
-
-								</div>
-								<div class="row">
-									<div class="col-8">Giảm giá</div>
-									<div class="col-4 text-right">
-										<div class="checkout__order__subtotal"
-											style="border: none; padding-top: 0; font-weight: normal">
-											<span> -<c:out value="${giamGia}"></c:out>
-
-											</span>
-										</div>
-
-									</div>
-								</div>
-								<div class="checkout__order__total">
-									Tổng thanh toán <span> <c:out value="${tongThanhToan}"></c:out>
-
-									</span>
-								</div>
-								<button type="submit" class="site-btn">Đặt hàng</button>
-							</div>
-						</div>
-					</div>
-				</form:form>
-			</div>
+	<c:if test="${dsSanPhamMua.size()==0 }">
+		<div style="text-align: center;" class="mb-4">
+			<p>Giỏ hàng rỗng</p>
+			<a style="color: #326e51; background-color: transparent;"
+				href="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/">Tiếp
+				tục mua hàng <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
 		</div>
-	</section>
+	</c:if>
+
+	<c:if test="${dsSanPhamMua.size()!=0 }">
+		<section class="checkout spad">
+			<div class="container">
+				<div class="checkout__form">
+					<c:url var="toUrl"
+						value="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/user/orders/success">
+						<c:param name="maND" value="${nguoiDung.getMaND() }"></c:param>
+					</c:url>
+					<form:form id="form-create-order" action="${toUrl}" method="post"
+						onsubmit="return submicForm()">
+						<div class="row">
+							<div class="col-lg-8 col-md-6">
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="checkout__input">
+											<p>
+												Tên<span>*</span>
+											</p>
+											<input type="text" readonly="readonly"
+												value="${fn:substring(nguoiDung.tenND,fn:split(nguoiDung.tenND, ' ')[0].length() + 1, 500)}" />
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="checkout__input">
+											<p>
+												Họ<span>*</span>
+											</p>
+											<input type="text" readonly="readonly"
+												value="${fn:split(nguoiDung.tenND, ' ')[0]}" />
+										</div>
+									</div>
+								</div>
+								<div class="checkout__input">
+									<p>
+										Số điện thoại<span>*</span>
+									</p>
+									<input type="text" readonly="readonly" name="sdt"
+										value="${nguoiDung.sdt }" />
+								</div>
+								<div class="checkout__input">
+									<p>
+										Email<span>*</span>
+									</p>
+									<input type="text" readonly="readonly" name="taiKhoan"
+										value="${nguoiDung.taiKhoan.tenDangNhap }" />
+								</div>
+								<div class="checkout__input">
+									<p>
+										Địa chỉ<span>*</span>
+									</p>
+									<input id="input_address" name="diaChi" path="diaChi"
+										style="font-family: 'Roboto', sans-serif;" type="text"
+										placeholder="Địa chỉ của bạn ..." class="checkout__input__add"
+										onkeyUp="validateAdressNotNull()" />
+								</div>
+								<div class="checkout__input">
+									<p>
+										Ghi chú đơn hàng<span>*</span>
+									</p>
+									<input type="text"
+										placeholder="Ghi chú về đơn hàng của bạn, Ví dụ như ghi chú đặc biệt cho đơn hàng" />
+								</div>
+							</div>
+							<div class="col-lg-4 col-md-6">
+								<div class="checkout__order">
+									<h4>Đơn hàng của bạn</h4>
+									<table style="width: 100%" class="tb-hoadon">
+										<tr>
+											<th class="tb-header">Sản phẩm</th>
+											<th class="tb-header">Giá thành</th>
+											<th class="tb-header">Số lượng</th>
+											<th class="tb-header">Thành tiền</th>
+										</tr>
+										<c:forEach var="sanPhamMua" items="${dsSanPhamMua }">
+											<tr>
+												<td>${sanPhamMua.tenSp}</td>
+												<td><fmt:formatNumber value="${sanPhamMua.giaSp}"
+														type="currency" currencySymbol="" />đ</td>
+												<td>${sanPhamMua.soLuong}</td>
+												<td><fmt:formatNumber value="${sanPhamMua.thanhTien}"
+														type="currency" currencySymbol="" />đ</td>
+
+											</tr>
+										</c:forEach>
+
+
+									</table>
+
+									<div class="checkout__order__subtotal">
+										Tổng tiền hàng <span> <c:out value="${tongTienHang}"></c:out></span>
+
+									</div>
+									<div class="row">
+										<div class="col-8">Giảm giá</div>
+										<div class="col-4 text-right">
+											<div class="checkout__order__subtotal"
+												style="border: none; padding-top: 0; font-weight: normal">
+												<span> -<c:out value="${giamGia}"></c:out>
+
+												</span>
+											</div>
+
+										</div>
+									</div>
+									<div class="checkout__order__total">
+										Tổng thanh toán <span> <c:out value="${tongThanhToan}"></c:out>
+
+										</span>
+									</div>
+									<button type="submit" class="site-btn">Đặt hàng</button>
+								</div>
+							</div>
+						</div>
+					</form:form>
+				</div>
+			</div>
+		</section>
+	</c:if>
+
 	<!-- Checkout Section End -->
 
 	<!-- Footer Section Begin -->

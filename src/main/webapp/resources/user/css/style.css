@@ -710,6 +710,10 @@ ol {
     border-radius: 50%;
     float: left;
     margin-right: 20px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .hero__search__phone__text {
@@ -1700,6 +1704,9 @@ ol {
     -ms-transition: all, 0.3s;
     -o-transition: all, 0.3s;
     transition: all, 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* uck - vc */
@@ -1784,6 +1791,15 @@ ol {
 
 .product__details__text p {
     margin-bottom: 45px;
+}
+
+/* uck - vc */
+.product__details__text .product__details__add-cart-btn {
+    border: none;
+}
+
+.product__details__text #gioHang {
+    display: inline-grid;
 }
 
 .product__details__text .primary-btn {
@@ -1993,7 +2009,7 @@ ol {
     border-radius: 4px 4px 0 0;
     border: none;
     color: #666;
-    height: 80px;
+    height: 120px;
     padding: 10px;
     width: 100%;
 }

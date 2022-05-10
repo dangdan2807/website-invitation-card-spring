@@ -36,7 +36,7 @@ public class NguoiDung implements Serializable {
     private String hinhAnh;
 
     @OneToOne
-    @JoinColumn(name = "email", nullable = false, unique = true, columnDefinition = "VARCHAR(255) DEFAULT('')")
+    @JoinColumn(name = "maTaiKhoan", nullable = false, unique = true, columnDefinition = "INT")
     private TaiKhoan taiKhoan;
 
     @OneToMany(mappedBy = "nguoiDung", fetch = FetchType.LAZY)
@@ -125,6 +125,12 @@ public class NguoiDung implements Serializable {
 
 	public void setHinhAnh(String hinhAnh) {
 		this.hinhAnh = hinhAnh;
+	}
+
+	@Override
+	public String toString() {
+		return "NguoiDung [maND=" + maND + ", tenND=" + tenND + ", diaChi=" + diaChi + ", sdt=" + sdt + ", hinhAnh="
+				+ hinhAnh + "]";
 	}
 
     

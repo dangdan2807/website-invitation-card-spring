@@ -48,7 +48,17 @@
 
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
+					<c:if test="${status != null}">
+						<div class="alert alert-${status == 1 ? "success": "warning"} alert-dismissible fade show"
+							role="alert">
+							<strong>Thông báo</strong> ${msg}
+							<button type="button" class="close" data-dismiss="alert"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
 
+					</c:if>
 					<!-- Page Heading -->
 					<h1 class="h3 mb-2 text-gray-800">Quản lý hóa đơn</h1>
 					<!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
@@ -58,8 +68,7 @@
 					<div class="card shadow mb-4">
 						<div class="card-header py-3 row" style="margin: 0">
 							<div class="col-4">
-								<button class="btn btn-primary" data-toggle="modal"
-									data-target="#orderModal">Thêm hóa đơn</button>
+								<button class="btn btn-primary btn-open-modal">Thêm hóa đơn</button>
 							</div>
 							<div class="col-8" style="text-align: right">
 								<jsp:include page="common/page.jsp"></jsp:include>
@@ -99,19 +108,26 @@
 									</tfoot>
 									<tbody>
 										<c:forEach var="order" items="${orders}" varStatus="loop">
+											<c:url var="editLink" value="./order">
+												<c:param name="maHD" value="${order.maHD}" />
+											</c:url>
+											<c:url var="deleteLink" value="./delete-order">
+												<c:param name="maHD" value="${order.maHD}" />
+											</c:url>
 											<tr>
 												<td>${loop.index + 1}</td>
 												<td>${order.maHD }</td>
 												<td>${order.nguoiDung.tenND }</td>
 												<td>${order.nguoiDung.sdt }</td>
 												<td>${order.diaChiGiaoHang }</td>
-												<td>${order.tongTien }<sup>đ</sup></td>
+												<td class="money-format">${order.tongTien }</td>
 												<td>${order.trangThaiDonHang }</td>
 												<td>${order.dateToString(order.ngayGiaoHang) }</td>
 												<td>${order.dateToString(order.ngayLHD) }</td>
 												<td class="text-center">
-													<button class="btn btn-warning btn-edit">Sửa</button>
-													<button class="btn btn-danger btn-delete">Xóa</button>
+													<a class="btn btn-warning btn-edit" href="${editLink }">Sửa</a>
+													<a class="btn btn-danger btn-delete" data-msg="hóa đơn với mã là ${order.maHD }" 
+														data-href="${deleteLink }">Xóa</a>
 												</td>
 											</tr>
 										</c:forEach>
@@ -122,8 +138,7 @@
 						</div>
 						<div class="card-footer py-3 row" style="margin: 0">
 							<div class="col-4">
-								<button class="btn btn-primary" data-toggle="modal"
-									data-target="#orderModal">Thêm hóa đơn</button>
+								<button class="btn btn-primary btn-open-modal">Thêm hóa đơn</button>
 							</div>
 							<div class="col-8" style="text-align: right">
 								<jsp:include page="common/page.jsp"></jsp:include>
@@ -166,15 +181,21 @@
 					<form:form id="form"
 						action="${pageContext.request.contextPath}/admin/order"
 						modelAttribute="order" method="POST">
+						<form:hidden path="ngayLHD" class="clear"/>
+						<div class="mb-3">
+							<form:label path="maHD" cssClass="form-label">Mã hóa đơn</form:label>
+							<form:input path="maHD" type="text" cssClass="form-control clear" 
+								readonly="true"/>
+						</div>
 						<div class="mb-3 ">
 							<div id="search-autocomplete" class="form-outline">
-								<label class="form-label" for="maND">Tìm kiếm khách
-									hàng</label> 
-								<input class="form-control" list="userListOptions"
-									id="maND" placeholder="Type to search...">
+								<form:label path="nguoiDung.maND" class="form-label">Tìm kiếm khách
+									hàng</form:label> 
+								<form:input path="nguoiDung.maND" cssClass="form-control clear seachUser" list="userListOptions"
+									placeholder="Type to search..."/>
 								<datalist id="userListOptions">
 									<c:forEach var="user" items="${users}" varStatus="loop">
-										<option value="${user.maND}">${user.tenND}-${user.sdt}</option>
+										<option value="${user.maND}" data-tenND="${user.tenND}" data-sdt="${user.sdt}">${user.tenND}-${user.sdt}</option>
 									</c:forEach>
 									
 								</datalist>
@@ -182,61 +203,72 @@
 
 						</div>
 						<div class="mb-3">
-							<label for="tenND" class="form-label">Tên khách hàng</label>
-							<input type="text" class="form-control" id="tenND"
-								aria-describedby="tenNDHelp" disabled>
+							<form:label path="nguoiDung.tenND" cssClass="form-label">Tên khách hàng</form:label>
+							<form:input path="nguoiDung.tenND" type="text" cssClass="form-control clear nguoiDungtenND" 
+								readonly="true"/>
 							<div id="tenNDHelp" class="form-text"></div>
 						</div>
 						<div class="mb-3">
-							<label for="sdt" class="form-label">Số điện thoại</label> 
-							<input
-								type="text" class="form-control" id="sdt"
-								aria-describedby="sdtHelp" disabled>
+							<form:label path="nguoiDung.sdt" cssClass="form-label">Số điện thoại</form:label> 
+							<form:input path="nguoiDung.sdt" 
+								type="text" cssClass="form-control clear nguoiDungsdt"
+								aria-describedby="sdtHelp" readonly="true"/>
 							<div id="sdtHelp" class="form-text"></div>
 						</div>
 						<div class="mb-3">
-							<label for="price" class="form-label">Địa chỉ giao hàng</label> 
-							<form:input path="diaChiGiaoHang" type="text" cssClass="form-control"/>
+							<form:label path="diaChiGiaoHang" cssClass="form-label">Địa chỉ giao hàng</form:label> 
+							<form:input path="diaChiGiaoHang" type="text" cssClass="form-control clear"/>
 						</div>
 						<div class="mb-3">
-							<label for="image" class="form-label">Ngày giao hàng</label> 
-							<form:input path="ngayGiaoHang" type="date" cssClass="form-control"/>
+							<form:label path="ngayGiaoHang" cssClass="form-label">Ngày giao hàng</form:label> 
+							<form:input path="ngayGiaoHang" type="date" cssClass="form-control clear" />
 						</div>
 						<div class="mb-3">
-							<label for="image" class="form-label">Trạng thái giao hàng</label>
-							<form:select path="trangThaiDonHang" cssClass="form-select form-control" aria-label="Default select example">
-								  <option selected>Đang xuất hàng</option>
-								  <option value="1">Đang giao hàng</option>
-								  <option value="2">Giao hàng hoàn tất</option>
-								  
+							<form:label path="trangThaiDonHang" class="form-label">Trạng thái giao hàng</form:label>
+							${order.trangThaiDonHang == "pending" ? "selected" : "" }
+							<form:select path="trangThaiDonHang" cssClass="form-select form-control clear" aria-label="Default select example">
+								
+								  <option value="pending" ${order.trangThaiDonHang == "pending" ? "selected" : "" }>
+								  	Đang chờ thanh toán</option>
+								  <option value="payment" ${order.trangThaiDonHang == "payment" ? "selected" : "" }>
+								  	Đã thanh toán</option>
+								  <option value="shipping" ${order.trangThaiDonHang == "shipping" ? "selected" : "" }>
+								  	Đang giao hàng</option>
+								  <option value="complete" ${order.trangThaiDonHang == "complete" ? "selected" : "" }>
+								  	Giao hàng hoàn tất</option>
+								  <option value="cancelled" ${order.trangThaiDonHang == "cancelled" ? "selected" : "" }>
+								  	Đã hủy</option> 
 							</form:select>
 						</div>
+						
 						<div class="card shadow mb-4">
 							<div class="card-header py-3 row" style="margin: 0">
 								<div class="col-6">
 									<div id="search-autocomplete" class="form-outline">
 										<label for="card-name" class="form-label">Tìm kiếm
 											thiệp</label> 
-										<input class="form-control" list="datalistProduct"
-											id="exampleDataList"
+										<input class="form-control clear" list="datalistProduct"
+											id="searchProduct"
 											placeholder="Nhập tên thiệp để thêm vào hóa đơn...">
 										<datalist id="datalistProduct">
 											<c:forEach var="product" items="${dsSanPham}" varStatus="loop">
-												<option value="${product.tenSp}">${product.tenSp}</option>
+												<option value="${product.tenSp}" data-maSp="${product.maSp}" 
+													data-giaSp="${product.getGiaSauGiamGia()}" data-tenSp="${product.tenSp}">${product.tenSp}</option>
 											</c:forEach>
 										</datalist>
 									</div>
 								</div>
 								<div class="col-3">
-									<label for="" class="form-label">Số lượng</label> <input
-										type="number" class="form-control" value="100" min="1"/>
+									<label for="" class="form-label">Số lượng</label> 
+									<input
+										type="number" id="soLuongAdd" class="form-control" value="100" min="1"/>
 								</div>
 								<div class="col-3" style="display: flex; align-items: flex-end;">
-									<button class="btn btn-primary">Thêm sản phẩm</button>
+									<a class="btn btn-primary btn-add-item">Thêm sản phẩm</a>
 								</div>
 							</div>
 							<div class="table-responsive">
-								<table class="table table-bordered table-hover" id="dataTable"
+								<table class="table table-bordered table-hover" id="itemTable"
 									width="100%" cellspacing="0">
 									<thead>
 										<tr>
@@ -249,22 +281,20 @@
 										</tr>
 									</thead>
 									<tbody>
-										
-										<%-- <c:forEach var="cthd" items="order.dsCTHoaDon" varStatus="loop">
-											<form:input path="cthd[0].sanPham.tenSp"/>
-										</c:forEach> --%>
-										
-										<!-- <tr>
-											<td>2</td>
-											<td>Thiệp cưới hiện đại</td>
-											<td><input type="number" class="form-control"
-												value="100" /></td>
-											<td>10.000đ</td>
-											<td>100.000đ</td>
-											<td class="text-center">
-												<button class="btn btn-danger btn-delete">Xóa</button>
-											</td>
-										</tr> -->
+										<c:forEach var="cthd" items="${dsCTHoaDon}" varStatus="loop">
+											<tr>
+												<input type="hidden" value="${cthd.sanPham.maSp}" name="dscthdmaSp"/>
+												<td>${cthd.sanPham.maSp}</td>
+												<td>${cthd.sanPham.tenSp}</td>
+												<td><input value="${cthd.soLuong}" 
+													type="number" class="form-control" name="dscthdsoLuong"/></td>
+												<td class="money-format tdGiaSp" data-giaSp="${cthd.giaBan}">${cthd.giaBan}</td>
+												<td class="money-format thanhTien">${cthd.giaBan * cthd.soLuong}</td>
+												<td class="text-center">
+													<a class="btn btn-danger btn-delete-item">Xóa</a>
+												</td>
+											</tr>
+										</c:forEach>
 									</tbody>
 								</table>
 							</div>
@@ -272,8 +302,8 @@
 								<div class="col-6">
 									Tổng tiền
 								</div>
-								<div class="col-6" style="text-align: right">
-									100.000đ
+								<div class="col-6 money-format" style="text-align: right" id="tongTien">
+									${order.tongTien}
 								</div>
 							</div>
 					</form:form>
@@ -281,8 +311,8 @@
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button"
 						data-dismiss="modal">Hủy</button>
-					<a class="btn btn-primary"
-						onclick="document.querySelector('form#product-form').submit();">Thêm</a>
+					<a class="btn btn-primary btn-form"
+						onclick="document.querySelector('form#form').submit();">${maHD != null ? "Sửa": "Thêm"}</a>
 				</div>
 			</div>
 		</div>
@@ -298,13 +328,107 @@
 	<script>
 		$(document).ready(
 				function() {
+					tinhTong();
 					var modal = new bootstrap.Modal(document
 							.getElementById('orderModal'), {
 						keyboard : false
 					});
-					$(".btn-edit").click(function() {
+					${maHD != null ? "modal.show();": ""}
+					/* $(".btn-edit").click(function() {
+						modal.show();
+					}); */
+					$(".btn-open-modal").click(function() {
+						$(".btn-form").text("Thêm");
+						$(".clear").val("");
+						$("#itemTable > tbody").html('');
+						tinhTong();
+						$("#maHD").val('0');
 						modal.show();
 					});
+					
+					$(".btn-delete-item").click(function (){
+						$(this).parent().parent().remove();
+						tinhTong();
+					});
+					
+					$(".seachUser").on("input", function(){
+						console.log("hi");
+						var val = document.getElementById("nguoiDung.maND").value;
+					    var opts = document.getElementById('userListOptions').childNodes;
+					    for (var i = 0; i < opts.length; i++) {
+					      if (opts[i].value === val) {
+					    	console.log(opts[i], $(opts[i]).attr("data-tenND"), $(opts[i]).attr("data-sdt"));
+					    	$(".nguoiDungtenND").val($(opts[i]).attr("data-tenND"));
+					    	$(".nguoiDungsdt").val($(opts[i]).attr("data-sdt"));
+					        break;
+					      }
+					    }
+					});
+					
+					var currentSellect;
+					$("#searchProduct").on('input', function() {
+						var val = document.getElementById("searchProduct").value;
+					    var opts = document.getElementById('datalistProduct').childNodes;
+					    for (var i = 0; i < opts.length; i++) {
+					      if (opts[i].value === val) {
+					    	console.log(opts[i]);
+					    	currentSellect = opts[i]; 
+					        break;
+					      }
+					    }
+
+					})
+					
+					$(".btn-add-item").click(function(){
+						
+						var maSp = $(currentSellect).attr("data-maSp");
+						var tenSp = $(currentSellect).attr("data-tenSp");
+						var giaSp = $(currentSellect).attr("data-giaSp");
+						var soLuong = Number($("#soLuongAdd").val());
+						var html = `<tr>
+							<input type="hidden" value="`+ maSp +`" name="dscthdmaSp"/>
+							<td>`+ maSp +`</td>
+							<td>`+ tenSp +`</td>
+							<td><input value="`+ soLuong +`" 
+								type="number" class="form-control" name="dscthdsoLuong"/></td>
+							<td class="money-format tdGiaSp" data-giaSp="`+ giaSp +`">`+ formatNumber(giaSp) +`</td>
+							<td class="money-format thanhTien">`+ formatNumber(giaSp*soLuong) +`</td>
+							<td class="text-center">
+								<a class="btn btn-danger btn-delete-item">Xóa</a>
+							</td>
+						</tr>`;
+						
+						$("#itemTable > tbody").append(html);
+						
+						var btnDelete = document.querySelectorAll(".btn-delete-item");
+						for(var i=0; i<btnDelete.length; i++){
+							btnDelete[i].addEventListener("click", function (){
+								$(this).parent().parent().remove();
+								tinhTong();
+							})
+						}
+						$("#searchProduct").val("");
+						tinhTong();
+					});
+
+					$("input[name='dscthdsoLuong']").on("input", tinhTong);
+					
+					
+					
+					function tinhTong(){
+						var item = $("#itemTable > tbody > tr");
+						var tong = 0;
+						for(var i=0; i<item.length; i++){
+							var soLuong = $(item[i]).find("input[name='dscthdsoLuong']").val();
+							var giaSp = $(item[i]).find(".tdGiaSp").attr("data-giaSp");
+							
+							tong += giaSp * soLuong;
+							console.log(soLuong, giaSp);
+							$(item[i]).find(".thanhTien").text(formatNumber(giaSp * soLuong));
+						}
+						
+						$("#tongTien").text(formatNumber(tong));
+					}
 				});
 	</script>
 </body>

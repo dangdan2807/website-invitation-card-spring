@@ -3,41 +3,27 @@ package N1.Controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import N1.DAO.SanPhamDAO;
-import N1.Service.HoaDonService;
-import N1.Service.LoaiSanPhamService;
-import N1.Service.NguoiDungService;
-import N1.Service.SanPhamService;
-import N1.Service.SanPhamServiceImpl;
+import N1.DTO.DSCTHoaDonForm;
+import N1.Service.*;
 import N1.Service.ThongKeService;
 import N1.Service.ThongKeServiceImpl.LineChartObject;
 import N1.Service.ThongKeServiceImpl.LabelCount;
-import N1.entity.ChiTietLoaiSP;
-import N1.entity.HoaDon;
-import N1.entity.LoaiSanPham;
-import N1.entity.NguoiDung;
-import N1.entity.SanPham;
-import N1.entity.TaiKhoan;
+import N1.entity.*;
 import N1.utils.Datetime;
 
 @Controller
@@ -57,6 +43,9 @@ public class AdminController {
 
 	@Autowired
 	private HoaDonService hoaDonService;	
+	
+	@Autowired
+	private CTHoaDonService ctHoaDonService;	
 	
 	/**************************** Dashboard *******************************/
 	@GetMapping("")
@@ -158,10 +147,10 @@ public class AdminController {
 		
 		NguoiDung nguoiDung2 = nguoiDungService.findNguoiDungById(nguoiDung.getMaND());
 		nguoiDung2.setTenND(nguoiDung.getTenND());
-		nguoiDung2.setSdt(nguoiDung.getTenND());
+		nguoiDung2.setSdt(nguoiDung.getSdt());
 		nguoiDung2.setDiaChi(nguoiDung.getDiaChi());
-		nguoiDung2.setHinhAnh(nguoiDung.getTenND());
-		
+		nguoiDung2.setHinhAnh(nguoiDung.getHinhAnh());
+		System.out.println(nguoiDung2.getTaiKhoan());
 		nguoiDungService.save(nguoiDung2);
 		
 		redirectAttributes.addAttribute("msg", "Cập nhật người dùng thành công");
@@ -172,15 +161,33 @@ public class AdminController {
 	
 	/**************************** Order *******************************/
 	@GetMapping("/order")
-	public String order(@RequestParam(name = "page", required = false) Integer page, Model model, HttpServletRequest request) {
+	public String order(@RequestParam(name = "maHD", required = false) Integer maHD, 
+			@RequestParam(name = "page", required = false) Integer page, 
+			Model model, HttpServletRequest request) {
 		String path = request.getServletPath();
 		
 		if(page == null)
 			page = 1;
 		
+		model.addAttribute("msg", request.getParameter("msg"));
+		model.addAttribute("status", request.getParameter("status"));
+		
+		HoaDon order = new HoaDon();
+		List<ChiTietHoaDon> dsCTHoaDon = new ArrayList<ChiTietHoaDon>();
+		if(maHD != null) {
+			order = hoaDonService.findHoaDonById(maHD);
+			dsCTHoaDon = ctHoaDonService.getChiTietHoaDonByMaHD(maHD);
+			order.setDsCTHoaDon(dsCTHoaDon);
+		}
+		System.out.println(dsCTHoaDon);
 		List<SanPham> dsSanPham = sanPhamService.getDSSanPham(page);
 		List<NguoiDung> users = nguoiDungService.findAll();
 		List<HoaDon> orders = hoaDonService.findAll(page);
+		
+		
+		
+		model.addAttribute("maHD", maHD);
+		model.addAttribute("dsCTHoaDon", dsCTHoaDon);
 		model.addAttribute("title", "Quản lý hóa đơn");
 		model.addAttribute("numberOfPage", hoaDonService.getNumberOfPage());
 		model.addAttribute("currentPage", page);
@@ -188,8 +195,48 @@ public class AdminController {
 		model.addAttribute("orders", orders);
 		model.addAttribute("users", users);
 		model.addAttribute("dsSanPham", dsSanPham);
-		model.addAttribute("order", new HoaDon());
+		model.addAttribute("order", order);
 		return "admin/order";
+	}
+	
+	@PostMapping("/order")
+	public String addOrUpdateOrder(@ModelAttribute("hoaDon") HoaDon hoaDon, 
+			@RequestParam("dscthdmaSp") List<Integer> dscthdmaSp,
+			@RequestParam("dscthdsoLuong") List<Integer> dscthdsoLuong, 
+			Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		System.out.println(hoaDon);
+		System.out.println(dscthdmaSp);
+		System.out.println(dscthdsoLuong);
+		
+		
+		List<ChiTietHoaDon> dscthd = new ArrayList<ChiTietHoaDon>();
+		for(int i=0; i<dscthdmaSp.size(); i++) {
+			SanPham sanPham = sanPhamService.getSanPhamByIdSanPham(dscthdmaSp.get(i));
+			System.out.println(sanPham.getGiaSauGiamGia());
+			dscthd.add(new ChiTietHoaDon(hoaDon, sanPham, dscthdsoLuong.get(i), sanPham.getGiaSauGiamGia()));
+		}
+		hoaDon.setDsCTHoaDon(dscthd);
+		if(hoaDon.getMaHD() == 0)
+			hoaDon.setNgayLHD(Datetime.getToday());
+		hoaDonService.saveHoaDon(hoaDon);
+		if(hoaDon.getMaHD() == 0) {
+			redirectAttributes.addAttribute("msg", "Thêm hóa đơn thành công!");
+			redirectAttributes.addAttribute("status", 1);
+		}else {
+			redirectAttributes.addAttribute("msg", "Cập nhật hóa đơn thành công");
+			redirectAttributes.addAttribute("status", 1);
+		}
+		
+		return "redirect:/admin/order";
+	}
+	
+	@GetMapping("/delete-order")
+	public String deleteOrder(@RequestParam(name = "maHD") Integer maHD, Model model, HttpServletRequest request, 
+			RedirectAttributes redirectAttributes) {
+		redirectAttributes.addAttribute("msg", "Xóa hóa đơn thành công!");
+		redirectAttributes.addAttribute("status", 1);
+		hoaDonService.delete(maHD);
+		return "redirect:/admin/order";
 	}
 	
 	/**************************** Product *******************************/

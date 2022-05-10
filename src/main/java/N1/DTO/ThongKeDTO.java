@@ -1,4 +1,4 @@
-package N1.DTO;
+package N1.Dto;
 
 import java.util.Date;
 import java.util.List;

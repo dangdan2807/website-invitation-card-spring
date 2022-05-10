@@ -69,4 +69,30 @@ public class ChiTietHoaDon implements Serializable {
     public double getThanhTien() {
         return this.giaBan * this.soLuong;
     }
+
+	public HoaDon getHoaDon() {
+		return hoaDon;
+	}
+
+	public void setHoaDon(HoaDon hoaDon) {
+		this.hoaDon = hoaDon;
+	}
+
+	public double getGiaBan() {
+		return giaBan;
+	}
+
+	public void setGiaBan(double giaBan) {
+		this.giaBan = giaBan;
+	}
+
+
+
+	@Override
+	public String toString() {
+		return "ChiTietHoaDon [sanPham=" + sanPham.getMaSp() + ", soLuong=" + soLuong + ", giaBan="
+				+ giaBan + "]";
+	}
+    
+    
 }

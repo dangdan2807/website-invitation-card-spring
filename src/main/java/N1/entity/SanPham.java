@@ -95,6 +95,13 @@ public class SanPham implements Serializable {
         this.giaMua = giaMua;
     }
     
+    public SanPham(int maSp, String tenSp, String hinhAnh, double giaSP) {
+        this.maSp = maSp;
+        this.tenSp = tenSp;
+        this.hinhAnh = hinhAnh;
+        this.giaSP = giaSP;
+    }
+    
     public SanPham(int maSp) {
 		super();
 		this.maSp = maSp;
@@ -181,6 +188,10 @@ public class SanPham implements Serializable {
 
 	public void setDsDanhGia(List<DanhGia> dsDanhGia) {
 		this.dsDanhGia = dsDanhGia;
+	}
+	
+	public double getGiaSauGiamGia() {
+		return giaSP * (100 - giamGia) / 100;
 	}
 	
 	public String toStringLoaiSp() {

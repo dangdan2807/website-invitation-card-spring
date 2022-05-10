@@ -2,6 +2,8 @@ package N1.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -15,6 +17,10 @@ import javax.persistence.CascadeType;
 @Table(name = "TaiKhoan")
 public class TaiKhoan implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "maTaiKhoan", nullable = false, columnDefinition = "INT")
+    private int maTaiKhoan;
+
     @Column(name = "tenDangNhap", nullable = false, columnDefinition = "VARCHAR(255)")
     private String tenDangNhap;
 
@@ -34,6 +40,14 @@ public class TaiKhoan implements Serializable {
     public TaiKhoan() {
     }
 
+    public TaiKhoan(int maTaiKhoan, String tenDangNhap, String matKhau, int tinhTrang, ChucVu chucVu) {
+        this.maTaiKhoan = maTaiKhoan;
+        this.tenDangNhap = tenDangNhap;
+        this.matKhau = matKhau;
+        this.tinhTrang = tinhTrang;
+        this.chucVu = chucVu;
+    }
+
     public TaiKhoan(String tenDangNhap, String matKhau, int tinhTrang, ChucVu chucVu) {
         this.tenDangNhap = tenDangNhap;
         this.matKhau = matKhau;
@@ -51,6 +65,14 @@ public class TaiKhoan implements Serializable {
         this.tenDangNhap = tenDangNhap;
         this.tinhTrang = tinhTrang;
         this.chucVu = chucVu;
+    }
+
+    public int getMaTaiKhoan() {
+        return maTaiKhoan;
+    }
+
+    public void setMaTaiKhoan(int maTaiKhoan) {
+        this.maTaiKhoan = maTaiKhoan;
     }
 
     public String getTenDangNhap() {
@@ -85,4 +107,9 @@ public class TaiKhoan implements Serializable {
         this.chucVu = chucVu;
     }
 
+	@Override
+	public String toString() {
+		return "TaiKhoan [tenDangNhap=" + tenDangNhap + ", matKhau=" + matKhau + ", tinhTrang=" + tinhTrang
+				+ ", chucVu=" + chucVu + ", nguoiDung=" + nguoiDung + "]";
+	}
 }

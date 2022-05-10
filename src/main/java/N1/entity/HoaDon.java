@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import N1.utils.Datetime;
 
 @Entity
@@ -28,6 +31,7 @@ public class HoaDon implements Serializable {
     @Column(name = "maHD", nullable = false)
     private int maHD;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "ngayLHD", nullable = false, columnDefinition = "DATETIME DEFAULT(GETDATE())")
     private Date ngayLHD;
@@ -41,6 +45,7 @@ public class HoaDon implements Serializable {
     @Column(name = "trangThaiDonHang", nullable = false, columnDefinition = "NVARCHAR(100) DEFAULT(N'Chưa thanh toán')")
     private String trangThaiDonHang;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name = "ngayGiaoHang", columnDefinition = "DATETIME")
     private Date ngayGiaoHang;
@@ -48,7 +53,7 @@ public class HoaDon implements Serializable {
     @Column(name = "diaChiGiaoHang", columnDefinition = "TEXT DEFAULT('')")
     private String diaChiGiaoHang;
 
-    @OneToMany(mappedBy = "hoaDon")
+    @OneToMany(mappedBy = "hoaDon", cascade = CascadeType.REMOVE)
     private List<ChiTietHoaDon> dsCTHoaDon;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -87,71 +92,71 @@ public class HoaDon implements Serializable {
 		this.nguoiDung = nguoiDung;
 	}
 
+	
+	
 	public int getMaHD() {
-        return maHD;
-    }
+		return maHD;
+	}
 
-    public void setMaHD(int maHD) {
-        this.maHD = maHD;
-    }
+	public void setMaHD(int maHD) {
+		this.maHD = maHD;
+	}
 
-    public Date getNgayLHD() {
-        return ngayLHD;
-    }
+	public Date getNgayLHD() {
+		return ngayLHD;
+	}
 
-    public void setNgayLHD(Date ngayLHD) {
-        this.ngayLHD = ngayLHD;
-    }
+	public void setNgayLHD(Date ngayLHD) {
+		this.ngayLHD = ngayLHD;
+	}
 
-    public double getTongTien() {
-        return tongTien;
-    }
+	public double getTongTien() {
+		return tongTien;
+	}
 
-    public void setTongTien(double tongTien) {
-        this.tongTien = tongTien;
-    }
+	public void setTongTien(double tongTien) {
+		this.tongTien = tongTien;
+	}
 
-    public double getTongSoLuong() {
-        return tongSoLuong;
-    }
+	public double getTongSoLuong() {
+		return tongSoLuong;
+	}
 
-    public void setTongSoLuong(double tongSoLuong) {
-        this.tongSoLuong = tongSoLuong;
-    }
+	public void setTongSoLuong(double tongSoLuong) {
+		this.tongSoLuong = tongSoLuong;
+	}
 
-    public String getTrangThaiDonHang() {
-        return trangThaiDonHang;
-    }
+	public String getTrangThaiDonHang() {
+		return trangThaiDonHang;
+	}
 
-    public void setTrangThaiDonHang(String trangThaiDonHang) {
-        this.trangThaiDonHang = trangThaiDonHang;
-    }
+	public void setTrangThaiDonHang(String trangThaiDonHang) {
+		this.trangThaiDonHang = trangThaiDonHang;
+	}
 
-    public List<ChiTietHoaDon> getDsCTHoaDon() {
-        return dsCTHoaDon;
-    }
+	public Date getNgayGiaoHang() {
+		return ngayGiaoHang;
+	}
 
-    public void setDsCTHoaDon(List<ChiTietHoaDon> dsCTHoaDon) {
-        this.dsCTHoaDon = dsCTHoaDon;
-    }
+	public void setNgayGiaoHang(Date ngayGiaoHang) {
+		this.ngayGiaoHang = ngayGiaoHang;
+	}
 
-    public Date getNgayGiaoHang() {
-        return ngayGiaoHang;
-    }
+	public String getDiaChiGiaoHang() {
+		return diaChiGiaoHang;
+	}
 
-    public void setNgayGiaoHang(Date ngayGiaoHang) {
-        this.ngayGiaoHang = ngayGiaoHang;
-    }
+	public void setDiaChiGiaoHang(String diaChiGiaoHang) {
+		this.diaChiGiaoHang = diaChiGiaoHang;
+	}
 
-    public String getDiaChiGiaoHang() {
-        return diaChiGiaoHang;
-    }
+	public List<ChiTietHoaDon> getDsCTHoaDon() {
+		return dsCTHoaDon;
+	}
 
-    public void setDiaChiGiaoHang(String diaChiGiaoHang) {
-        this.diaChiGiaoHang = diaChiGiaoHang;
-    }
-    
-    
+	public void setDsCTHoaDon(List<ChiTietHoaDon> dsCTHoaDon) {
+		this.dsCTHoaDon = dsCTHoaDon;
+	}
 
 	public NguoiDung getNguoiDung() {
 		return nguoiDung;
@@ -160,7 +165,7 @@ public class HoaDon implements Serializable {
 	public void setNguoiDung(NguoiDung nguoiDung) {
 		this.nguoiDung = nguoiDung;
 	}
-	
+
 	public String dateToString(Date d) {
 		String str = Datetime.dateToString(d);
 		if(str==null){
@@ -173,7 +178,7 @@ public class HoaDon implements Serializable {
 	public String toString() {
 		return "HoaDon [maHD=" + maHD + ", ngayLHD=" + ngayLHD + ", tongTien=" + tongTien + ", tongSoLuong="
 				+ tongSoLuong + ", trangThaiDonHang=" + trangThaiDonHang + ", ngayGiaoHang=" + ngayGiaoHang
-				+ ", diaChiGiaoHang=" + diaChiGiaoHang + ", dsCTHoaDon=" + dsCTHoaDon + ", nguoiDung=" + nguoiDung
+				+ ", diaChiGiaoHang=" + diaChiGiaoHang + ", nguoiDung=" + nguoiDung
 				+ "]";
 	}
     
