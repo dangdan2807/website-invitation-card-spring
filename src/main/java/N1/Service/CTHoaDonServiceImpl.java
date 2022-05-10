@@ -29,6 +29,12 @@ public class CTHoaDonServiceImpl implements CTHoaDonService {
 
 	@Override
 	@Transactional
+	public List<ChiTietHoaDon> getChiTietHoaDonByMaHD(int maHD) {
+		return ctHoaDonDAO.getChiTietHoaDonByMaHD(maHD);
+	}
+
+	@Override
+	@Transactional
 	public List<ChiTietHoaDon> getDSCTHoaDonByMaHD(int mHD) {
 		
 		return ctHoaDonDAO.getDSCTHoaDonByMaHD(mHD);

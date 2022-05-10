@@ -217,8 +217,8 @@
 								<form:errors path="giamGia" cssClass="form-text" />
 							</div>
 							<div class="mb-3 col-6">
-								<label for="real-price" class="form-label">Giá sau khuyến mãi (đồng)</label> 
-								<input type="number" class="form-control money-format" id="real-price" disabled>
+								<label for="real-price" class="form-label">Giá sau khuyến mãi</label> 
+								<input type="text" class="form-control money-format" id="real-price" disabled>
 							</div>
 						</div>
 						<div class="mb-3">

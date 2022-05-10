@@ -16,7 +16,11 @@ public class Datetime {
     static DateFormat sqlDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public static Date getToday(){
-        return new Date(System.currentTimeMillis());
+        return new Date(System.currentTimeMillis()/86400000*86400000);
+    }
+    
+    public static Date endDate(Date d) {
+    	return new Date(d.getYear(), d.getMonth(), d.getDate(), 23, 59);
     }
    
     public static Date date(int day, int month, int year){
@@ -72,6 +76,13 @@ public class Datetime {
             calendar.add(Calendar.DATE, 1);
         }
         return dates;
+    }
+    
+    public static Date tomorrow(Date d) {
+    	Calendar calendar = new GregorianCalendar();
+        calendar.setTime(d);
+        calendar.add(Calendar.DATE, +1);
+        return calendar.getTime();
     }
     
     public static Date yesterday()

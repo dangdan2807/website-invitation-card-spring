@@ -1,4 +1,4 @@
-package N1.Dto;
+package N1.DTO;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,42 +25,47 @@ public class ThongKeDTOImpl implements ThongKeDTO{
 
 	@Override
 	public long tongDoanhThu(Date from, Date to) {
+		to = Datetime.tomorrow(to);
 		Session session = sessionFactory.getCurrentSession();
 		Long doanhThu = ((BigDecimal)session.createNativeQuery("select doanhThu=COALESCE(SUM(tongTien), 0) from HoaDon\r\n"
-				+ "where ngayLHD >= '"+Datetime.sqlDateFormat(from)+"' and ngayLHD <= '"+Datetime.sqlDateFormat(to)+"';").getSingleResult()).longValue();
+				+ "where ngayLHD >= '"+Datetime.sqlDateFormat(from)+"' and ngayLHD < '"+Datetime.sqlDateFormat(to)+"';").getSingleResult()).longValue();
 		return doanhThu;
 	}
 
 	@Override
 	public long tongLoiNhuan(Date from, Date to) {
+		to = Datetime.tomorrow(to);
 		Session session = sessionFactory.getCurrentSession();
 		long tongLoiNhuan = ((BigDecimal)session.createNativeQuery("select loiNhuan=COALESCE(SUM((giaBan-giaMua)*cthd.soLuong), 0) from HoaDon as hd \r\n"
 				+ "inner join ChiTietHoaDon as cthd \r\n"
 				+ "on hd.maHD = cthd.maHD \r\n"
 				+ "inner join SanPham as sp \r\n"
 				+ "on sp.maSP = cthd.maSP \r\n"
-				+ "where ngayLHD >= '"+Datetime.sqlDateFormat(from)+"' and ngayLHD <= '"+Datetime.sqlDateFormat(to)+"';").getSingleResult()).longValue();
+				+ "where ngayLHD >= '"+Datetime.sqlDateFormat(from)+"' and ngayLHD < '"+Datetime.sqlDateFormat(to)+"';").getSingleResult()).longValue();
 		return tongLoiNhuan;
 	}
 
 	@Override
 	public int tongSoDonHang(Date from, Date to) {
+		to = Datetime.tomorrow(to);
 		Session session = sessionFactory.getCurrentSession();
 		int doanhThu = (int) session.createNativeQuery("select soDonHang=COUNT(maHD) from HoaDon\r\n"
-				+ "where ngayLHD >= '"+Datetime.sqlDateFormat(from)+"' and ngayLHD <= '"+Datetime.sqlDateFormat(to)+"';").getSingleResult();
+				+ "where ngayLHD >= '"+Datetime.sqlDateFormat(from)+"' and ngayLHD < '"+Datetime.sqlDateFormat(to)+"';").getSingleResult();
 		return doanhThu;
 	}
 
 	@Override
 	public int tongSoThiepBan(Date from, Date to) {
+		to = Datetime.tomorrow(to);
 		Session session = sessionFactory.getCurrentSession();
 		int tongSoLuong = (int) session.createNativeQuery("select tongSoLuong=COALESCE(SUM(tongSoLuong), 0) from HoaDon\r\n"
-				+ "where ngayLHD >= '"+Datetime.sqlDateFormat(from)+"' and ngayLHD <= '"+Datetime.sqlDateFormat(to)+"';").getSingleResult();
+				+ "where ngayLHD >= '"+Datetime.sqlDateFormat(from)+"' and ngayLHD < '"+Datetime.sqlDateFormat(to)+"';").getSingleResult();
 		return tongSoLuong;
 	}
 
 	@Override
 	public LabelCount soDanhMucBanRa(Date from, Date to) {
+		to = Datetime.tomorrow(to);
 		Session session = sessionFactory.getCurrentSession();
 		List<Object[]> results = session.createNativeQuery("select lsp.tenLSP, soLuong = COALESCE(SUM(cthd.soLuong), 0)\r\n"
 				+ "from HoaDon as hd \r\n"
@@ -72,7 +77,7 @@ public class ThongKeDTOImpl implements ThongKeDTO{
 				+ "on sp.maSP = ctlsp.maSP\r\n"
 				+ "inner join LoaiSanPham as lsp\r\n"
 				+ "on ctlsp.maLSP = lsp.maLSP\r\n"
-				+ "where ngayLHD >= '"+Datetime.sqlDateFormat(from)+"' and ngayLHD <= '"+Datetime.sqlDateFormat(to)+"'\r\n"
+				+ "where ngayLHD >= '"+Datetime.sqlDateFormat(from)+"' and ngayLHD < '"+Datetime.sqlDateFormat(to)+"'\r\n"
 				+ "group by lsp.maLSP, lsp.tenLSP;").getResultList();
 		
 		List<String> label = new ArrayList<>();
@@ -88,6 +93,7 @@ public class ThongKeDTOImpl implements ThongKeDTO{
 
 	@Override
 	public LabelCount soSanPhamBanRa(Date from, Date to) {
+		to = Datetime.tomorrow(to);
 		Session session = sessionFactory.getCurrentSession();
 		List<Object[]> results = session.createNativeQuery("select tenSp, soLuong=COALESCE(SUM(cthd.soLuong), 0)\r\n"
 				+ "from HoaDon as hd \r\n"
@@ -95,7 +101,7 @@ public class ThongKeDTOImpl implements ThongKeDTO{
 				+ "on hd.maHD = cthd.maHD \r\n"
 				+ "inner join SanPham as sp \r\n"
 				+ "on sp.maSP = cthd.maSP \r\n"
-				+ "where ngayLHD >= '"+Datetime.sqlDateFormat(from)+"' and ngayLHD <= '"+Datetime.sqlDateFormat(to)+"'\r\n"
+				+ "where ngayLHD >= '"+Datetime.sqlDateFormat(from)+"' and ngayLHD < '"+Datetime.sqlDateFormat(to)+"'\r\n"
 				+ "group by sp.maSp, tenSp;").getResultList();
 		
 		List<String> label = new ArrayList<>();

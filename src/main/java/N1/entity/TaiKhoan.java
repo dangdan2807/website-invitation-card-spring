@@ -107,4 +107,9 @@ public class TaiKhoan implements Serializable {
         this.chucVu = chucVu;
     }
 
+	@Override
+	public String toString() {
+		return "TaiKhoan [tenDangNhap=" + tenDangNhap + ", matKhau=" + matKhau + ", tinhTrang=" + tinhTrang
+				+ ", chucVu=" + chucVu + ", nguoiDung=" + nguoiDung + "]";
+	}
 }

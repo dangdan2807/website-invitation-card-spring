@@ -37,4 +37,20 @@ public class ChiTietHoaDonPK implements Serializable {
         return true;
     }
 
+	public int getHoaDon() {
+		return hoaDon;
+	}
+
+	public void setHoaDon(int hoaDon) {
+		this.hoaDon = hoaDon;
+	}
+
+	public int getSanPham() {
+		return sanPham;
+	}
+
+	public void setSanPham(int sanPham) {
+		this.sanPham = sanPham;
+	}
+
 }
