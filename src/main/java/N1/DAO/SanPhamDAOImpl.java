@@ -136,8 +136,8 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 	@Override
 	public List<SanPham> getLatestSanPhams(int numOfLines) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		String query = "from SanPham sp Order By sp.maSp DESC";
-		Query<SanPham> results = currentSession.createQuery(query, SanPham.class);
+		String query = "select * from SanPham sp Order By sp.maSp DESC";
+		Query<SanPham> results = currentSession.createNativeQuery(query, SanPham.class);
 		results.setMaxResults(numOfLines);
 		return results.getResultList();
 	}
