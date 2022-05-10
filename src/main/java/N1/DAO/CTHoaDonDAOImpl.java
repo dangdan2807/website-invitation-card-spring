@@ -50,4 +50,14 @@ public class CTHoaDonDAOImpl implements CTHoaDonDAO {
 		return chiTietHoaDon;
 	}
 
+	@Override
+	@Transactional
+	public List<ChiTietHoaDon> getDSCTHoaDonByMaHD(int mHD) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		String query="select * from ChiTietHoaDon where maHD ="+mHD;
+		List<ChiTietHoaDon> cthd=new ArrayList<ChiTietHoaDon>();
+		cthd=currentSession.createNativeQuery(query,ChiTietHoaDon.class).getResultList();
+		return cthd;
+	}
+
 }

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import N1.Dto.*;
 import N1.Service.*;
@@ -55,8 +56,11 @@ public class UserController {
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		NguoiDung nguoiDung = nguoiDungService.findNguoiDungById(maND);
 		model.addAttribute("nguoiDung", nguoiDung);
+		
 		List<SanPhamMua> dsSanPhamMua = sanPhamService.getSanPhamMua(maND);
+		
 		model.addAttribute("dsSanPhamMua", dsSanPhamMua);
+		
 		double tongTienHang = 0;
 		for (SanPhamMua sanPhamMua : dsSanPhamMua) {
 			tongTienHang += sanPhamMua.getThanhTien();
@@ -73,12 +77,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/orders/success", method = RequestMethod.POST)
-	public String createHoaDon(PayLoadCreateOrder payLoadCreateOrder, Model model) {
+	public String createHoaDon(@RequestParam("maND") int userId,PayLoadCreateOrder payLoadCreateOrder, Model model) {
 		String diaChi=payLoadCreateOrder.getDiaChi();
 				byte[] bytes = diaChi.getBytes(StandardCharsets.ISO_8859_1);
 				diaChi = new String(bytes, StandardCharsets.UTF_8);
 		// 1 Lay user tu context security
-		Integer userId = 19;
 		// 1.1 lay chi tiet user
 		NguoiDung nguoiDung = nguoiDungService.findNguoiDungById(userId);
 		// 2 Lay thong tin gio hang tu user
@@ -107,7 +110,6 @@ public class UserController {
 			ctHoaDonService.addChiTietHoaDon(cthd);
 			chiTietHoaDons.add(cthd);
 		});
-
 		// 4 Xoa gio hang cua khach hang
 		gioHangService.deleteGioHangByIdNguoiDung(userId);
 		// 5 Tao trang chi tiet hoa don( truyen du lieu hoa don vua tao duoc qua trang
@@ -116,7 +118,38 @@ public class UserController {
 		model.addAttribute("chiTietHoaDons", chiTietHoaDons);
 		model.addAttribute("tongTienHang", tongTienHang);
 		model.addAttribute("giamGia", tongTienHang * 0.05);
-		System.out.println(hoadonSave.toString());
+		model.addAttribute("isCategoryPage", 0);
 		return "user/detail-order";
+	}
+	@RequestMapping(value = "/show-order")
+	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD,Model model) {
+		// Tìm hóa đơn theo mã hóa đơn
+		HoaDon hoaDon=hoaDonService.findHoaDonById(maHD);
+		List<ChiTietHoaDon> cthds=new ArrayList<ChiTietHoaDon>();
+		cthds=ctHoaDonService.getDSCTHoaDonByMaHD(hoaDon.getMaHD());
+		double tongTienHang=0;
+		for (ChiTietHoaDon chiTietHoaDon : cthds) {
+			tongTienHang=tongTienHang+chiTietHoaDon.getThanhTien();
+		}
+		model.addAttribute("hoadonThanhToan", hoaDon);
+		model.addAttribute("chiTietHoaDons", cthds);
+		model.addAttribute("tongTienHang", tongTienHang);
+		model.addAttribute("giamGia", tongTienHang * 0.05);
+		model.addAttribute("isCategoryPage", 0);
+		return "user/detail-order";
+	}
+	
+	@RequestMapping(value = "/order/history")
+	public String showHoaDonByNguoiDung( @RequestParam("maND") int userId,Model model) {
+		List<HoaDon> hoaDons=hoaDonService.findHoaDonByUserId(userId);
+		hoaDons.forEach(e->{
+		List<ChiTietHoaDon> cthds=new ArrayList<ChiTietHoaDon>();
+		cthds=ctHoaDonService.getDSCTHoaDonByMaHD(e.getMaHD());
+		e.setDsCTHoaDon(cthds);
+		});
+				
+		model.addAttribute("hoadons",hoaDons);
+		model.addAttribute("isCategoryPage", 0);
+		return "user/history";
 	}
 }

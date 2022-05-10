@@ -44,4 +44,17 @@ public class HoaDonServiceImpl implements HoaDonService {
 		return hoaDonDAO.getNumberOfPage();
 	}
 
+	@Override
+	@Transactional
+	public List<HoaDon> findHoaDonByUserId(int maND) {
+		
+		return hoaDonDAO.findHoaDonByUserId(maND);
+	}
+
+	@Override
+	public HoaDon findHoaDonById(int maHD) {
+		
+		return hoaDonDAO.findHoaDonById(maHD);
+	}
+
 }

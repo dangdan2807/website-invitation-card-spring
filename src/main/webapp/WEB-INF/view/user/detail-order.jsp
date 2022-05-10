@@ -119,8 +119,6 @@ img {
 </style>
 </head>
 <body>
-	<div>
-
 		<div class="thong-bao">
 					<p>Bạn đã đặt hàng thành công
 				<span class="icon-check ml-2">	<i class="fa fa-check-circle" aria-hidden="true"></i></span>
@@ -284,13 +282,13 @@ img {
 
 				<div class="text-center">
 					<c:url var="backUrl"
-						value="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/">
+						value="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/user/order/history">
 						<c:param name="maND"
 							value="${hoadonThanhToan.getNguoiDung().getMaND() }"></c:param>
 					</c:url>
 					<a href="${backUrl}"
 						style="color: #326e51; background-color: transparent;"> <i
-						class="fa fa-caret-left"></i> Quay lại
+						class="fa fa-caret-left"></i> Quay lại đơn hàng của tôi
 					</a>
 				</div>
 
@@ -301,7 +299,9 @@ img {
 		<!-- Footer Section Begin -->
 		<jsp:include page="./module/footer.jsp" />
 		<!-- Footer Section End -->
-	</div>
+			<!-- Js Plugins -->
+	<jsp:include page="./module/link-js.jsp" />
+	
 
 </body>
 </html>

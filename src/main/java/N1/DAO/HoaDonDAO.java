@@ -15,4 +15,5 @@ public interface HoaDonDAO {
     public List<HoaDon> findHoaDonBySDTKhachHang(String soDienThoai);
     public HoaDon findHoaDonById(int maHD);
     public HoaDon addHoaDon(HoaDon hoaDon);
+    public List<HoaDon> findHoaDonByUserId(int maND);
 }
