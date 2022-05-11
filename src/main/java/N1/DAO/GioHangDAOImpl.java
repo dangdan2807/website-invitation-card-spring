@@ -53,6 +53,18 @@ public class GioHangDAOImpl implements GioHangDAO {
 		}
 		return true;
 	}
+	
+	@Override
+	public int getNumOfSanPhamInGioHangByEmail(String email) {
+		Session currentSession= sessionFactory.getCurrentSession();
+		String query = "SELECT count(*) FROM GioHang gh "
+				+ "where gh.maND = ( "
+				+ "select nd.maND from TaiKhoan tk, NguoiDung nd "
+				+ "where tk.maTaiKhoan = nd.maTaiKhoan "
+				+ "and tk.tenDangNhap = '" + email + "')";
+		int result = (int) currentSession.createNativeQuery(query).getSingleResult();
+		return result;
+	}
 
 	@Override
 	public List<GioHang> getDSGioHang() {

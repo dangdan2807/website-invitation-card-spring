@@ -50,19 +50,19 @@ public class HoaDon implements Serializable {
 	@Column(name = "ngayGiaoHang", columnDefinition = "DATETIME")
 	private Date ngayGiaoHang;
 
-	@Column(name = "diaChiGiaoHang", columnDefinition = "NTEXT DEFAULT(N'')")
-	private String diaChiGiaoHang;
+    @Column(name = "diaChiGiaoHang", columnDefinition = "TEXT DEFAULT('')")
+    private String diaChiGiaoHang;
+    
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.EAGER)
+    private List<ChiTietHoaDon> dsCTHoaDon;
 
-	@OneToMany(mappedBy = "hoaDon", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	private List<ChiTietHoaDon> dsCTHoaDon;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "maKH", nullable = false, columnDefinition = "INT")
-	private NguoiDung nguoiDung;
-
-	public HoaDon() {
-		dsCTHoaDon = new ArrayList<ChiTietHoaDon>();
-	}
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name = "maKH", nullable = false, columnDefinition = "INT")
+    private NguoiDung nguoiDung;
+    
+    public HoaDon() {
+    	dsCTHoaDon = new ArrayList<ChiTietHoaDon>();
+    }
 
 	public HoaDon(int maHD, Date ngayLHD, double tongTien, double tongSoLuong, NguoiDung nguoiDung) {
 		this.maHD = maHD;

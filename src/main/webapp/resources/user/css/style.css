@@ -24,7 +24,7 @@
 html,
 body {
     height: 100%;
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Roboto', 'Open Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-smoothing: antialiased;
 }
@@ -403,6 +403,57 @@ ol {
     margin-right: 6px;
 }
 
+/* uck - vc */
+.header__top__right__auth .account__container {
+    position: relative;
+}
+
+/* uck - vc */
+.header__top__right__auth .account__container .account_avatar {
+    width: 25px;
+    height: 25px;
+    margin-right: 4px;
+}
+
+/* uck - vc */
+.header__top__right__auth .account__container:hover .account_name {
+    opacity: 0.6;
+}
+
+/* uck - vc */
+.header__top__right__auth .account__container .dropdown-menu {
+    display: none;
+    position: absolute;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    top: 30px;
+}
+
+.header__top__right__auth .account__container .dropdown-menu::before {
+    content: "";
+    border-width: 10px 14px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    right: 100px;
+    top: -20px;
+}
+
+.header__top__right__auth .account__container .dropdown-menu::after  {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -8px;
+    right: 0;
+    width: 100%;
+    height: 14px;
+}
+
+/* uck - vc */
+.header__top__right__auth .account__container:hover .dropdown-menu {
+    display: block;
+}
+
 .header__logo {
     padding: 15px 0;
 }
@@ -513,35 +564,24 @@ ol {
 }
 
 .header__cart ul li a i {
-    font-size: 18px;
+    font-size: 20px;
     color: #1c1c1c;
 }
 
 .header__cart ul li a span {
-    height: 13px;
-    width: 13px;
+    height: 16px;
+    width: 16px;
     background: #7fad39;
-    font-size: 10px;
+    font-size: 12px;
     color: #ffffff;
-    line-height: 13px;
+    line-height: 16px;
     text-align: center;
     font-weight: 700;
     display: inline-block;
     border-radius: 50%;
     position: absolute;
-    top: 0;
-    right: -12px;
-}
-
-.header__cart .header__cart__price {
-    font-size: 14px;
-    color: #6f6f6f;
-    display: inline-block;
-}
-
-.header__cart .header__cart__price span {
-    color: #252525;
-    font-weight: 700;
+    top: -8px;
+    right: -10px;
 }
 
 .humberger__menu__wrapper {
@@ -2125,7 +2165,7 @@ ol {
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item {
-    width: 630px;
+    width: 430px;
     text-align: left;
 }
 
@@ -2142,18 +2182,14 @@ ol {
     display: inline-block;
 }
 
-.shoping__cart__table table tbody tr td.shoping__cart__price {
-    font-size: 18px;
-    color: #1c1c1c;
-    font-weight: 700;
-    width: 100px;
-}
-
+/* uck - vc */
+.shoping__cart__table table tbody tr td.shoping__cart__discount__percent,
+.shoping__cart__table table tbody tr td.shoping__cart__price,
 .shoping__cart__table table tbody tr td.shoping__cart__total {
     font-size: 18px;
     color: #1c1c1c;
     font-weight: 700;
-    width: 110px;
+    width: 100px;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item__close {
@@ -2167,7 +2203,7 @@ ol {
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__quantity {
-    width: 225px;
+    width: 170px;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty {
@@ -2922,6 +2958,13 @@ ol {
     }
 }
 
+/* uck - vc */
+@media only screen and (min-width: 1023px) and (max-width: 1199px) {
+    .header__menu ul li a {
+        font-size: 13px;
+    }
+}
+
 /* Tablet Device = 768px */
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -3054,15 +3097,6 @@ ol {
         position: absolute;
         top: 0;
         right: -12px;
-    }
-    .humberger__menu__cart .header__cart__price {
-        font-size: 14px;
-        color: #6f6f6f;
-        display: inline-block;
-    }
-    .humberger__menu__cart .header__cart__price span {
-        color: #252525;
-        font-weight: 700;
     }
     .humberger__menu__cart {
         margin-bottom: 25px;
@@ -3337,10 +3371,6 @@ ol {
         font-weight: 700;
     }
 
-    .blog__details__author {
-        overflow: hidden;
-        margin-bottom: 25px;
-    }
     .humberger__open {
         display: block;
         font-size: 22px;
@@ -3438,15 +3468,6 @@ ol {
         position: absolute;
         top: 0;
         right: -12px;
-    }
-    .humberger__menu__cart .header__cart__price {
-        font-size: 14px;
-        color: #6f6f6f;
-        display: inline-block;
-    }
-    .humberger__menu__cart .header__cart__price span {
-        color: #252525;
-        font-weight: 700;
     }
     .humberger__menu__cart {
         margin-bottom: 25px;

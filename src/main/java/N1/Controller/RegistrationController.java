@@ -23,12 +23,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
+import N1.DAO.TaiKhoanDAO;
+import N1.Service.TaiKhoanService;
+import N1.entity.NguoiDung;
 import N1.entity.TaiKhoan;
 
 @Controller
 @RequestMapping("/dang-ky")
 public class RegistrationController {
+	@Autowired
+	private TaiKhoanService taiKhoanService;
 
 	@Autowired
 	private UserDetailsManager userDetailsManager;
@@ -64,7 +68,6 @@ public class RegistrationController {
 
 		logger.info("Processing registration form for: " + tenDangNhap);
 
-		// form validation
 		if (theBindingResult.hasErrors()) {
 
 			theModel.addAttribute("crmUser", new TaiKhoan());
@@ -75,41 +78,30 @@ public class RegistrationController {
 			return "user/registration";
 		}
 
-		// check the database if user already exists
-		boolean userExists = doesUserExist(tenDangNhap);
-
-		if (userExists) {
+		boolean userExitst = taiKhoanService.doesUserExist(tenDangNhap);
+		System.out.println(userExitst);
+		if (userExitst) {
 			theModel.addAttribute("crmUser", new TaiKhoan());
-			theModel.addAttribute("registrationError", "User name already exists.");
+			theModel.addAttribute("registrationError", "Email đã được đăng ký.");
 
-			logger.warning("User name already exists.");
+			logger.warning("Email đã được đăng ký.");
 
 			return "user/registration";
 		}
 
-		//
-		// whew ... we passed all of the validation checks!
-		// let's get down to business!!!
-		//
-
-		// encrypt the password
 		String encodedPassword = passwordEncoder.encode(theCrmUser.getMatKhau());
 
-		// prepend the encoding algorithm id
 		encodedPassword = "{bcrypt}" + encodedPassword;
+		System.out.println(encodedPassword);
+		
+		NguoiDung user = new NguoiDung();
+		theCrmUser.setMatKhau(encodedPassword);
+		user.setTaiKhoan(theCrmUser);
+		user.setTenND(tenDangNhap);
+		
+		taiKhoanService.createUser(user);
 
-		// give user default role of "employee"
-		List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ROLE_CUSTOMER");
-
-		// create user object (from Spring Security framework)
-		User tempUser = new User(tenDangNhap, encodedPassword, authorities);
-
-		// save user in the database
-		userDetailsManager.createUser(tempUser);
-
-		logger.info("Successfully created user: " + tenDangNhap);
-
-		return "user/registration-confirmation";
+		return "redirect:/dang-nhap";
 	}
 
 	private boolean doesUserExist(String tenDangNhap) {

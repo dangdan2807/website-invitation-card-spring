@@ -21,4 +21,5 @@ public interface GioHangDAO {
 
 	public boolean saveGioHang(GioHang gioHang);
 	
+	public int getNumOfSanPhamInGioHangByEmail(String email);
 }

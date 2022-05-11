@@ -1,5 +1,6 @@
 package N1.Controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import N1.Service.GioHangService;
 import N1.Service.LoaiSanPhamService;
+import N1.Service.NguoiDungService;
 import N1.Service.SanPhamService;
 import N1.entity.LoaiSanPham;
+import N1.entity.NguoiDung;
 import N1.entity.SanPham;
 
 @Controller
@@ -25,9 +29,14 @@ public class CategoryController {
 	private LoaiSanPhamService loaiSanPhamService;
 	@Autowired
 	private SanPhamService sanPhamService;
+	@Autowired
+	private GioHangService gioHangService;
+	@Autowired
+	private NguoiDungService nguoiDungService;
 
 	@RequestMapping(value = { "/id={id}", "/id={id}/tim-kiem" }, method = RequestMethod.GET)
-	public String showCategoryPage(Model model, @PathVariable(name = "id", required = false) Integer id,
+	public String showCategoryPage(Model model, Principal principal, 
+			@PathVariable(name = "id", required = false) Integer id,
 			@RequestParam(name = "ten-san-pham", required = false, defaultValue = "") String tenSanPham,
 			@RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
 			@RequestParam(name = "page", required = false, defaultValue = "1") Integer currentPage,
@@ -49,6 +58,14 @@ public class CategoryController {
 		}
 		if (maxPrice <= 0) {
 			maxPrice = 0.0;
+		}
+		
+		NguoiDung nguoiDung = null; 
+		int soLuongSpGh = 0;
+		if (principal != null) {
+			String email = principal.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
 		}
 
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();

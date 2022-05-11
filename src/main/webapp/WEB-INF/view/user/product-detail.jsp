@@ -96,7 +96,7 @@
                                 </div>
                             </div>
                         </div>
-                        <security:authorize access="hasAnyRole('Khach hang', 'Admin')">
+                        <security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')">
 	                        <form:form method="POST" 
 	                            modelAttribute="gioHang"
 	                            action="${pageContext.request.contextPath}/san-pham/id=${sanPham.maSp}/them-vao-gio-hang"
@@ -105,7 +105,7 @@
 	                            <input type="submit" class="primary-btn product__details__add-cart-btn" value="THÊM VÀO GIỎ HÀNG" />
 	                        </form:form>
                         </security:authorize>
-                        <security:authorize access="!hasAnyRole('Khach hang', 'Admin')">
+                        <security:authorize access="!hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')">
                             <a href='<c:url value = "/dang-nhap" />' class="primary-btn product__details__add-cart-btn" >THÊM VÀO GIỎ HÀNG</a>
                         </security:authorize>
                         <ul>
@@ -179,11 +179,11 @@
                                                             class="review__textarea-context" 
                                                             placeholder="Mời bạn chia sẻ thêm một số cảm nhận về sản phẩm ..." ></form:textarea>
                                                     </div>
-                                                    <security:authorize access="hasAnyRole('Khach hang', 'Admin')">
+                                                    <security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')">
                                                         <input class="review__btn-submit btn btn-primary" type="submit" value="Gửi đánh giá ngay" />
 			                                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                                     </security:authorize>
-                                                    <security:authorize access="!hasAnyRole('Khach hang', 'Admin')">
+                                                    <security:authorize access="!hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')">
                                                     	<a href='<c:url value = "/dang-nhap"/>' class="review__btn-submit btn btn-primary"> Đăng nhập</a>
                                                     </security:authorize>
                                                 </div>

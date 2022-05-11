@@ -15,6 +15,7 @@
 <title>Chi Tiết Hóa Đơn</title>
 
 <jsp:include page="./module/link-css.jsp" />
+
 <style type="text/css">
 .content_box_profile_page {
 	border: solid 1px #e5e5e5;;
@@ -283,8 +284,7 @@ img {
 				<div class="text-center">
 					<c:url var="backUrl"
 						value="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/user/order/history">
-						<c:param name="maND"
-							value="${hoadonThanhToan.getNguoiDung().getMaND() }"></c:param>
+						
 					</c:url>
 					<a href="${backUrl}"
 						style="color: #326e51; background-color: transparent;"> <i
@@ -300,7 +300,7 @@ img {
 		<jsp:include page="./module/footer.jsp" />
 		<!-- Footer Section End -->
 			<!-- Js Plugins -->
-	<jsp:include page="./module/link-js.jsp" />
+		<jsp:include page="./module/link-js.jsp" />
 	
 
 </body>

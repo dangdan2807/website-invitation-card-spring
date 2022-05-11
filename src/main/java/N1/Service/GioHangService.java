@@ -20,4 +20,6 @@ public interface GioHangService {
 	public List<GioHang> findGioHangByUserId(int maND);
 
 	public boolean saveGioHang(GioHang gioHang);
+	
+	public int getNumOfSanPhamInGioHangByEmail(String email);
 }

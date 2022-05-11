@@ -10,4 +10,5 @@ public interface NguoiDungService {
     public int getNumberOfPage();
     public void save(NguoiDung nguoiDung);
     public NguoiDung findNguoiDungById(int id);
+    public NguoiDung findNguoiDungByEmail(String email);
 }

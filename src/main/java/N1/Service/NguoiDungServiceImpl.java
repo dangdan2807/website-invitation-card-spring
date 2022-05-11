@@ -43,10 +43,13 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	@Override
 	@Transactional
 	public NguoiDung findNguoiDungById(int id) {
-		// TODO Auto-generated method stub
 		return nguoiDungDAO.findNguoiDungById(id);
 	}
 
-	
-
+	@Override
+	@Transactional
+	public NguoiDung findNguoiDungByEmail(String email) {
+		
+		return nguoiDungDAO.findNguoiDungByEmail(email);
+	}
 }
