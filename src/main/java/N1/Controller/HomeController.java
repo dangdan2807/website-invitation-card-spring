@@ -8,8 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import N1.DAO.HoaDonDAO;
-import N1.Dto.SanPhamMua;
+import N1.DTO.SanPhamMua;
 import N1.Service.*;
 import N1.entity.*;
 
@@ -23,16 +22,7 @@ public class HomeController {
 	private LoaiSanPhamService loaiSanPhamService;
 
 	@Autowired
-	private DanhGiaService danhGiaService;	
-	
-	@Autowired
 	private HoaDonService hoaDonService;
-	
-	@Autowired
-	private NguoiDungService nguoiDungService;
-	
-	@Autowired
-	private TaiKhoanService taiKhoanService;
 	
 	@RequestMapping({ "/", "/trang-chu", "/home" })
 	public String showHomePage(Model model) {
@@ -74,12 +64,10 @@ public class HomeController {
 	@RequestMapping({ "/demo" })
 	public String showDemoPage(Model model) {
 		List<TaiKhoan> taiKhoanList = new ArrayList<>();
-//		NguoiDung nguoiDung = nguoiDungService.findNguoiDungById(1);
 		List<NguoiDung> nguoiDungList = new ArrayList<NguoiDung>();
-//		nguoiDungList.add(nguoiDung);
-//				nguoiDungService.findNguoiDungById(1);
-		List<HoaDon> hoaDonList = hoaDonService.findHoaDonByUserId(10);
-//		List<HoaDon> hoaDonList = new ArrayList<HoaDon>();
+		HoaDon hoaDon = hoaDonService.findHoaDonById(1);
+		List<HoaDon> hoaDonList = new ArrayList<HoaDon>();
+		hoaDonList.add(hoaDon);
 		List<ChiTietHoaDon> ctHoaDonList = new ArrayList<>();
 		List<SanPham> sanPhamList = sanPhamService.getRatedTopSanPhams(6);
 		List<ChiTietLoaiSP> ctLoaiSPList = new ArrayList<>();
@@ -105,14 +93,6 @@ public class HomeController {
 
 		return "user/contact";
 	}
-//
-//	@GetMapping({ "/dang-nhap-2", "/login" })
-//	public String showLoginPage(Model model) {
-//		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
-//		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-//		model.addAttribute("isCategoryPage", 0);
-//		return "user/login";
-//	}
 
 	@GetMapping("/access-denied")
 	public String showAccessDenied() {

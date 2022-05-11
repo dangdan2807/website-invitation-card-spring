@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import N1.DAO.*;
-import N1.Dto.SanPhamMua;
+import N1.DTO.*;
 import N1.entity.*;
 
 @Service

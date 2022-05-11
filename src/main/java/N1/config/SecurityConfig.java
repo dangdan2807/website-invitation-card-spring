@@ -23,31 +23,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication().dataSource(securityDataSource)
                 .usersByUsernameQuery("SELECT tenDangNhap, matKhau, tinhTrang FROM TaiKhoan where tenDangNhap = ?")
                 .authoritiesByUsernameQuery("select tk.tenDangNhap, cv.tenChucVu from ChucVu as cv, TaiKhoan as tk "
-                		+ "where tk.maChucVu = cv.maChucVu and tk.tenDangNhap = ?");
+                        + "where tk.maChucVu = cv.maChucVu and tk.tenDangNhap = ?");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//    	http.authorizeRequests()
-//        .antMatchers("/resources/css/**").permitAll()
-//        .antMatchers("/resources/bootstrap/**").permitAll()
-//        .antMatchers("/resources/jquery/**").permitAll()
-//        .antMatchers("/resources/fonts/**").permitAll()
-//        .antMatchers("/user/**").hasAnyRole("Khach hang", "Admin")
-//        .antMatchers("/san-pham/id=*/them-vao-gio-hang").hasAnyRole("Khach hang", "Admin")
-//        .antMatchers("/san-pham/id=*/them-danh-gia").hasAnyRole("Khach hang", "Admin")
-//        .antMatchers("/**").permitAll()
-//        .anyRequest().authenticated()
-//        .and()
-//        .formLogin()
-//        .loginPage("/dang-nhap")
-//        .loginProcessingUrl("/authenticateLogin")
-//        .permitAll()
-//        .and()
-//        .logout().permitAll()
-//        .and()
-//        .exceptionHandling().accessDeniedPage("/access-denied");
-    
+        http.authorizeRequests()
+                .antMatchers("/resources/css/**").permitAll()
+                .antMatchers("/resources/bootstrap/**").permitAll()
+                .antMatchers("/resources/jquery/**").permitAll()
+                .antMatchers("/resources/fonts/**").permitAll()
+                // .antMatchers("/user/**").hasAnyRole("Khach hang", "Admin")
+                // .antMatchers("/san-pham/id=*/them-vao-gio-hang").hasAnyRole("Khach hang",
+                // "Admin")
+                // .antMatchers("/san-pham/id=*/them-danh-gia").hasAnyRole("Khach hang",
+                // "Admin")
+                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/dang-nhap")
+                .loginProcessingUrl("/authenticateLogin")
+                .permitAll()
+                .and()
+                .logout().permitAll()
+                .and()
+                .exceptionHandling().accessDeniedPage("/access-denied");
+
     }
 
     @Bean

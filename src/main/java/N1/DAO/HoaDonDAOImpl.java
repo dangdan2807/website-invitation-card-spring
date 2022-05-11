@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import N1.entity.HoaDon;
-import N1.entity.NguoiDung;
-import N1.entity.SanPham;
+import N1.entity.*;
 
 @Repository
 public class HoaDonDAOImpl implements HoaDonDAO {

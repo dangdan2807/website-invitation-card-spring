@@ -5,6 +5,28 @@
         All Functions
         uck
     --------------------*/
+    const updateTotal = function(item) {
+        var parentElement = item.parent().parent().parent().parent();
+        var quantityElement = parentElement.find('.shoping__cart__quantity  input');
+        var priceElement = parentElement.find('.shoping__cart__price')
+        var discountElement = parentElement.find('.shoping__cart__discount__percent');
+        var totalElement = parentElement.find('.shoping__cart__total')
+
+        var quantity = parseInt(quantityElement.val());
+        var priceStr = priceElement.text();
+        var price = parseFloat(priceStr.replaceAll(/[\s.đ]/ig, ''));
+        var discountPercentStr = discountElement.text();
+        var discountPercent = parseFloat(discountPercentStr.replaceAll(/[\s.%]/ig, ''));
+        var total = 0;
+        if (discountPercentStr.length > 0) {
+            total = price * quantity * (1 - discountPercent / 100);
+        } else {
+            total = price * quantity;
+        }
+
+        totalElement.text(formatMoney(total));
+    }
+
     const getDayOfTime = function (time) {
         var date = new Date(time);
         const options = { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" };
@@ -81,6 +103,7 @@
         
         // format phần trăm
         $('.product__discount__percent').each(formatPercentBySelect);
+        $('.shoping__cart__discount__percent').each(formatPercentBySelect);
 
         // format thời gian
         $('.product__details__comment-item > .comment__time').each(getDayOfTimeBySelect);
@@ -258,11 +281,11 @@
 
     minamount.change(function () {
         let data = minamount.val();
-        minamount.val(formatMoney(data.replaceAll(/[/s.đ]/ig, '')));
+        minamount.val(formatMoney(data.replaceAll(/[\s.đ]/ig, '')));
     });
     maxamount.change(function () {
         let data = maxamount.val();
-        maxamount.val(formatMoney(data.replaceAll(/[/s.đ]/ig, '')));
+        maxamount.val(formatMoney(data.replaceAll(/[\s.đ]/ig, '')));
     });
 
     /*--------------------------
@@ -306,7 +329,16 @@
                 newVal = 1;
             }
         }
+        updateTotal($(this));
         $button.parent().find('input').val(newVal);
+    });
+
+    // uck - vc
+    $('.pro-qty > input').change(function () {
+        if ($(this).val() < 1) {
+            $(this).val(1);
+        }
+        updateTotal($(this));
     });
 
 })(jQuery);

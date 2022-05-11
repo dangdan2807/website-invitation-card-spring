@@ -2125,7 +2125,7 @@ ol {
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item {
-    width: 630px;
+    width: 430px;
     text-align: left;
 }
 
@@ -2142,18 +2142,14 @@ ol {
     display: inline-block;
 }
 
-.shoping__cart__table table tbody tr td.shoping__cart__price {
-    font-size: 18px;
-    color: #1c1c1c;
-    font-weight: 700;
-    width: 100px;
-}
-
+/* uck - vc */
+.shoping__cart__table table tbody tr td.shoping__cart__discount__percent,
+.shoping__cart__table table tbody tr td.shoping__cart__price,
 .shoping__cart__table table tbody tr td.shoping__cart__total {
     font-size: 18px;
     color: #1c1c1c;
     font-weight: 700;
-    width: 110px;
+    width: 100px;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item__close {
@@ -2167,7 +2163,7 @@ ol {
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__quantity {
-    width: 225px;
+    width: 170px;
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__quantity .pro-qty {
@@ -3326,10 +3322,6 @@ ol {
         font-weight: 700;
     }
 
-    .blog__details__author {
-        overflow: hidden;
-        margin-bottom: 25px;
-    }
     .humberger__open {
         display: block;
         font-size: 22px;

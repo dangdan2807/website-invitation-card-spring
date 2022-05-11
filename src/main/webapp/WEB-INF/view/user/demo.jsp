@@ -39,7 +39,7 @@
     <p>Người dùng</p>
     <ul>
         <c:forEach var="nguoiDung" items="${nguoiDungList}">
-            <li>${nguoiDung.tenND}</li>
+            <li>${nguoiDung.tenND} - ${nguoiDung.taiKhoan.tenDangNhap}</li>
         </c:forEach>
     </ul>
     <hr />
