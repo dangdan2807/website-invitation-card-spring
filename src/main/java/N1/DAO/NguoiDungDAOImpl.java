@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import N1.entity.NguoiDung;
-
+import N1.entity.*;
 
 @Repository
 public class NguoiDungDAOImpl implements NguoiDungDAO {
@@ -52,22 +51,6 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
     @Override
     public boolean updateNguoiDung(NguoiDung nguoiDung) {
         Session currentSession=sessionFactory.getCurrentSession();
-        
-//        String email=nguoiDung.getTaiKhoan().getTenDangNhap();
-//        NguoiDung nguoiDungCapNhat=findNguoiDungByEmail(email);
-//        if(nguoiDungCapNhat==null){
-//            return false;
-//        }
-//        nguoiDungCapNhat.setDiaChi(nguoiDung.getDiaChi());
-//        nguoiDungCapNhat.setTenND(nguoiDung.getTenND());
-//        nguoiDungCapNhat.setSdt(nguoiDung.getSdt());
-//
-//        //xử lý tài khoản
-//        TaiKhoan taiKhoanCapNhat=nguoiDungCapNhat.getTaiKhoan();
-//        TaiKhoan taiKhoanCu=nguoiDung.getTaiKhoan();
-//        // thay đổi matKhau
-//        taiKhoanCapNhat.setMatKhau(taiKhoanCu.getMatKhau());
-//        nguoiDungCapNhat.setTaiKhoan(taiKhoanCapNhat);
         currentSession.saveOrUpdate(nguoiDung);
         return true;
     }
@@ -93,8 +76,9 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
 
 	@Override
 	public List<NguoiDung> getDSNguoiDung() {
-		// TODO Auto-generated method stub
-		return null;
+		Session currentSession=sessionFactory.getCurrentSession();
+		Query<NguoiDung> results = currentSession.createQuery("from NguoiDung", NguoiDung.class);
+		return results.getResultList();
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package N1.Controller;
 
-import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +32,11 @@ public class ProductController {
 	private DanhGiaService danhGiaService;
 	@Autowired
 	private GioHangService gioHangService;
+	@Autowired
+	private NguoiDungService nguoiDungService;
 
 	@RequestMapping(value = { "", "/tim-kiem" }, method = RequestMethod.GET)
-	public String showProductPage(Model model,
+	public String showProductPage(Model model, Principal principal,
 			@RequestParam(name = "ten-san-pham", required = false, defaultValue = "") String tenSanPham,
 			@RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
 			@RequestParam(name = "page", required = false, defaultValue = "1") Integer currentPage,
@@ -54,6 +55,17 @@ public class ProductController {
 		if (maxPrice <= 0) {
 			maxPrice = 0.0;
 		}
+		
+		NguoiDung nguoiDung = null; 
+		int soLuongSpGh = 0;
+		if (principal != null) {
+			String email = principal.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		}
+		
+		model.addAttribute("nguoiDung", nguoiDung);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
 
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
@@ -89,8 +101,8 @@ public class ProductController {
 		return "user/shop-grid";
 	}
 
-	@RequestMapping(value = "/id={theId}", method = RequestMethod.GET, produces = "text/x-www-form-urlencoded; charset=UTF-8")
-	public String getProductById(Model model, 
+	@RequestMapping(value = "/id={theId}", method = RequestMethod.GET)
+	public String getProductById(Model model, Principal principal,
 			@PathVariable(name = "theId", required = false) Integer id,
 			@RequestParam(name = "comment-page", required = false, defaultValue = "1") Integer currentPageComment,
 			@RequestParam(name = "msg", required = false, defaultValue = "") String msg,
@@ -100,8 +112,18 @@ public class ProductController {
 		if (currentPageComment <= 0 || currentPageComment == null) {
 			currentPageComment = 1;
 		}
+		
+		NguoiDung nguoiDung = null; 
+		int soLuongSpGh = 0;
+		if (principal != null) {
+			String email = principal.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		}
+		
+		model.addAttribute("nguoiDung", nguoiDung);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
 
-		model.addAttribute("isCategoryPage", 0);
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
@@ -122,11 +144,14 @@ public class ProductController {
 		for (DanhGia danhGia : danhGias) {
 			star += danhGia.getXepHang();
 		}
+		
 		if (danhGias.size() > 0)
 			star /= danhGias.size();
 		else {
 			star = 5;
 		}
+		
+		model.addAttribute("isCategoryPage", 0);
 		model.addAttribute("starSize", new int[] { 1, 2, 3, 4, 5 });
 		model.addAttribute("star", star);
 		model.addAttribute("pagingSize", new int[] { 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5 });
@@ -145,7 +170,7 @@ public class ProductController {
 				sanPham.getMaSp());
 		model.addAttribute("dsSanPhamLQ", dsSanPhamLQ);
 
-		return "user/shop-details";
+		return "user/product-detail";
 	}
 	
 	@RequestMapping(value = "/id={theId}/them-vao-gio-hang", method = RequestMethod.POST)
@@ -153,15 +178,19 @@ public class ProductController {
 			@PathVariable(name = "theId", required = false) Integer sanPhamId,
 			@ModelAttribute("gioHang") GioHang gioHang, 
 			RedirectAttributes redirectAttributes) {
-		gioHang.setNguoiDung(new NguoiDung(2));
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String currentPrincipalName = authentication.getName();
+		
+		NguoiDung nguoiDung = nguoiDungService.findNguoiDungByEmail(currentPrincipalName);
+		gioHang.setNguoiDung(nguoiDung);
 		gioHang.setSanPham(new SanPham(sanPhamId));
 
 		boolean resultSave = gioHangService.saveGioHang(gioHang);
 		if (resultSave) {
-			redirectAttributes.addAttribute("msg", "Them san pham vao gio hang thanh cong");
+			redirectAttributes.addAttribute("msg", "Thêm sản phẩm vào giỏ hàng thành công");
 			redirectAttributes.addAttribute("status", 1);
 		} else {
-			redirectAttributes.addAttribute("msg", "Them san pham vao gio hang that bai");
+			redirectAttributes.addAttribute("msg", "Thêm sản phẩm vào giỏ hàng thất bại");
 			redirectAttributes.addAttribute("status", 0);
 		}
 
@@ -173,26 +202,23 @@ public class ProductController {
 			@PathVariable(name = "theId", required = false) Integer sanPhamId,
 			@ModelAttribute("danhGia") DanhGia danhGia, 
 			RedirectAttributes redirectAttributes) {
+		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String currentPrincipalName = authentication.getName();
-		System.out.println(currentPrincipalName);
-		danhGia.setNguoiDung(new NguoiDung(2));
+		
+		NguoiDung nguoiDung = nguoiDungService.findNguoiDungByEmail(currentPrincipalName);
+		danhGia.setNguoiDung(nguoiDung);
 		danhGia.setSanPham(new SanPham(sanPhamId));
 
-		String noiDung = danhGia.getNoiDung();
-		byte[] bytes = noiDung.getBytes(StandardCharsets.ISO_8859_1);
-		noiDung = new String(bytes, StandardCharsets.UTF_8);
-		danhGia.setNoiDung(noiDung);
-		
 		model.addAttribute("danhGia", new DanhGia());
-//		boolean resultSave = danhGiaService.addDanhGia(danhGia);
-//		if (resultSave) {
-//			redirectAttributes.addAttribute("msg", "Danh gia san pham thanh cong");
-//			redirectAttributes.addAttribute("status", 1);
-//		} else {
-//			redirectAttributes.addAttribute("msg", "Danh gia san pham that bai");
-//			redirectAttributes.addAttribute("status", 0);
-//		}
+		boolean resultSave = danhGiaService.addDanhGia(danhGia);
+		if (resultSave) {
+			redirectAttributes.addAttribute("msg", "Đánh giá sản phẩm thành công");
+			redirectAttributes.addAttribute("status", 1);
+		} else {
+			redirectAttributes.addAttribute("msg", "Đánh giá sản phẩm thất bại");
+			redirectAttributes.addAttribute("status", 0);
+		}
 
 		return "redirect:/san-pham/id=" + sanPhamId;
 	}

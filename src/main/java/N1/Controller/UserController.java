@@ -42,10 +42,21 @@ public class UserController {
     private CTHoaDonService ctHoaDonService;
 
     @RequestMapping({ "/gio-hang", "/cart" })
-	public String showShoppingCartPage(Model model) {
+	public String showShoppingCartPage(Model model, Principal principal) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		model.addAttribute("isCategoryPage", 0);
+
+		NguoiDung nguoiDung = null; 
+		int soLuongSpGh = 0;
+		if (principal != null) {
+			String email = principal.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		}
+		
+		model.addAttribute("nguoiDung", nguoiDung);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
 		
 		List<SanPham> dsSanPham = new ArrayList<SanPham>();
 		model.addAttribute("dsSanPham", dsSanPham);
@@ -134,8 +145,18 @@ public class UserController {
 		model.addAttribute("isCategoryPage", 0);
 		return "user/detail-order";
 	}
-	@RequestMapping(value = "/show-order")
-	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD,Model model) {
+	@RequestMapping(value = {"/show-order" })
+	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD, Model model, Principal principal) {
+		NguoiDung nguoiDungLogin = null; 
+		int soLuongSpGh = 0;
+		if (principal != null) {
+			String email = principal.getName();
+			nguoiDungLogin = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		}
+		model.addAttribute("nguoiDung", nguoiDungLogin);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
+		
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		// Tìm hóa đơn theo mã hóa đơn
@@ -157,15 +178,21 @@ public class UserController {
 		return "user/show-my-order";
 	}
 	
-	@RequestMapping(value = "/order/history")
-	public String showHoaDonByNguoiDung(Model model,Principal principal) {
-		String username="";
-		if(principal!=null) {
-			username=principal.getName();
+	@RequestMapping(value = {"/order/history", "/lich-su-mua-hang"})
+	public String showHoaDonByNguoiDung( @RequestParam("maND") int userId, Model model, Principal principal) {
+		NguoiDung nguoiDung = null; 
+		int soLuongSpGh = 0;
+		if (principal != null) {
+			String email = principal.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
 		}
+		model.addAttribute("nguoiDung", nguoiDung);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
+		
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		NguoiDung nguoiDung=nguoiDungService.findNguoiDungByEmail(username);
+		
 		List<HoaDon> hoaDons=hoaDonService.findHoaDonByUserId(nguoiDung.getMaND());
 		hoaDons.forEach(e->{
 		List<ChiTietHoaDon> cthds=new ArrayList<ChiTietHoaDon>();

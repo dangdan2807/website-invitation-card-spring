@@ -6,4 +6,6 @@ public interface GioHangService {
 	public void deleteGioHangByIdNguoiDung(int maND);
 	
 	public boolean saveGioHang(GioHang gioHang);
+	
+	public int getNumOfSanPhamInGioHangByEmail(String email);
 }

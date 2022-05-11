@@ -88,7 +88,6 @@ public class HoaDonServiceImpl implements HoaDonService {
 	@Override
 	@Transactional
 	public List<HoaDon> findHoaDonByUserId(int maND) {
-		
 		return hoaDonDAO.findHoaDonByUserId(maND);
 	}
 

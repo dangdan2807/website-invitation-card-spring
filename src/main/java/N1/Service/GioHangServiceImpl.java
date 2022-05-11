@@ -27,4 +27,9 @@ public class GioHangServiceImpl implements GioHangService {
 		return gioHangDAO.saveGioHang(gioHang);
 	}
 
+	@Override
+	@Transactional
+	public int getNumOfSanPhamInGioHangByEmail(String email) {
+		return gioHangDAO.getNumOfSanPhamInGioHangByEmail(email);
+	}
 }
