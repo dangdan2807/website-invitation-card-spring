@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+
 <header class="header">
 	<input type="hidden" name="${_csrf.parameterName}"
 		value="${_csrf.token}" />
@@ -24,8 +25,27 @@
 								class="fa fa-twitter"></i></a>
 						</div>
 						<div class="header__top__right__auth">
-							<a href="<c:url value ='/dang-nhap' />"><i class="fa fa-user"></i>
-								Đăng nhập</a>
+							<security:authorize access="!hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')">
+								<a href="<c:url value ='/dang-nhap' />">
+									<i class="fa fa-user"></i>
+									Đăng nhập
+								</a>
+							</security:authorize>
+							<security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')">
+								<div class="account__container">
+									<a class="account_info" href='<c:url value = "/user/profile" />'>
+										<img class="account_avatar rounded-circle" src='<c:url value = "${nguoiDung.hinhAnh}" />' alt="">
+										<span class="account_name">${nguoiDung.tenND}</>
+									</a>
+									<div class="dropdown-menu">
+										<a class="dropdown-item" href='<c:url value = "/user/profile" />'>Tài khoản của tôi</a>
+										<a class="dropdown-item" href='<c:url value = "/user/gio-hang" />'>Giỏ hàng</a>
+										<a class="dropdown-item" href='<c:url value = "/user/lich-su-mua-hang" />'>Lịch sử mua hàng</a>
+										<div class="dropdown-divider"></div>
+										<a class="dropdown-item" href='<c:url value = "/dang-xuat" />'>Đăng xuất</a>
+									</div>
+								</div>
+							</security:authorize>
 						</div>
 					</div>
 				</div>
@@ -45,31 +65,43 @@
 				<nav class="header__menu">
 					<ul>
 						<li
-							<%String tag = request.getParameter("activePage");
-if (tag.equals("home")) {
-	out.print("class='active'");
-}%>>
+							<%
+							String tag = request.getParameter("activePage");
+							if (tag.equals("home")) {
+								out.print("class='active'");
+							}
+							%>
+							>
 							<a href="<c:url value ='/trang-chu' />">Trang chủ</a>
 						</li>
 
 						<li
-							<%if (tag.equals("shop-grid")) {
-	out.print("class='active'");
-}%>>
+							<%
+							if (tag.equals("shop-grid")) {
+								out.print("class='active'");
+							}
+							%>
+							>
 							<a href='<c:url value = "/san-pham" />'>Cửa Hàng</a>
 						</li>
 
 						<li
-							<%if (tag.equals("shopping-cart")) {
-	out.print("class='active'");
-}%>>
+							<%
+							if (tag.equals("shopping-cart")) {
+								out.print("class='active'");
+							}
+							%>
+						>
 							<a href='<c:url value = "/user/gio-hang" />'>Giỏ Hàng</a>
 						</li>
 
 						<li
-							<%if (tag.equals("contact")) {
-	out.print("class='active'");
-}%>>
+							<%
+							if (tag.equals("contact")) {
+								out.print("class='active'");
+							}
+							%>
+						>
 							<a href='<c:url value = "/lien-he" />'>Liên Hệ</a>
 						</li>
 					</ul>
@@ -78,18 +110,15 @@ if (tag.equals("home")) {
 			<div class="col-lg-3">
 				<div class="header__cart">
 					<ul>
-						<li><a href="<c:url value = '/gio-hang' />"><i
-								class="fa fa-shopping-bag"></i>
-								 <span> <c:out
-										value="${soLuong }"></c:out>
-							</span></a></li>
+						<li>
+							<a href="<c:url value = '/gio-hang' />">
+								<i class="fa-solid fa-cart-shopping"></i>
+								<security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')">
+									<span>${soLuongSpGh}</span>
+		                        </security:authorize>
+							</a>
+						</li>
 					</ul>
-					<div class="header__cart__price">
-						Tổng tiền: <span> <fmt:formatNumber value="${tongTienHang}"
-								type="currency" currencySymbol="" />
-
-						</span>
-					</div>
 				</div>
 			</div>
 		</div>

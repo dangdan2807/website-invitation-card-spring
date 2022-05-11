@@ -32,10 +32,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] PUBLIC_MATCHERS = {
 			"/resources/**",
 			"/",
+			"/**",
 			"/san-pham",
 			"/lien-he",
 			"/danh-muc/**",
-			"/san-pham/**"
+			"/san-pham/id=*",
+			"/san-pham/tim-kiem",
+			"/danh-muc/**"
 	};
 
     @Override
@@ -47,17 +50,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       
         http.authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
-                .antMatchers("/resources/css/**").permitAll()
-                .antMatchers("/resources/bootstrap/**").permitAll()
-                .antMatchers("/resources/jquery/**").permitAll()
-                .antMatchers("/resources/fonts/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                // .antMatchers("/user/**").hasAnyRole("Khach hang", "Admin")
-                // .antMatchers("/san-pham/id=*/them-vao-gio-hang").hasAnyRole("Khach hang",
-                // "Admin")
-                // .antMatchers("/san-pham/id=*/them-danh-gia").hasAnyRole("Khach hang",
-                // "Admin")
-                .antMatchers("/**").permitAll()
+				.antMatchers("/user/**").hasAnyRole("ROLE_CUSTOMER", "ROLE_ADMIN")
+				.antMatchers("/san-pham/id=*/them-vao-gio-hang").hasAnyRole("ROLE_CUSTOMER", "ROLE_ADMIN")
+				.antMatchers("/san-pham/id=*/them-danh-gia").hasAnyRole("ROLE_CUSTOMER", "ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

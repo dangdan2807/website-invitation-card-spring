@@ -1,6 +1,7 @@
 package N1.Controller;
 
 import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,10 +40,21 @@ public class UserController {
     private CTHoaDonService ctHoaDonService;
 
     @RequestMapping({ "/gio-hang", "/cart" })
-	public String showShoppingCartPage(Model model) {
+	public String showShoppingCartPage(Model model, Principal principal) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		model.addAttribute("isCategoryPage", 0);
+
+		NguoiDung nguoiDung = null; 
+		int soLuongSpGh = 0;
+		if (principal != null) {
+			String email = principal.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		}
+		
+		model.addAttribute("nguoiDung", nguoiDung);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
 		
 		List<SanPham> dsSanPham = new ArrayList<SanPham>();
 		model.addAttribute("dsSanPham", dsSanPham);
@@ -51,9 +63,20 @@ public class UserController {
 	}
 
     @RequestMapping({ "/thanh-toan/{maND}", "/checkout/{maND}" })
-	public String showCheckoutPage(Model model, @PathVariable int maND) {
+	public String showCheckoutPage(Model model, @PathVariable int maND,  Principal principal) {
+		NguoiDung nguoiDungLogin = null; 
+		int soLuongSpGh = 0;
+		if (principal != null) {
+			String email = principal.getName();
+			nguoiDungLogin = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		}
+		model.addAttribute("nguoiDung", nguoiDungLogin);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
+		
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+		
 		NguoiDung nguoiDung = nguoiDungService.findNguoiDungById(maND);
 		model.addAttribute("nguoiDung", nguoiDung);
 		
@@ -120,8 +143,18 @@ public class UserController {
 		model.addAttribute("isCategoryPage", 0);
 		return "user/detail-order";
 	}
-	@RequestMapping(value = "/show-order")
-	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD,Model model) {
+	@RequestMapping(value = {"/show-order" })
+	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD, Model model, Principal principal) {
+		NguoiDung nguoiDungLogin = null; 
+		int soLuongSpGh = 0;
+		if (principal != null) {
+			String email = principal.getName();
+			nguoiDungLogin = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		}
+		model.addAttribute("nguoiDung", nguoiDungLogin);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
+		
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		// Tìm hóa đơn theo mã hóa đơn
@@ -143,8 +176,18 @@ public class UserController {
 		return "user/show-my-order";
 	}
 	
-	@RequestMapping(value = "/order/history")
-	public String showHoaDonByNguoiDung( @RequestParam("maND") int userId,Model model) {
+	@RequestMapping(value = {"/order/history", "/lich-su-mua-hang"})
+	public String showHoaDonByNguoiDung( @RequestParam("maND") int userId, Model model, Principal principal) {
+		NguoiDung nguoiDungLogin = null; 
+		int soLuongSpGh = 0;
+		if (principal != null) {
+			String email = principal.getName();
+			nguoiDungLogin = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		}
+		model.addAttribute("nguoiDung", nguoiDungLogin);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
+		
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		List<HoaDon> hoaDons=hoaDonService.findHoaDonByUserId(userId);

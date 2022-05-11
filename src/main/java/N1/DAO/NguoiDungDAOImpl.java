@@ -1,6 +1,5 @@
 package N1.DAO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -10,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import N1.entity.ChucVu;
-import N1.entity.NguoiDung;
-import N1.entity.SanPham;
-import N1.entity.TaiKhoan;
+import N1.entity.*;
 
 @Repository
 public class NguoiDungDAOImpl implements NguoiDungDAO {
@@ -55,22 +51,6 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
     @Override
     public boolean updateNguoiDung(NguoiDung nguoiDung) {
         Session currentSession=sessionFactory.getCurrentSession();
-        
-//        String email=nguoiDung.getTaiKhoan().getTenDangNhap();
-//        NguoiDung nguoiDungCapNhat=findNguoiDungByEmail(email);
-//        if(nguoiDungCapNhat==null){
-//            return false;
-//        }
-//        nguoiDungCapNhat.setDiaChi(nguoiDung.getDiaChi());
-//        nguoiDungCapNhat.setTenND(nguoiDung.getTenND());
-//        nguoiDungCapNhat.setSdt(nguoiDung.getSdt());
-//
-//        //xử lý tài khoản
-//        TaiKhoan taiKhoanCapNhat=nguoiDungCapNhat.getTaiKhoan();
-//        TaiKhoan taiKhoanCu=nguoiDung.getTaiKhoan();
-//        // thay đổi matKhau
-//        taiKhoanCapNhat.setMatKhau(taiKhoanCu.getMatKhau());
-//        nguoiDungCapNhat.setTaiKhoan(taiKhoanCapNhat);
         currentSession.saveOrUpdate(nguoiDung);
         return true;
     }
@@ -78,8 +58,10 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
     @Override
     public NguoiDung findNguoiDungByEmail(String email) {
         Session currentSession=sessionFactory.getCurrentSession();
-        String query="SELECT * FROM NguoiDung WHERE email ='"+email+"'";
-        NguoiDung nguoiDung=(NguoiDung) currentSession.createNativeQuery(query, NguoiDung.class).getSingleResult();
+        String queryStr = "SELECT * FROM NguoiDung nd, TaiKhoan tk "
+        		+ "WHERE nd.maTaiKhoan = tk.maTaiKhoan "
+        		+ "AND tk.tenDangNhap = '" + email + "'";
+        NguoiDung nguoiDung = currentSession.createNativeQuery(queryStr, NguoiDung.class).getSingleResult();
         return nguoiDung;
     }
 
@@ -92,8 +74,9 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
 
 	@Override
 	public List<NguoiDung> getDSNguoiDung() {
-		// TODO Auto-generated method stub
-		return null;
+		Session currentSession=sessionFactory.getCurrentSession();
+		Query<NguoiDung> results = currentSession.createQuery("from NguoiDung", NguoiDung.class);
+		return results.getResultList();
 	}
 
 	@Override
