@@ -14,6 +14,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "SanPham")
@@ -23,23 +30,32 @@ public class SanPham implements Serializable {
     @Column(name = "maSp", nullable = false)
     private int maSp;
 
+    @NotBlank(message = "Tên thiệp không được để trống")
     @Column(name = "tenSp", nullable = false, columnDefinition = "NVARCHAR(255)")
     private String tenSp;
 
     @Column(name = "hinhAnh", columnDefinition = "TEXT")
     private String hinhAnh;
 
+    @NotBlank(message = "Mô tả không được để trống")
     @Column(name = "moTa", nullable = false, columnDefinition = "NTEXT DEFAULT(N'')")
     private String moTa;
 
+    @NotNull(message = "Giá bán không được để trống")
+    @Min(value = 0, message = "Giá bán không thể là số âm")
     @Column(name = "giaSP", nullable = false, columnDefinition = "MONEY DEFAULT(0) CHECK(giaSP >= 0)")
-    private double giaSP;
+    private Double giaSP;
 
+    @NotNull(message = "Giảm giá không được để trống")
+    @Min(value = 0, message = "Giảm giá phải trong khoảng 0-100")
+    @Max(value = 100, message = "Giảm giá phải trong khoảng 0-100")
     @Column(name = "giamGia", nullable = false, columnDefinition = "float DEFAULT(0) CHECK(giamGia >= 0)")
-    private double giamGia;
+    private Double giamGia;
 
+    @NotNull(message = "Giá nhập không được để trống")
+    @Min(value = 0, message = "Giá nhập không thể là số âm")
     @Column(name = "giaMua", nullable = false, columnDefinition = "MONEY DEFAULT(0) CHECK(giaMua >= 0)")
-    private double giaMua;
+    private Double giaMua;
 
     @OneToMany(mappedBy = "sanPham")
     private List<ChiTietHoaDon> dsCTHoaDon;
@@ -115,19 +131,19 @@ public class SanPham implements Serializable {
         this.moTa = moTa;
     }
 
-    public double getGiamGia() {
+    public Double getGiamGia() {
         return giamGia;
     }
 
-    public void setGiamGia(double giamGia) {
+    public void setGiamGia(Double giamGia) {
         this.giamGia = giamGia;
     }
 
-    public double getGiaMua() {
+    public Double getGiaMua() {
         return giaMua;
     }
 
-    public void setGiaMua(double giaMua) {
+    public void setGiaMua(Double giaMua) {
         this.giaMua = giaMua;
     }
 
@@ -158,11 +174,11 @@ public class SanPham implements Serializable {
         this.hinhAnh = hinhAnh;
     }
 
-    public double getGiaSP() {
+    public Double getGiaSP() {
         return giaSP;
     }
 
-    public void setGiaSP(double giaSP) {
+    public void setGiaSP(Double giaSP) {
         this.giaSP = giaSP;
     }
 
@@ -193,6 +209,8 @@ public class SanPham implements Serializable {
 	public double getGiaSauGiamGia() {
 		return giaSP * (100 - giamGia) / 100;
 	}
+	
+	
 	
 	public String toStringLoaiSp() {
 		AtomicReference<String> rs = new AtomicReference<String>("");

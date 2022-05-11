@@ -78,7 +78,10 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
     @Override
     public NguoiDung findNguoiDungByEmail(String email) {
         Session currentSession=sessionFactory.getCurrentSession();
-        String query="SELECT * FROM NguoiDung WHERE email ='"+email+"'";
+        String query="select * from NguoiDung as nd\r\n"
+        		+ "inner join TaiKhoan as tk\r\n"
+        		+ "on nd.maTaiKhoan = tk.maTaiKhoan\r\n"
+        		+ "where tenDangNhap = '"+ email +"'";
         NguoiDung nguoiDung=(NguoiDung) currentSession.createNativeQuery(query, NguoiDung.class).getSingleResult();
         return nguoiDung;
     }
