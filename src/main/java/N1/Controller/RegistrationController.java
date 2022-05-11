@@ -82,9 +82,9 @@ public class RegistrationController {
 		System.out.println(userExitst);
 		if (userExitst) {
 			theModel.addAttribute("crmUser", new TaiKhoan());
-			theModel.addAttribute("registrationError", "User name already exists.");
+			theModel.addAttribute("registrationError", "Email đã được đăng ký.");
 
-			logger.warning("User name already exists.");
+			logger.warning("Email đã được đăng ký.");
 
 			return "user/registration";
 		}
