@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import N1.entity.ChiTietHoaDon;
-import N1.entity.ChiTietHoaDonPK;
-import N1.entity.SanPham;
+import N1.entity.*;
 
 @Repository
 public class CTHoaDonDAOImpl implements CTHoaDonDAO {
@@ -66,9 +64,9 @@ public class CTHoaDonDAOImpl implements CTHoaDonDAO {
 			String tenSp = item[4].toString();
 			double giaSp = Double.parseDouble(item[5].toString());
 			String hinhAnh = item[6].toString();
-			 SanPham sanPham = new SanPham(maSp, tenSp, hinhAnh, giaSp);
-			 ChiTietHoaDon ctHoaDon = new ChiTietHoaDon(sanPham, soLuong, giaBan);
-			 dataList.add(ctHoaDon);
+			SanPham sanPham = new SanPham(maSp, tenSp, hinhAnh, giaSp);
+			ChiTietHoaDon ctHoaDon = new ChiTietHoaDon(sanPham, soLuong, giaBan);
+			dataList.add(ctHoaDon);
 		});
 
 		return dataList;

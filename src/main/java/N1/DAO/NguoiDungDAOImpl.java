@@ -41,8 +41,8 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
 
     @Override
     public NguoiDung addNguoiDung(NguoiDung nguoiDung) {
-       Session currenSession=sessionFactory.getCurrentSession();
-       currenSession.saveOrUpdate(nguoiDung);
+       Session currentSession=sessionFactory.getCurrentSession();
+       currentSession.saveOrUpdate(nguoiDung);
         return nguoiDung;
     }
     
@@ -56,19 +56,20 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
     }
 
     @Override
-    @Transactional
     public NguoiDung findNguoiDungByEmail(String email) {
         Session currentSession=sessionFactory.getCurrentSession();
-        String query="select nd.* from NguoiDung nd join TaiKhoan tk\r\n"
-        		+ "on nd.maTaiKhoan=tk.maTaiKhoan \r\n"
-        		+ "where tk.tenDangNhap='"+email+"'";
-        Query<NguoiDung> results = currentSession.createNativeQuery(query, NguoiDung.class);
-        return results.getSingleResult();
+        String queryStr = "SELECT * FROM NguoiDung nd "
+        		+ "WHERE nd.maTaiKhoan in ( "
+        			+ "select tk.maTaiKhoan from TaiKhoan tk "
+        			+ "WHERE tk.tenDangNhap = '" + email + "' )";
+        Query<NguoiDung> results = currentSession.createNativeQuery(queryStr, NguoiDung.class);
+        results.setMaxResults(1);
+        NguoiDung nguoiDung = results.getSingleResult();
+        return nguoiDung;
        
     }
 
     @Override
-    @Transactional
     public NguoiDung findNguoiDungById(int id) {
         Session currentSession=sessionFactory.getCurrentSession();
         return currentSession.find(NguoiDung.class, id);

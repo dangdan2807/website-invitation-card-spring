@@ -1,14 +1,12 @@
 package N1.Controller;
 
-
-import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -42,82 +40,96 @@ public class UserController {
 	@Autowired
 	private CTHoaDonService ctHoaDonService;
 
-	@RequestMapping({ "/gio-hang/{maND}", "/cart/{maND}" })
-	public String showShoppingCartPage(Model model, @PathVariable int maND) {
-		List<GioHang> gioHang = gioHangService.findGioHangByUserId(maND);
-		double tongTien = 0;
-		for (GioHang gioHang2 : gioHang) {
-			tongTien += gioHang2.getSanPham().getGiaSP() * gioHang2.getSoLuong() * 
-					(100 - gioHang2.getSanPham().getGiamGia())/100;
-		}
+	@RequestMapping({ "/gio-hang", "/cart" })
+	public String showShoppingCartPage(Model model) {
+		String returnUrl = "";
+		returnUrl = "redirect:/dang-nhap";
 		
-		model.addAttribute("tongTien",tongTien);
-		
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
-		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		model.addAttribute("isCategoryPage", 0);
-
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		NguoiDung nguoiDung = null; 
 		int soLuongSpGh = 0;
-		if (principal != null) {
-			String email = principal.getName();
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			model.addAttribute("isCategoryPage", 0);
+			String email = authentication.getName();
 			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+			model.addAttribute("nguoiDung", nguoiDung);
+			model.addAttribute("soLuongSpGh", soLuongSpGh);
+			
+			int maND = nguoiDung.getMaND();
+			List<GioHang> gioHang = gioHangService.findGioHangByUserId(maND);
+			double tongTien = 0;
+			for (GioHang gioHang2 : gioHang) {
+				tongTien += gioHang2.getSanPham().getGiaSP() * gioHang2.getSoLuong() *
+						(100 - gioHang2.getSanPham().getGiamGia()) / 100;
+			}
+			model.addAttribute("tongTien", tongTien);
+			
+			List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+			model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+			
+			List<GioHang> dsGioHang = gioHangService.findGioHangByUserId(maND);
+			model.addAttribute("dsSanPhamGioHang", dsGioHang);
+			returnUrl = "user/shopping-cart";
 		}
-		
-		model.addAttribute("nguoiDung", nguoiDung);
-		model.addAttribute("soLuongSpGh", soLuongSpGh);
-		
-		List<GioHang> dsGioHang = gioHangService.findGioHangByUserId(maND);
-		model.addAttribute("dsSanPhamGioHang",dsGioHang);
-		
-		return "user/shopping-cart";
+
+		return returnUrl;
 	}
 
-    @RequestMapping({ "/thanh-toan", "/checkout" })
+	@RequestMapping({ "/thanh-toan", "/checkout" })
 	public String showCheckoutPage(Model model) {
-    	
-    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	String username ="";
+		model.addAttribute("isCategoryPage", 0);
+
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = "";
 		if (principal instanceof UserDetails) {
-		   username = ((UserDetails)principal).getUsername();
+			username = ((UserDetails) principal).getUsername();
 		} else {
-			username= principal.toString();
+			username = principal.toString();
 		}
-		NguoiDung nguoiDung=nguoiDungService.findNguoiDungByEmail(username);
+		int soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(username);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
+
+		NguoiDung nguoiDung = nguoiDungService.findNguoiDungByEmail(username);
+		model.addAttribute("nguoiDung", nguoiDung);
+
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		//NguoiDung nguoiDung = nguoiDungService.findNguoiDungById(maND);
-		model.addAttribute("nguoiDung", nguoiDung);
-		
+
 		List<SanPhamMua> dsSanPhamMua = sanPhamService.getSanPhamMua(nguoiDung.getMaND());
-		int soLuong=dsSanPhamMua.size();
 		model.addAttribute("dsSanPhamMua", dsSanPhamMua);
+
+		int soLuong = dsSanPhamMua.size();
 		model.addAttribute("soLuong", soLuong);
+
 		double tongTienHang = 0;
 		for (SanPhamMua sanPhamMua : dsSanPhamMua) {
 			tongTienHang += sanPhamMua.getThanhTien();
 		}
-		
+
 		double giamGia = tongTienHang * 0.05;
 		double tongThanhToan = tongTienHang - giamGia;
 		model.addAttribute("tongTienHang", tongTienHang);
 		model.addAttribute("giamGia", giamGia);
 		model.addAttribute("tongThanhToan", tongThanhToan);
-		model.addAttribute("isCategoryPage", 0);
-		
+
 		return "user/checkout";
 	}
 
 	@RequestMapping(value = "/orders/success", method = RequestMethod.POST)
-	public String createHoaDon(PayLoadCreateOrder payLoadCreateOrder, Model model,Principal principal) {
-		String username="";
-		if(principal!=null) {
-			 username=principal.getName();
+	public String createHoaDon(PayLoadCreateOrder payLoadCreateOrder, Model model, Principal principal) {
+		model.addAttribute("isCategoryPage", 0);
+
+		String username = "";
+		if (principal != null) {
+			username = principal.getName();
 		}
+		int soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(username);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
+
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		String diaChi=payLoadCreateOrder.getDiaChi();
+		String diaChi = payLoadCreateOrder.getDiaChi();
 		// 1 Lay user tu context security
 		// 1.1 lay chi tiet user
 		NguoiDung nguoiDung = nguoiDungService.findNguoiDungByEmail(username);
@@ -153,30 +165,33 @@ public class UserController {
 		model.addAttribute("chiTietHoaDons", chiTietHoaDons);
 		model.addAttribute("tongTienHang", tongTienHang);
 		model.addAttribute("giamGia", tongTienHang * 0.05);
-		model.addAttribute("isCategoryPage", 0);
 		return "user/detail-order";
 	}
-	@RequestMapping(value = {"/show-order" })
-	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD, Model model, Principal principal) {
-		NguoiDung nguoiDungLogin = null; 
+
+	@RequestMapping(value = { "/show-order", "/danh-sach-mua-hang" })
+	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD, Model model) {
+		String returnUrl = "redirect:/dang-nhap";
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		NguoiDung nguoiDung = null; 
 		int soLuongSpGh = 0;
-		if (principal != null) {
-			String email = principal.getName();
-			nguoiDungLogin = nguoiDungService.findNguoiDungByEmail(email);
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
 		}
-		model.addAttribute("nguoiDung", nguoiDungLogin);
+		model.addAttribute("nguoiDung", nguoiDung);
 		model.addAttribute("soLuongSpGh", soLuongSpGh);
-		
+			
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		// Tìm hóa đơn theo mã hóa đơn
-		System.out.println("maHD"+ maHD);
-		HoaDon hoaDon=hoaDonService.findHoaDonById(maHD);
+		System.out.println("maHD" + maHD);
+		HoaDon hoaDon = hoaDonService.findHoaDonById(maHD);
 		System.out.println(hoaDon.toString());
-		List<ChiTietHoaDon> cthds=new ArrayList<ChiTietHoaDon>();
-		cthds=ctHoaDonService.getDSCTHoaDonByMaHD(hoaDon.getMaHD());
-		double tongTienHang=0;
+		List<ChiTietHoaDon> cthds = new ArrayList<ChiTietHoaDon>();
+		cthds = ctHoaDonService.getDSCTHoaDonByMaHD(hoaDon.getMaHD());
+		double tongTienHang = 0;
 		for (ChiTietHoaDon chiTietHoaDon : cthds) {
 			tongTienHang = tongTienHang + chiTietHoaDon.getThanhTien();
 		}
@@ -184,36 +199,39 @@ public class UserController {
 		model.addAttribute("chiTietHoaDons", cthds);
 		model.addAttribute("tongTienHang", tongTienHang);
 		model.addAttribute("giamGia", tongTienHang * 0.05);
-		
-		model.addAttribute("isCategoryPage", 0);
-		return "user/show-my-order";
+			
+		returnUrl = "user/show-my-order";
+		return returnUrl;
 	}
-	
-	@RequestMapping(value = {"/order/history", "/lich-su-mua-hang"})
-	public String showHoaDonByNguoiDung( @RequestParam("maND") int userId, Model model, Principal principal) {
+
+	@RequestMapping(value = { "/order/history", "/lich-su-mua-hang" })
+	public String showHoaDonByNguoiDung(@RequestParam("maND") int userId, Model model) {
+		String returnUrl = "redirect:/dang-nhap";
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		NguoiDung nguoiDung = null; 
 		int soLuongSpGh = 0;
-		if (principal != null) {
-			String email = principal.getName();
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
 			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
 		}
 		model.addAttribute("nguoiDung", nguoiDung);
 		model.addAttribute("soLuongSpGh", soLuongSpGh);
-		
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
-		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		
-		List<HoaDon> hoaDons=hoaDonService.findHoaDonByUserId(nguoiDung.getMaND());
-		hoaDons.forEach(e->{
-		List<ChiTietHoaDon> cthds=new ArrayList<ChiTietHoaDon>();
-		cthds=ctHoaDonService.getDSCTHoaDonByMaHD(e.getMaHD());
-		e.setDsCTHoaDon(cthds);
-		});
-
-		model.addAttribute("hoadons", hoaDons);
-		model.addAttribute("isCategoryPage", 0);
-		return "user/history";
+			
+			List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+			model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+			
+			List<HoaDon> hoaDons = hoaDonService.findHoaDonByUserId(nguoiDung.getMaND());
+			hoaDons.forEach(e -> {
+				List<ChiTietHoaDon> cthds = new ArrayList<ChiTietHoaDon>();
+				cthds = ctHoaDonService.getDSCTHoaDonByMaHD(e.getMaHD());
+				e.setDsCTHoaDon(cthds);
+			});
+			model.addAttribute("hoadons", hoaDons);
+			
+		returnUrl = "user/history";
+		return returnUrl;
 	}
-	
+
 }

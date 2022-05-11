@@ -1,7 +1,6 @@
 package N1.DAO;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -34,8 +33,9 @@ public class GioHangDAOImpl implements GioHangDAO {
 	@Override
 	public boolean saveGioHang(GioHang gioHang) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		String query = " SELECT * FROM GioHang " + "where maND = " + gioHang.getNguoiDung().getMaND() + " AND maSp = "
-				+ gioHang.getSanPham().getMaSp();
+		String query = " SELECT * FROM GioHang "
+				+ "where maND = " + gioHang.getNguoiDung().getMaND()
+				+ " AND maSp = " + gioHang.getSanPham().getMaSp();
 		Query<GioHang> result = currentSession.createNativeQuery(query, GioHang.class);
 		result.setMaxResults(1);
 
@@ -56,13 +56,13 @@ public class GioHangDAOImpl implements GioHangDAO {
 	
 	@Override
 	public int getNumOfSanPhamInGioHangByEmail(String email) {
-		Session currentSession= sessionFactory.getCurrentSession();
-		String query = "SELECT count(*) FROM GioHang gh "
-				+ "where gh.maND = ( "
-				+ "select nd.maND from TaiKhoan tk, NguoiDung nd "
-				+ "where tk.maTaiKhoan = nd.maTaiKhoan "
-				+ "and tk.tenDangNhap = '" + email + "')";
-		int result = (int) currentSession.createNativeQuery(query).getSingleResult();
+		Session currentSession = sessionFactory.getCurrentSession();
+		String queryStr = "SELECT count(*) FROM GioHang gh "
+				+ "where gh.maND in ( "
+					+ "select top(1) nd.maND from TaiKhoan tk, NguoiDung nd "
+					+ "where tk.maTaiKhoan = nd.maTaiKhoan "
+					+ "and tk.tenDangNhap = '" + email + "' )";
+		int result = (int) currentSession.createNativeQuery(queryStr).getSingleResult();
 		return result;
 	}
 
@@ -89,7 +89,6 @@ public class GioHangDAOImpl implements GioHangDAO {
 
 	@Override
 	public List<GioHang> findAll() {
-		// TODO Auto-generated method stub
 		Session currentSession = sessionFactory.getCurrentSession();
 		return currentSession.createQuery("from GioHang", GioHang.class).getResultList();
 	}
@@ -118,7 +117,7 @@ public class GioHangDAOImpl implements GioHangDAO {
 	@Override
 	public List<GioHang> findGioHangByUserId(int maND) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		String queryStr = "select * from GioHang " + "where maND = " + maND;
+		String queryStr = "select * from GioHang where maND = " + maND;
 		List<GioHang> results = currentSession.createNativeQuery(queryStr, GioHang.class).getResultList();
 		
 		return results;

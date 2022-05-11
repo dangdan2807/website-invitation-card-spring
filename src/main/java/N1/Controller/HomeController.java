@@ -4,12 +4,14 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import N1.DTO.SanPhamMua;
 import N1.Service.*;
 import N1.entity.*;
 
@@ -18,29 +20,25 @@ import N1.entity.*;
 public class HomeController {
 	@Autowired
 	private SanPhamService sanPhamService;
-
 	@Autowired
 	private LoaiSanPhamService loaiSanPhamService;
-
 	@Autowired
 	private HoaDonService hoaDonService;
-	
 	@Autowired
 	private NguoiDungService nguoiDungService;
-	
 	@Autowired
 	private GioHangService gioHangService;
 	
 	@RequestMapping({ "/", "/trang-chu", "/home" })
-	public String showHomePage(Model model, Principal principal) {
+	public String showHomePage(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		NguoiDung nguoiDung = null; 
 		int soLuongSpGh = 0;
-		if (principal != null) {
-			String email = principal.getName();
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
 			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
 		}
-		
 		model.addAttribute("nguoiDung", nguoiDung);
 		model.addAttribute("soLuongSpGh", soLuongSpGh);
 		
@@ -93,19 +91,19 @@ public class HomeController {
 	}
 
 	@GetMapping({ "/lien-he", "/contact" })
-	public String showContractPage(Model model, Principal principal) {
+	public String showContractPage(Model model) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		model.addAttribute("isCategoryPage", 0);
 		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		NguoiDung nguoiDung = null; 
 		int soLuongSpGh = 0;
-		if (principal != null) {
-			String email = principal.getName();
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
 			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
 		}
-		
 		model.addAttribute("nguoiDung", nguoiDung);
 		model.addAttribute("soLuongSpGh", soLuongSpGh);
 

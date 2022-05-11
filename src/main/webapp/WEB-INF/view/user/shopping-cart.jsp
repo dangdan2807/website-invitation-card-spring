@@ -121,10 +121,12 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="shoping__cart__btns">
-						<a href="<c:url value = '/gio-hang/2' />"
-							class="primary-btn cart-btn">TIẾP TỤC MUA SẮM</a> <a href=""
-							class="primary-btn cart-btn cart-btn-right"> 
-							<span class="icon_loading"></span> CẬP NHẬT GIỎ HÀNG
+						<a href="<c:url value = '/san-pham' />" class="primary-btn cart-btn">
+							TIẾP TỤC MUA SẮM
+						</a> 
+						<a href="<c:url value = '/gio-hang' />" class="primary-btn cart-btn cart-btn-right"> 
+							<span class="icon_loading"></span> 
+							CẬP NHẬT GIỎ HÀNG
 						</a>
 					</div>
 				</div>
@@ -132,11 +134,8 @@
 					<div class="shoping__checkout">
 						<h5>Tổng số giỏ hàng</h5>
 						<ul>
-							<li>Thành Tiền <span> 
-                      			${tongTien }
-                         	
-							</span></li>
-							<li>Total <span>${tongTien }</span></li>
+							<li>Thành Tiền <span>${tongTien}</span></li>
+							<li>Total <span>${tongTien}</span></li>
 						</ul>
 						<a href="#" class="primary-btn">TIẾN HÀNH KIỂM TRA</a>
 					</div>

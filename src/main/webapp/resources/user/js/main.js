@@ -331,8 +331,8 @@
                 newVal = 1;
             }
         }
-        updateTotal($(this));
         $button.parent().find('input').val(newVal);
+        updateTotal($button);
     });
 
     // uck - vc
