@@ -14,7 +14,7 @@
 			<div class="modal-body">Bạn có chắc chắn muốn đăng xuất không?</div>
 			<div class="modal-footer">
 				<button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-				<a class="btn btn-primary" href="login.html">Đăng xuất</a>
+				<a class="btn btn-primary" href="${pageContext.request.contextPath}/dang-xuat">Đăng xuất</a>
 			</div>
 		</div>
 	</div>

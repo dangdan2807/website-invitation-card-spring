@@ -1,5 +1,6 @@
 package N1.Controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,8 +52,14 @@ public class AdminController {
 	@GetMapping("")
 	public String dashboard(@RequestParam(name = "dateType", required = false) String dateType,
 			@RequestParam(name = "from", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date from, 
-			@RequestParam(name = "to", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date to, Model model, HttpServletRequest request) {
+			@RequestParam(name = "to", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date to, Model model,
+			Principal principal, 
+			HttpServletRequest request) {
 		String path = request.getServletPath();
+		
+		System.out.println(principal);
+		System.out.println(principal.getName());
+		
 		
 		if(dateType == null)
 			dateType = "today";

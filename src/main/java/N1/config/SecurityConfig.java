@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -25,14 +28,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery("select tk.tenDangNhap, cv.tenChucVu from ChucVu as cv, TaiKhoan as tk "
                         + "where tk.maChucVu = cv.maChucVu and tk.tenDangNhap = ?");
     }
+    
+    private static final String[] PUBLIC_MATCHERS = {
+			"/resources/**",
+			"/",
+			"/san-pham",
+			"/lien-he",
+			"/danh-muc/**",
+			"/san-pham/**"
+	};
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        filter.setForceEncoding(true);
+        http.addFilterBefore(filter,CsrfFilter.class);
+      
         http.authorizeRequests()
+                .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .antMatchers("/resources/css/**").permitAll()
                 .antMatchers("/resources/bootstrap/**").permitAll()
                 .antMatchers("/resources/jquery/**").permitAll()
                 .antMatchers("/resources/fonts/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 // .antMatchers("/user/**").hasAnyRole("Khach hang", "Admin")
                 // .antMatchers("/san-pham/id=*/them-vao-gio-hang").hasAnyRole("Khach hang",
                 // "Admin")
@@ -46,10 +65,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/authenticateLogin")
                 .permitAll()
                 .and()
-                .logout().permitAll()
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/dang-xuat"))
+                .logoutSuccessUrl("/").permitAll()
                 .and()
                 .exceptionHandling().accessDeniedPage("/access-denied");
-
     }
 
     @Bean

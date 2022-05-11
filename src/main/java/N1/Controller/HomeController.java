@@ -1,5 +1,7 @@
 package N1.Controller;
 
+import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,9 @@ public class HomeController {
 	private HoaDonService hoaDonService;
 	
 	@RequestMapping({ "/", "/trang-chu", "/home" })
-	public String showHomePage(Model model) {
+	public String showHomePage(Model model, Principal principal) {
+		System.out.println(principal);
+		
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 
