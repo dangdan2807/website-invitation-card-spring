@@ -19,7 +19,7 @@
     const formatNumber = function(value) {
         return new Intl.NumberFormat(
             'vi-Vn',
-            { maximumSignificantDigits: 2 }).format(value);
+            { maximumSignificantDigits: 20 }).format(value);
     }
     
     const formatNumberBySelect = function() {
@@ -75,6 +75,8 @@
         $('.checkout__order > ul > li > span').each(formatMoneyBySelect);
         $('.checkout__order__subtotal > span').each(formatMoneyBySelect);
         $('.checkout__order__total > span').each(formatMoneyBySelect);
+        $('.shoping__checkout > ul > li > span').each(formatMoneyBySelect);
+        $('.header__cart__price > span').each(formatMoneyBySelect);
 
         // format số
         $('.product__details__text .product__details__rating > span:first-child()').each(formatNumberBySelect);

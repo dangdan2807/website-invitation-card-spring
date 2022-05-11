@@ -1,5 +1,7 @@
 package N1.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,48 @@ public class GioHangServiceImpl implements GioHangService {
 	@Transactional
 	public boolean saveGioHang(GioHang gioHang) {
 		return gioHangDAO.saveGioHang(gioHang);
+	}
+
+	@Override
+	@Transactional
+	public List<GioHang> getDSGioHang() {
+		// TODO Auto-generated method stub
+		return gioHangDAO.getDSGioHang();
+	}
+
+	@Override
+	@Transactional
+	public List<GioHang> findAll() {
+		// TODO Auto-generated method stub
+		return gioHangDAO.findAll();
+	}
+
+	@Override
+	@Transactional
+	public List<GioHang> findAll(int page) {
+		// TODO Auto-generated method stub
+		return gioHangDAO.findAll(page);
+	}
+
+	@Override
+	@Transactional
+	public int getNumberOfPage() {
+		// TODO Auto-generated method stub
+		return gioHangDAO.getNumberOfPage();
+	}
+
+	@Override
+	@Transactional
+	public GioHang addGioHang(GioHang gioHang) {
+		// TODO Auto-generated method stub
+		return gioHangDAO.addGioHang(gioHang);
+	}
+
+	@Override
+	@Transactional
+	public List<GioHang> findGioHangByUserId(int maND) {
+		// TODO Auto-generated method stub
+		return gioHangDAO.findGioHangByUserId(maND);
 	}
 
 }

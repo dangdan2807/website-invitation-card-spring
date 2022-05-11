@@ -3224,9 +3224,20 @@ ol {
         display: none;
     }
 
+	/* uck -vc */
     .shoping__cart-mobile {
         display: block;
         margin-bottom: 12px;
+    }
+    
+    /* uck -vc */
+    .shoping__cart-mobile__title {
+   	    font-size: 40px;
+	    font-weight: 700;
+	    text-align: center;
+	    color: #fff;
+	    background: #7fad39;
+	    padding: 16px 0;
     }
 
     /* uck -vc */
