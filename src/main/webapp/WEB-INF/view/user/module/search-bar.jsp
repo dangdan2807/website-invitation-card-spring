@@ -23,12 +23,11 @@
             <div class="col-lg-9">
                 <div class="hero__search">
                     <div class="hero__search__form">
-                    	<c:if test="${isCategoryPage == 0}">
-                        	<form class="search__form" method="GET" action='${pageContext.request.contextPath}/san-pham/tim-kiem'>
-                    	</c:if>
-                    	<c:if test="${isCategoryPage == 1}">
-                    		<form class="search__form" method="GET" action='${pageContext.request.contextPath}/danh-muc/id=${selectedCategoryId}/tim-kiem'>
-                    	</c:if>
+                       	<c:set var = "searchPath" scope = "session" value = "san-pham"/>
+                        <c:if test="${isCategoryPage == 1}">
+                        	<c:set var = "searchPath" scope = "session" value = "danh-muc/id=${selectedCategoryId}"/>
+                        </c:if>
+                        <form class="search__form" method="GET" action='${pageContext.request.contextPath}/${searchPath}/tim-kiem'>
                             <input class="search__form-input" type="text" name="ten-san-pham" placeholder="Bạn cần gì?" />
                             <button class="site-btn search__form-button" type="submit">TÌM</button>
                         </form>

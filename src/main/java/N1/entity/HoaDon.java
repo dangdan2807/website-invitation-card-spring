@@ -26,61 +26,61 @@ import N1.utils.Datetime;
 @Entity
 @Table(name = "HoaDon")
 public class HoaDon implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "maHD", nullable = false)
-    private int maHD;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "maHD", nullable = false, columnDefinition = "INT")
+	private int maHD;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "ngayLHD", nullable = false, columnDefinition = "DATETIME DEFAULT(GETDATE())")
-    private Date ngayLHD;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column(name = "ngayLHD", nullable = false, columnDefinition = "DATETIME DEFAULT(GETDATE())")
+	private Date ngayLHD;
 
-    @Column(name = "tongTien", nullable = false, columnDefinition = "MONEY DEFAULT(0) CHECK(tongTien >= 0)")
-    private double tongTien;
+	@Column(name = "tongTien", nullable = false, columnDefinition = "MONEY DEFAULT(0) CHECK(tongTien >= 0)")
+	private double tongTien;
 
-    @Column(name = "tongSoLuong", nullable = false, columnDefinition = "INT DEFAULT(0) CHECK(tongSoLuong >= 0)")
-    private double tongSoLuong;
+	@Column(name = "tongSoLuong", nullable = false, columnDefinition = "INT DEFAULT(0) CHECK(tongSoLuong >= 0)")
+	private double tongSoLuong;
 
-    @Column(name = "trangThaiDonHang", nullable = false, columnDefinition = "NVARCHAR(100) DEFAULT(N'Chưa thanh toán')")
-    private String trangThaiDonHang;
+	@Column(name = "trangThaiDonHang", nullable = false, columnDefinition = "NVARCHAR(100) DEFAULT(N'Chưa thanh toán')")
+	private String trangThaiDonHang;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Temporal(value = TemporalType.TIMESTAMP)
-    @Column(name = "ngayGiaoHang", columnDefinition = "DATETIME")
-    private Date ngayGiaoHang;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Temporal(value = TemporalType.TIMESTAMP)
+	@Column(name = "ngayGiaoHang", columnDefinition = "DATETIME")
+	private Date ngayGiaoHang;
 
     @Column(name = "diaChiGiaoHang", columnDefinition = "TEXT DEFAULT('')")
     private String diaChiGiaoHang;
-
-    @OneToMany(mappedBy = "hoaDon", cascade = CascadeType.REMOVE)
+    
+    @OneToMany(mappedBy = "hoaDon", fetch = FetchType.EAGER)
     private List<ChiTietHoaDon> dsCTHoaDon;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "maKH", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name = "maKH", nullable = false, columnDefinition = "INT")
     private NguoiDung nguoiDung;
-
+    
     public HoaDon() {
     	dsCTHoaDon = new ArrayList<ChiTietHoaDon>();
     }
 
-    public HoaDon(int maHD, Date ngayLHD, double tongTien, double tongSoLuong, NguoiDung nguoiDung) {
-        this.maHD = maHD;
-        this.ngayLHD = ngayLHD;
-        this.tongTien = tongTien;
-        this.tongSoLuong = tongSoLuong;
-        this.nguoiDung = nguoiDung;
-    }
+	public HoaDon(int maHD, Date ngayLHD, double tongTien, double tongSoLuong, NguoiDung nguoiDung) {
+		this.maHD = maHD;
+		this.ngayLHD = ngayLHD;
+		this.tongTien = tongTien;
+		this.tongSoLuong = tongSoLuong;
+		this.nguoiDung = nguoiDung;
+	}
 
-    public HoaDon(Date ngayLHD, double tongTien, double tongSoLuong, Date ngayGiaoHang, String diaChiGiaoHang) {
-        this.ngayLHD = ngayLHD;
-        this.tongTien = tongTien;
-        this.tongSoLuong = tongSoLuong;
-        this.ngayGiaoHang = ngayGiaoHang;
-        this.diaChiGiaoHang = diaChiGiaoHang;
-    }
+	public HoaDon(Date ngayLHD, double tongTien, double tongSoLuong, Date ngayGiaoHang, String diaChiGiaoHang) {
+		this.ngayLHD = ngayLHD;
+		this.tongTien = tongTien;
+		this.tongSoLuong = tongSoLuong;
+		this.ngayGiaoHang = ngayGiaoHang;
+		this.diaChiGiaoHang = diaChiGiaoHang;
+	}
 
-    public HoaDon(Date ngayLHD, double tongTien, double tongSoLuong, String trangThaiDonHang, Date ngayGiaoHang,
+	public HoaDon(Date ngayLHD, double tongTien, double tongSoLuong, String trangThaiDonHang, Date ngayGiaoHang,
 			String diaChiGiaoHang, NguoiDung nguoiDung) {
 		super();
 		this.ngayLHD = ngayLHD;
@@ -92,8 +92,6 @@ public class HoaDon implements Serializable {
 		this.nguoiDung = nguoiDung;
 	}
 
-	
-	
 	public int getMaHD() {
 		return maHD;
 	}
@@ -168,9 +166,9 @@ public class HoaDon implements Serializable {
 
 	public String dateToString(Date d) {
 		String str = Datetime.dateToString(d);
-		if(str==null){
-            return "";
-        }
+		if (str == null) {
+			return "";
+		}
 		return str;
 	}
 
@@ -181,7 +179,5 @@ public class HoaDon implements Serializable {
 				+ ", diaChiGiaoHang=" + diaChiGiaoHang + ", nguoiDung=" + nguoiDung
 				+ "]";
 	}
-    
-    
 
 }

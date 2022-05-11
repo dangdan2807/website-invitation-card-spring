@@ -54,13 +54,19 @@
 	<!-- Humberger Begin -->
 	<jsp:include page="./module/header-mobile.jsp">
 		<jsp:param name="activePage" value="shoppingCart" />
+		<jsp:param name="soLuong" value="${soLuong}" />
+		<jsp:param name="tongTienHang" value="${tongTienHang}" />
 	</jsp:include>
 	<!-- Humberger End -->
-
+	
 	<!-- Header Section Begin -->
 	<jsp:include page="./module/header.jsp">
-		<jsp:param name="activePage" value="shoppingCart" />
+	<jsp:param name="activePage" value="shoppingCart" />
+		<jsp:param name="soLuong" value="${soLuong}" />
+		<jsp:param name="tongTienHang" value="${tongTienHang}" />
 	</jsp:include>
+	<!-- Header Section End -->
+	
 	<!-- Header Section End -->
 
 	<!-- Search bar Begin -->
