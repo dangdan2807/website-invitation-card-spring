@@ -1,6 +1,7 @@
 package N1.Controller;
 
 import java.nio.charset.StandardCharsets;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,9 @@ public class HomeController {
 	private DanhGiaService danhGiaService;	
 	
 	@RequestMapping({ "/", "/trang-chu", "/home" })
-	public String showHomePage(Model model) {
+	public String showHomePage(Model model, Principal principal) {
+		System.out.println(principal);
+		
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 

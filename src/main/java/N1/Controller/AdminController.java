@@ -57,8 +57,9 @@ public class AdminController {
 			HttpServletRequest request) {
 		String path = request.getServletPath();
 		
-//		System.out.println(principal);
-//		System.out.println(principal.getName());
+		System.out.println(principal);
+		System.out.println(principal.getName());
+		
 		
 		if(dateType == null)
 			dateType = "today";
