@@ -47,6 +47,13 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 		return nguoiDungDAO.findNguoiDungById(id);
 	}
 
+	@Override
+	@Transactional
+	public NguoiDung findNguoiDungByEmail(String email) {
+		
+		return nguoiDungDAO.findNguoiDungByEmail(email);
+	}
+
 	
 
 }

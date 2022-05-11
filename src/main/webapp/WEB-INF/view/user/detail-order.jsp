@@ -284,8 +284,7 @@ img {
 				<div class="text-center">
 					<c:url var="backUrl"
 						value="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/user/order/history">
-						<c:param name="maND"
-							value="${hoadonThanhToan.getNguoiDung().getMaND() }"></c:param>
+						
 					</c:url>
 					<a href="${backUrl}"
 						style="color: #326e51; background-color: transparent;"> <i

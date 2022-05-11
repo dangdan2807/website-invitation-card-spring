@@ -1,6 +1,5 @@
 package N1.DAO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -10,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import N1.entity.ChucVu;
 import N1.entity.NguoiDung;
-import N1.entity.SanPham;
-import N1.entity.TaiKhoan;
+
 
 @Repository
 public class NguoiDungDAOImpl implements NguoiDungDAO {
@@ -76,11 +73,15 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
     }
 
     @Override
+    @Transactional
     public NguoiDung findNguoiDungByEmail(String email) {
         Session currentSession=sessionFactory.getCurrentSession();
-        String query="SELECT * FROM NguoiDung WHERE email ='"+email+"'";
-        NguoiDung nguoiDung=(NguoiDung) currentSession.createNativeQuery(query, NguoiDung.class).getSingleResult();
-        return nguoiDung;
+        String query="select nd.* from NguoiDung nd join TaiKhoan tk\r\n"
+        		+ "on nd.maTaiKhoan=tk.maTaiKhoan \r\n"
+        		+ "where tk.tenDangNhap='"+email+"'";
+        Query<NguoiDung> results = currentSession.createNativeQuery(query, NguoiDung.class);
+        return results.getSingleResult();
+       
     }
 
     @Override
