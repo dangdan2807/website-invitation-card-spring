@@ -271,15 +271,16 @@ public class UserController {
 	@RequestMapping("/profile")
 	public String showMyProfile(Model model, Principal principal) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
-		
+		System.out.println(principal);
 		NguoiDung nguoiDung = null;
 		int soLuongSpGh = 0;
 		String email = "";
-		if (principal != null) {
-			email = principal.getName();
-			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
-			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		if (principal == null) {
+			return "redirect:/dang-nhap";
 		}
+		email = principal.getName();
+		nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+		soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
 		ThongTinCapNhat thongTinCapNhat = new ThongTinCapNhat(nguoiDung.getHinhAnh(), 
 				nguoiDung.getSdt(), nguoiDung.getTenND(), nguoiDung.getTaiKhoan().getMatKhau(), 
 				nguoiDung.getDiaChi());
