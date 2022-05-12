@@ -32,7 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] PUBLIC_MATCHERS = {
 			"/resources/**",
 			"/",
-			"/**",
 			"/san-pham",
 			"/lien-he",
 			"/danh-muc/**",
@@ -50,10 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.rememberMe().key("uniqueAndSecret").tokenValiditySeconds(1296000);
         http.authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
 				.antMatchers("/user/**").hasAnyRole("CUSTOMER", "ADMIN")
 				.antMatchers("/san-pham/id=*/them-vao-gio-hang").hasAnyRole("CUSTOMER", "ADMIN")
 				.antMatchers("/san-pham/id=*/them-danh-gia").hasAnyRole("CUSTOMER", "ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
