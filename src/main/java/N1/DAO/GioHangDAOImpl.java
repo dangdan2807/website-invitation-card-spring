@@ -1,6 +1,7 @@
 package N1.DAO;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -9,6 +10,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import N1.DTO.SanPhamMua;
 import N1.entity.*;
 
 @Repository
@@ -26,6 +28,26 @@ public class GioHangDAOImpl implements GioHangDAO {
 		gioHang.forEach(e -> {
 			System.out.println("Xóa thành công");
 			currentSession.delete(e);
+		});
+
+	}
+	
+	@Override
+	public void deleteGioHangByIdNguoiDungAndSanPhamMuas(int maND, List<SanPhamMua> sanPhamMuas) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		String query = "select * from GioHang where maND=" + maND + " and maSp in ("; 
+		for(int i = 0; i < sanPhamMuas.size(); i++) {
+			query += sanPhamMuas.get(i).getMaSp();
+			if ((sanPhamMuas.size() - 1) == i) {
+				query += ") ";
+			} else {
+				query += ", ";
+			}
+		}
+		
+		List<GioHang> gioHang = currentSession.createNativeQuery(query, GioHang.class).getResultList();
+		gioHang.forEach(e -> {
+//			currentSession.delete(e);
 		});
 
 	}

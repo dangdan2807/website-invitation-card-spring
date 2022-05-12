@@ -18,7 +18,7 @@
 
 <style type="text/css">
 .content_box_profile_page {
-	border: solid 1px #e5e5e5;;
+	border: solid 1px #e5e5e5;
 	padding: 10px 0;
 	color: #333;
 	font-family: 'Roboto', sans-serif;
@@ -281,7 +281,10 @@ img {
 				</div>
 
 				<div class="text-center">
-					<c:url var="backUrl" value="/user/order/history" />
+					<c:url var="backUrl"
+						value="/user/order/history">
+						
+					</c:url>
 					<a href="${backUrl}"
 						style="color: #326e51; background-color: transparent;"> <i
 						class="fa fa-caret-left"></i> Quay lại đơn hàng của tôi

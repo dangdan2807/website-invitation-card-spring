@@ -49,6 +49,7 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
     
 
     @Override
+    @Transactional
     public boolean updateNguoiDung(NguoiDung nguoiDung) {
         Session currentSession=sessionFactory.getCurrentSession();
         currentSession.saveOrUpdate(nguoiDung);
@@ -59,14 +60,13 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
     public NguoiDung findNguoiDungByEmail(String email) {
         Session currentSession=sessionFactory.getCurrentSession();
         String queryStr = "SELECT * FROM NguoiDung nd "
-        		+ "WHERE nd.maTaiKhoan in ( "
-        			+ "select tk.maTaiKhoan from TaiKhoan tk "
-        			+ "WHERE tk.tenDangNhap = '" + email + "' )";
+                + "WHERE nd.maTaiKhoan in ( "
+                    + "select tk.maTaiKhoan from TaiKhoan tk "
+                    + "WHERE tk.tenDangNhap = '" + email + "' )";
         Query<NguoiDung> results = currentSession.createNativeQuery(queryStr, NguoiDung.class);
         results.setMaxResults(1);
         NguoiDung nguoiDung = results.getSingleResult();
         return nguoiDung;
-       
     }
 
     @Override

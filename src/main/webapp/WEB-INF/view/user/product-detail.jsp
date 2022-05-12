@@ -177,7 +177,9 @@
                                                         <form:textarea 
                                                             path="noiDung"
                                                             class="review__textarea-context" 
-                                                            placeholder="Mời bạn chia sẻ thêm một số cảm nhận về sản phẩm ..." ></form:textarea>
+                                                            placeholder="Mời bạn chia sẻ thêm một số cảm nhận về sản phẩm ..."
+                                                            required="true"
+                                                            ></form:textarea>
                                                     </div>
                                                     <security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')">
                                                         <input class="review__btn-submit btn btn-primary" type="submit" value="Gửi đánh giá ngay" />

@@ -67,13 +67,6 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
 		return null;
 	}
 	
-	@Override
-    public boolean updateTaiKhoan(TaiKhoan taiKhoan) {
-        Session currentSession=sessionFactory.getCurrentSession();
-        currentSession.saveOrUpdate(taiKhoan);
-        return true;
-    }
-	
 	@Transactional
 	public int getLastId() {
 		Session currentSession = sessionFactory.getCurrentSession();
@@ -81,6 +74,14 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
 		int id = (int) currentSession.createNativeQuery(query).getSingleResult();
 		System.out.println("id "+id);
 		return id;
+	}
+
+	@Override
+	@Transactional
+	public boolean updateTaiKhoan(TaiKhoan taiKhoan) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		currentSession.saveOrUpdate(taiKhoan);
+		return true;
 	}
 
 }
