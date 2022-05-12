@@ -28,19 +28,19 @@ public class NguoiDung implements Serializable {
 	@Column(name = "maND", nullable = false, columnDefinition = "INT")
 	private int maND;
 
-	@NotNull
-	@NotBlank(message = "Tên người dùng không được để trống")
-	@Column(name = "tenND", nullable = false, columnDefinition = "NVARCHAR(125)")
-	private String tenND;
+//    @NotNull
+//    @NotBlank(message = "Tên người dùng không được để trống")
+    @Column(name = "tenND", nullable = false, columnDefinition = "NVARCHAR(125)")
+    private String tenND;
 
-	@NotBlank(message = "Địa chỉ không được để trống")
-	@Column(name = "diaChi", columnDefinition = "TEXT DEFAULT('')")
-	private String diaChi;
+//    @NotBlank(message = "Địa chỉ không được để trống")
+    @Column(name = "diaChi", columnDefinition = "TEXT DEFAULT('')")
+    private String diaChi;
 
-	@NotBlank(message = "Số điện thoại không được để trống")
-	@Pattern(regexp = "(84|0[3|5|7|8|9])+([0-9]{8})", message = "Số điện thoại không hợp lệ")
-	@Column(name = "sdt", columnDefinition = "VARCHAR(10) DEFAULT('')")
-	private String sdt;
+//    @NotBlank(message = "Số điện thoại không được để trống")
+//    @Pattern(regexp = "(84|0[3|5|7|8|9])+([0-9]{8})", message = "Số điện thoại không hợp lệ")
+    @Column(name = "sdt", columnDefinition = "VARCHAR(10) DEFAULT('')")
+    private String sdt;
 
 	@Column(name = "hinhAnh", columnDefinition = "text DEFAULT (N'')")
 	private String hinhAnh;
