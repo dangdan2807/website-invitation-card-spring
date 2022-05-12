@@ -186,6 +186,7 @@
 							<form:label path="maHD" cssClass="form-label">Mã hóa đơn</form:label>
 							<form:input path="maHD" type="text" cssClass="form-control clear" 
 								readonly="true"/>
+							<form:errors path="maHD" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3 ">
 							<div id="search-autocomplete" class="form-outline">
@@ -199,6 +200,7 @@
 									</c:forEach>
 									
 								</datalist>
+								<form:errors path="nguoiDung.maND" cssClass="form-text error-msg" />
 							</div>
 
 						</div>
@@ -206,22 +208,24 @@
 							<form:label path="nguoiDung.tenND" cssClass="form-label">Tên khách hàng</form:label>
 							<form:input path="nguoiDung.tenND" type="text" cssClass="form-control clear nguoiDungtenND" 
 								readonly="true"/>
-							<div id="tenNDHelp" class="form-text"></div>
+							<form:errors path="nguoiDung.tenND" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<form:label path="nguoiDung.sdt" cssClass="form-label">Số điện thoại</form:label> 
 							<form:input path="nguoiDung.sdt" 
 								type="text" cssClass="form-control clear nguoiDungsdt"
 								aria-describedby="sdtHelp" readonly="true"/>
-							<div id="sdtHelp" class="form-text"></div>
+							<form:errors path="nguoiDung.sdt" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<form:label path="diaChiGiaoHang" cssClass="form-label">Địa chỉ giao hàng</form:label> 
 							<form:input path="diaChiGiaoHang" type="text" cssClass="form-control clear"/>
+							<form:errors path="diaChiGiaoHang" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<form:label path="ngayGiaoHang" cssClass="form-label">Ngày giao hàng</form:label> 
 							<form:input path="ngayGiaoHang" type="date" cssClass="form-control clear" />
+							<form:errors path="ngayGiaoHang" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<form:label path="trangThaiDonHang" class="form-label">Trạng thái giao hàng</form:label>
@@ -239,6 +243,7 @@
 								  <option value="cancelled" ${order.trangThaiDonHang == "cancelled" ? "selected" : "" }>
 								  	Đã hủy</option> 
 							</form:select>
+							<form:errors path="trangThaiDonHang" cssClass="form-text error-msg" />
 						</div>
 						
 						<div class="card shadow mb-4">
@@ -333,7 +338,8 @@
 							.getElementById('orderModal'), {
 						keyboard : false
 					});
-					${maHD != null ? "modal.show();": ""}
+					${maHD != null || error == true ? "modal.show();": ""}
+					
 					/* $(".btn-edit").click(function() {
 						modal.show();
 					}); */

@@ -61,12 +61,19 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
 		String query = "insert into TaiKhoan (tenDangNhap, matKhau, tinhTrang, maChucVu)"
 					+" values('"+nguoiDung.getTaiKhoan().getTenDangNhap()+"', "
 					+"'"+nguoiDung.getTaiKhoan().getMatKhau()+"', "
-					+"'1', '1')";
+					+"'1', '2')";
 		currentSession.createNativeQuery(query).executeUpdate();
 		nguoiDung.getTaiKhoan().setMaTaiKhoan(getLastId());
 		nguoiDungDAO.addNguoiDung(nguoiDung);
 		return null;
 	}
+	
+	@Override
+    public boolean updateTaiKhoan(TaiKhoan taiKhoan) {
+        Session currentSession=sessionFactory.getCurrentSession();
+        currentSession.saveOrUpdate(taiKhoan);
+        return true;
+    }
 	
 	@Transactional
 	public int getLastId() {

@@ -56,12 +56,18 @@ const formatMoneyBySelect = function () {
     $(this).text(formatNumber(price));
 }
 
+const formatMoneyBySelectInput = function () {
+    var price = $(this).val();
+    $(this).val(formatNumber(price));
+}
+
 const formatPercentBySelect = function () {
     var price = $(this).text();
     $(this).text(formatNumberPersent(price) + "%");
 }
 
 $(".money-format").each(formatMoneyBySelect);
+$(".money-format-input").each(formatMoneyBySelectInput);
 $(".persent-format").each(formatPercentBySelect);
 
 var dynamicColors = function() {
@@ -70,5 +76,11 @@ var dynamicColors = function() {
     var b = Math.floor(Math.random() * 255);
     return "rgb(" + r + "," + g + "," + b + ")";
 }
+
+
+
+$("input").focus(function(){
+	$(this).parent().find(".error-msg").text("");
+});
 
 </script>

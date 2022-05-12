@@ -186,58 +186,62 @@
 							<form:label path="maSp" cssClass="form-label">Mã thiệp</form:label>
 							<form:input path="maSp" type="text" cssClass="form-control"
 								readonly="true" />
-							<form:errors path="maSp" cssClass="form-text" />
+							<form:errors path="maSp" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<form:label path="tenSp" cssClass="form-label">Tên thiệp</form:label>
 							<form:input path="tenSp" type="text" cssClass="form-control" />
-							<form:errors path="tenSp" cssClass="form-text" />
+							<form:errors path="tenSp" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<form:label path="moTa" cssClass="form-label">Mô tả</form:label>
 							<form:input path="moTa" type="text" cssClass="form-control" />
-							<form:errors path="moTa" cssClass="form-text" />
+							<form:errors path="moTa" cssClass="form-text error-msg" />
 						</div>
 						<div class="row">
 							<div class="mb-3 col-6">
 								<form:label path="giaMua" cssClass="form-label">Giá nhập</form:label>
 								<form:input path="giaMua" type="text" cssClass="form-control" />
-								<form:errors path="giaMua" cssClass="form-text" />
+								<form:errors path="giaMua" cssClass="form-text error-msg" />
 							</div>
 							<div class="mb-3 col-6">
 								<form:label path="giaSP" cssClass="form-label">Giá bán</form:label>
 								<form:input path="giaSP" type="text" cssClass="form-control" />
-								<form:errors path="giaSP" cssClass="form-text" />
+								<form:errors path="giaSP" cssClass="form-text error-msg" />
 							</div>
 						</div>
 						<div class="row">
 							<div class="mb-3 col-6">
 								<form:label path="giamGia" cssClass="form-label">Khuyến mãi</form:label>
 								<form:input path="giamGia" type="text" cssClass="form-control" />
-								<form:errors path="giamGia" cssClass="form-text" />
+								<form:errors path="giamGia" cssClass="form-text error-msg" />
 							</div>
 							<div class="mb-3 col-6">
 								<label for="real-price" class="form-label">Giá sau khuyến mãi</label> 
-								<input type="text" class="form-control money-format" id="real-price" disabled>
+								<input type="text" class="form-control money-format-input" id="real-price" disabled 
+									value="${sanPham.giaSP*(100-sanPham.giamGia)/100}"/>
 							</div>
 						</div>
 						<div class="mb-3">
 							<form:label path="hinhAnh" cssClass="form-label">Hình ảnh</form:label>
 							<form:input path="hinhAnh" type="text" cssClass="form-control" />
-							<form:errors path="hinhAnh" cssClass="form-text" />
+							<form:errors path="hinhAnh" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<label for="image" class="form-label">Loại thiệp</label> 
 							<%-- <form:select path="dsLoaiSP" items="${dsLoaiSanPham}" cssClass="form-control"
 								  itemValue="maLSP" itemLabel="tenLSP"/> --%>
-							<select id="dsLoaiSanPham"   name="dsLoaiSanPham" class="form-control" multiple="multiple">
+							<select id="dsLoaiSanPham"   name="dsLoaiSanPham" class="form-control" multiple="multiple" required="required">
 								<c:forEach var="loaiSp" items="${dsLoaiSanPham}">
-									<option value="${loaiSp.maLSP}">${loaiSp.tenLSP}</option>
+									<option value="${loaiSp.maLSP}" 
+										${dsLoaiSanPhamSelected.contains(loaiSp.maLSP) ? "selected" : ""}>
+										${loaiSp.tenLSP}
+									</option>
 								</c:forEach>
 							</select> 
 							
-							
-							<div id="categoryHelp" class="form-text help-text">Bấm ctrl
+							<div id="dsLoaiSanPhamError" class="form-text error-msg"></div>
+							<div id="dsLoaiSanPhamHelp" class="form-text help-text">Bấm ctrl
 								để chọn nhiều mục</div>
 						</div>
 
@@ -246,8 +250,7 @@
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button"
 						data-dismiss="modal">Hủy</button>
-					<a class="btn btn-primary btn-form"
-						onclick="document.querySelector('form#form').submit();">Thêm</a>
+					<a class="btn btn-primary btn-form">Thêm</a>
 				</div>
 			</div>
 		</div>
@@ -265,7 +268,7 @@
 					.getElementById('productModal'), {
 				keyboard : false
 			});
-			
+			${error == true ? "modal.show();": ""}
 			$(".btn-edit").click(function() {
 				$(".btn-form").text("Sửa");
 				$("#maSp").attr('value',
@@ -321,6 +324,18 @@
 				var discount = Number($("#giamGia").val());
 				return price*(100 - discount)/100;
 			}
+			
+			$(".btn-form").click(function(){
+				check = $("#dsLoaiSanPham option:selected").length;
+
+			    if(!check) {
+			        $("#dsLoaiSanPhamError").text("Vui lòng chọn ít nhất một loại thiệp");
+			        return false;
+			    }
+
+			    $("#dsLoaiSanPhamError").text("");
+				document.querySelector('form#form').submit();
+			});
 		});
 
 </script>

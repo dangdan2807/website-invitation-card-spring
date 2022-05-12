@@ -51,5 +51,11 @@ public class ChucVu implements Serializable {
 	public void setTenChucVu(String tenChucVu) {
 		this.tenChucVu = tenChucVu;
 	}
+
+	@Override
+	public String toString() {
+		return "ChucVu [maChucVu=" + maChucVu + ", tenChucVu=" + tenChucVu + "]";
+	}
+	
 	
 }
