@@ -1,6 +1,5 @@
 package N1.Controller;
 
-
 import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.ArrayList;
@@ -10,6 +9,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ import N1.entity.*;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    @Autowired
+	@Autowired
 	private SanPhamService sanPhamService;
 
 	@Autowired
@@ -36,52 +37,55 @@ public class UserController {
 	private HoaDonService hoaDonService;
 
 	@Autowired
-    private GioHangService gioHangService;
-    
-    @Autowired
-    private CTHoaDonService ctHoaDonService;
+	private GioHangService gioHangService;
 
-    @RequestMapping({ "/gio-hang", "/cart" })
+	@Autowired
+	private CTHoaDonService ctHoaDonService;
+	
+	@Autowired 
+	private TaiKhoanService taiKhoanService;
+	@RequestMapping({ "/gio-hang", "/cart" })
 	public String showShoppingCartPage(Model model, Principal principal) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		model.addAttribute("isCategoryPage", 0);
 
-		NguoiDung nguoiDung = null; 
+		NguoiDung nguoiDung = null;
 		int soLuongSpGh = 0;
 		if (principal != null) {
 			String email = principal.getName();
 			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
 		}
-		
+
 		model.addAttribute("nguoiDung", nguoiDung);
 		model.addAttribute("soLuongSpGh", soLuongSpGh);
-		
+
 		List<SanPham> dsSanPham = new ArrayList<SanPham>();
 		model.addAttribute("dsSanPham", dsSanPham);
 
 		return "user/shopping-cart";
 	}
 
-    @RequestMapping({ "/thanh-toan", "/checkout" })
+	@RequestMapping({ "/thanh-toan", "/checkout" })
 	public String showCheckoutPage(Model model) {
-    	
-    	Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	String username ="";
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = "";
 		if (principal instanceof UserDetails) {
-		   username = ((UserDetails)principal).getUsername();
+			username = ((UserDetails) principal).getUsername();
 		} else {
-			username= principal.toString();
+			username = principal.toString();
 		}
-		NguoiDung nguoiDung=nguoiDungService.findNguoiDungByEmail(username);
+		NguoiDung nguoiDung = nguoiDungService.findNguoiDungByEmail(username);
+		int soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(username);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		//NguoiDung nguoiDung = nguoiDungService.findNguoiDungById(maND);
+		// NguoiDung nguoiDung = nguoiDungService.findNguoiDungById(maND);
 		model.addAttribute("nguoiDung", nguoiDung);
-		
+
 		List<SanPhamMua> dsSanPhamMua = sanPhamService.getSanPhamMua(nguoiDung.getMaND());
-		int soLuong=dsSanPhamMua.size();
+		int soLuong = dsSanPhamMua.size();
 		model.addAttribute("dsSanPhamMua", dsSanPhamMua);
 		model.addAttribute("soLuong", soLuong);
 		double tongTienHang = 0;
@@ -94,19 +98,19 @@ public class UserController {
 		model.addAttribute("giamGia", giamGia);
 		model.addAttribute("tongThanhToan", tongThanhToan);
 		model.addAttribute("isCategoryPage", 0);
-		
+
 		return "user/checkout";
 	}
 
 	@RequestMapping(value = "/orders/success", method = RequestMethod.POST)
-	public String createHoaDon(PayLoadCreateOrder payLoadCreateOrder, Model model,Principal principal) {
-		String username="";
-		if(principal!=null) {
-			 username=principal.getName();
+	public String createHoaDon(PayLoadCreateOrder payLoadCreateOrder, Model model, Principal principal) {
+		String username = "";
+		if (principal != null) {
+			username = principal.getName();
 		}
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		String diaChi=payLoadCreateOrder.getDiaChi();
+		String diaChi = payLoadCreateOrder.getDiaChi();
 		// 1 Lay user tu context security
 		// 1.1 lay chi tiet user
 		NguoiDung nguoiDung = nguoiDungService.findNguoiDungByEmail(username);
@@ -125,8 +129,8 @@ public class UserController {
 		Date ngayLHD = new Date();
 		Date ngayGiaoHang = new Date(ngayLHD.getTime() + (3 * 1000 * 60 * 60 * 24));
 		String trangThaiDonHang = "Chưa thanh toán";
-		HoaDon hoaDon = new HoaDon(ngayLHD, tongThanhToan, tongSoLuong, trangThaiDonHang, ngayGiaoHang,
-				diaChi, nguoiDung);
+		HoaDon hoaDon = new HoaDon(ngayLHD, tongThanhToan, tongSoLuong, trangThaiDonHang, ngayGiaoHang, diaChi,
+				nguoiDung);
 		HoaDon hoadonSave = hoaDonService.addHoaDon(hoaDon);
 		dsSanPhamMua.forEach(e -> {
 			SanPham sanPham = sanPhamService.getSanPhamByIdSanPham(e.getMaSp());
@@ -145,9 +149,10 @@ public class UserController {
 		model.addAttribute("isCategoryPage", 0);
 		return "user/detail-order";
 	}
-	@RequestMapping(value = {"/show-order" })
+
+	@RequestMapping(value = { "/show-order" })
 	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD, Model model, Principal principal) {
-		NguoiDung nguoiDungLogin = null; 
+		NguoiDung nguoiDungLogin = null;
 		int soLuongSpGh = 0;
 		if (principal != null) {
 			String email = principal.getName();
@@ -156,31 +161,31 @@ public class UserController {
 		}
 		model.addAttribute("nguoiDung", nguoiDungLogin);
 		model.addAttribute("soLuongSpGh", soLuongSpGh);
-		
+
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		// Tìm hóa đơn theo mã hóa đơn
-		System.out.println("maHD"+ maHD);
-		HoaDon hoaDon=hoaDonService.findHoaDonById(maHD);
+		System.out.println("maHD" + maHD);
+		HoaDon hoaDon = hoaDonService.findHoaDonById(maHD);
 		System.out.println(hoaDon.toString());
-		List<ChiTietHoaDon> cthds=new ArrayList<ChiTietHoaDon>();
-		cthds=ctHoaDonService.getDSCTHoaDonByMaHD(hoaDon.getMaHD());
-		double tongTienHang=0;
+		List<ChiTietHoaDon> cthds = new ArrayList<ChiTietHoaDon>();
+		cthds = ctHoaDonService.getDSCTHoaDonByMaHD(hoaDon.getMaHD());
+		double tongTienHang = 0;
 		for (ChiTietHoaDon chiTietHoaDon : cthds) {
-			tongTienHang=tongTienHang+chiTietHoaDon.getThanhTien();
+			tongTienHang = tongTienHang + chiTietHoaDon.getThanhTien();
 		}
 		model.addAttribute("hoadonThanhToan", hoaDon);
 		model.addAttribute("chiTietHoaDons", cthds);
 		model.addAttribute("tongTienHang", tongTienHang);
 		model.addAttribute("giamGia", tongTienHang * 0.05);
-		
+
 		model.addAttribute("isCategoryPage", 0);
 		return "user/show-my-order";
 	}
-	
-	@RequestMapping(value = {"/order/history", "/lich-su-mua-hang"})
-	public String showHoaDonByNguoiDung( @RequestParam("maND") int userId, Model model, Principal principal) {
-		NguoiDung nguoiDung = null; 
+
+	@RequestMapping(value = { "/order/history", "/lich-su-mua-hang" })
+	public String showHoaDonByNguoiDung(Model model, Principal principal) {
+		NguoiDung nguoiDung = null;
 		int soLuongSpGh = 0;
 		if (principal != null) {
 			String email = principal.getName();
@@ -189,19 +194,81 @@ public class UserController {
 		}
 		model.addAttribute("nguoiDung", nguoiDung);
 		model.addAttribute("soLuongSpGh", soLuongSpGh);
-		
+
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		
-		List<HoaDon> hoaDons=hoaDonService.findHoaDonByUserId(nguoiDung.getMaND());
-		hoaDons.forEach(e->{
-		List<ChiTietHoaDon> cthds=new ArrayList<ChiTietHoaDon>();
-		cthds=ctHoaDonService.getDSCTHoaDonByMaHD(e.getMaHD());
-		e.setDsCTHoaDon(cthds);
+
+		List<HoaDon> hoaDons = hoaDonService.findHoaDonByUserId(nguoiDung.getMaND());
+		hoaDons.forEach(e -> {
+			List<ChiTietHoaDon> cthds = new ArrayList<ChiTietHoaDon>();
+			cthds = ctHoaDonService.getDSCTHoaDonByMaHD(e.getMaHD());
+			e.setDsCTHoaDon(cthds);
 		});
-				
-		model.addAttribute("hoadons",hoaDons);
+		model.addAttribute("hoadons", hoaDons);
 		model.addAttribute("isCategoryPage", 0);
 		return "user/history";
 	}
+
+	@RequestMapping("/profile")
+	public String showMyProfile(Model model, Principal principal) {
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+		
+		NguoiDung nguoiDung = null;
+		int soLuongSpGh = 0;
+		String email = "";
+		if (principal != null) {
+			email = principal.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		}
+		boolean kq=false;
+		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+		model.addAttribute("kq", kq);
+		model.addAttribute("nguoiDung", nguoiDung);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
+		model.addAttribute("email", email);
+		model.addAttribute("isCategoryPage", 0);
+		return "user/form-update-profile";
+	}
+
+	@RequestMapping("/profile/edit")
+	public String updateProfile(ThongTinCapNhat thongTinCapNhat, Model model,Principal principal) {
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+		
+		NguoiDung nguoiDung = null;
+		int soLuongSpGh = 0;
+		String email = "";
+		if (principal != null) {
+			email = principal.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		}
+		String sdt=thongTinCapNhat.getSdt();
+		String tenND=thongTinCapNhat.getTenND();
+		
+		// Cập nhật mật khẩu mà mật khẩu cần phải băm
+		String matKhau=thongTinCapNhat.getMatKhau();
+		System.out.println(matKhau);
+		TaiKhoan taiKhoan=nguoiDung.getTaiKhoan();
+		if(!matKhau.equals("")) {
+			 PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+				String encodedPassword = passwordEncoder.encode(matKhau);
+				encodedPassword = "{bcrypt}" + encodedPassword;
+				taiKhoan.setMatKhau(encodedPassword);
+				taiKhoanService.updateTaiKhoan(taiKhoan);
+		}
+		nguoiDung.setSdt(sdt);
+		nguoiDung.setTenND(tenND);
+		nguoiDung.setTaiKhoan(taiKhoan);
+		boolean kq=nguoiDungService.updateNguoiDung(nguoiDung);
+		
+		model.addAttribute("email", email);
+		model.addAttribute("nguoiDung", nguoiDung);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
+		model.addAttribute("kq", kq);
+		model.addAttribute("isCategoryPage", 0);
+		return "user/form-update-profile";
+	}
+	
 }

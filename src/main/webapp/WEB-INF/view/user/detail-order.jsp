@@ -18,7 +18,7 @@
 
 <style type="text/css">
 .content_box_profile_page {
-	border: solid 1px #e5e5e5;;
+	border: solid 1px #e5e5e5;
 	padding: 10px 0;
 	color: #333;
 	font-family: 'Roboto', sans-serif;
@@ -283,7 +283,7 @@ img {
 
 				<div class="text-center">
 					<c:url var="backUrl"
-						value="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/user/order/history">
+						value="/user/order/history">
 						
 					</c:url>
 					<a href="${backUrl}"
