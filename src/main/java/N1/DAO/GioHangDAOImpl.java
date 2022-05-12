@@ -23,13 +23,8 @@ public class GioHangDAOImpl implements GioHangDAO {
 	@Override
 	public void deleteGioHangByIdNguoiDung(int maND) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		String query = "select * from GioHang where maND=" + maND;
-		List<GioHang> gioHang = currentSession.createNativeQuery(query, GioHang.class).getResultList();
-		gioHang.forEach(e -> {
-			System.out.println("Xóa thành công");
-			currentSession.delete(e);
-		});
-
+		String query = "delete from gioHang where maND = "+maND+";";
+		currentSession.createNativeQuery(query).executeUpdate();
 	}
 	
 	@Override
