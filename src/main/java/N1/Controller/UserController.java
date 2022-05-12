@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,14 +17,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import N1.DTO.*;
 import N1.Service.*;
 import N1.entity.*;
+import N1.utils.Datetime;
 
 @Controller
 @RequestMapping("/user")
@@ -95,6 +102,29 @@ public class UserController {
 			
 			returnUrl = "redirect:/user/gio-hang";
 		}
+  
+  @PostMapping({ "/gio-hang", "/cart" })
+	public String addOrUpdateOrder(Principal principal,
+			@RequestParam("dscthdmaSp") List<Integer> dscthdmaSp,
+			@RequestParam("dscthdsoLuong") List<Integer> dscthdsoLuong, 
+			Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		
+		
+		
+		System.out.println(dscthdmaSp);
+		System.out.println(dscthdsoLuong);
+		NguoiDung user = nguoiDungService.findNguoiDungByEmail(principal.getName());
+		
+		
+		List<GioHang> dsGioHang = new ArrayList<GioHang>();
+		for(int i=0; i<dscthdmaSp.size(); i++) {
+			SanPham sanPham = sanPhamService.getSanPhamByIdSanPham(dscthdmaSp.get(i));
+			dsGioHang.add(new GioHang(user, sanPham, dscthdsoLuong.get(i)));
+		}
+		System.out.println(dsGioHang);
+		gioHangService.updateDanhSachGioHang(user.getMaND(), dsGioHang);
+		return "redirect:/user/gio-hang";
+	}
 
 		return returnUrl;
 	}
