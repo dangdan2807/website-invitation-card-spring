@@ -6,22 +6,22 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import N1.DTO.DSCTHoaDonForm;
 import N1.Service.*;
-import N1.Service.ThongKeService;
 import N1.Service.ThongKeServiceImpl.LineChartObject;
 import N1.Service.ThongKeServiceImpl.LabelCount;
 import N1.entity.*;
@@ -56,10 +56,8 @@ public class AdminController {
 			Principal principal, 
 			HttpServletRequest request) {
 		String path = request.getServletPath();
-		
-		System.out.println(principal);
-		System.out.println(principal.getName());
-		
+		NguoiDung admin = nguoiDungService.findNguoiDungByEmail(principal.getName());
+		model.addAttribute("admin", admin);
 		
 		if(dateType == null)
 			dateType = "today";
@@ -128,8 +126,13 @@ public class AdminController {
 	
 	/**************************** User *******************************/
 	@GetMapping("/user")
-	public String user(@RequestParam(name = "page", required = false) Integer page, Model model, HttpServletRequest request) {
+	public String user(
+			@RequestParam(name = "page", required = false) Integer page, 
+			Principal principal,
+			Model model, HttpServletRequest request) {
 		String path = request.getServletPath();
+		NguoiDung admin = nguoiDungService.findNguoiDungByEmail(principal.getName());
+		model.addAttribute("admin", admin);
 		
 		if(page == null)
 			page = 1;
@@ -148,15 +151,32 @@ public class AdminController {
 	}
 	
 	@PostMapping("/user")
-	public String updateNguoiDung(@ModelAttribute("nguoiDung") NguoiDung nguoiDung, Model model, 
+	public String updateNguoiDung(@Valid @ModelAttribute("nguoiDung") NguoiDung nguoiDung,
+			BindingResult bindingResult, Model model, Principal principal,
 			HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		System.out.println(nguoiDung);
+		
+		if(bindingResult.hasErrors()) {
+			String path = request.getServletPath();
+			NguoiDung admin = nguoiDungService.findNguoiDungByEmail(principal.getName());
+			model.addAttribute("admin", admin);
+			
+			List<NguoiDung> users = nguoiDungService.findAll(1);
+			model.addAttribute("error", true);
+			model.addAttribute("title", "Quản lý người dùng");
+			model.addAttribute("numberOfPage", nguoiDungService.getNumberOfPage());
+			model.addAttribute("currentPage", 1);
+			model.addAttribute("path", path);
+			model.addAttribute("users", users);
+			model.addAttribute("nguoiDung", nguoiDung);
+			return "admin/user";
+		}
 		
 		NguoiDung nguoiDung2 = nguoiDungService.findNguoiDungById(nguoiDung.getMaND());
 		nguoiDung2.setTenND(nguoiDung.getTenND());
 		nguoiDung2.setSdt(nguoiDung.getSdt());
 		nguoiDung2.setDiaChi(nguoiDung.getDiaChi());
 		nguoiDung2.setHinhAnh(nguoiDung.getHinhAnh());
+		nguoiDung2.getTaiKhoan().setChucVu(nguoiDung.getTaiKhoan().getChucVu());
 		System.out.println(nguoiDung2.getTaiKhoan());
 		nguoiDungService.save(nguoiDung2);
 		
@@ -169,9 +189,12 @@ public class AdminController {
 	/**************************** Order *******************************/
 	@GetMapping("/order")
 	public String order(@RequestParam(name = "maHD", required = false) Integer maHD, 
-			@RequestParam(name = "page", required = false) Integer page, 
+			@RequestParam(name = "page", required = false) Integer page,
+			Principal principal, 
 			Model model, HttpServletRequest request) {
 		String path = request.getServletPath();
+		NguoiDung admin = nguoiDungService.findNguoiDungByEmail(principal.getName());
+		model.addAttribute("admin", admin);
 		
 		if(page == null)
 			page = 1;
@@ -207,14 +230,13 @@ public class AdminController {
 	}
 	
 	@PostMapping("/order")
-	public String addOrUpdateOrder(@ModelAttribute("hoaDon") HoaDon hoaDon, 
+	public String addOrUpdateOrder(@Valid @ModelAttribute("hoaDon") HoaDon hoaDon, 
+			BindingResult bindingResult, Principal principal,
 			@RequestParam("dscthdmaSp") List<Integer> dscthdmaSp,
 			@RequestParam("dscthdsoLuong") List<Integer> dscthdsoLuong, 
 			Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		System.out.println(hoaDon);
-		System.out.println(dscthdmaSp);
-		System.out.println(dscthdsoLuong);
 		
+		System.out.println(bindingResult);
 		
 		List<ChiTietHoaDon> dscthd = new ArrayList<ChiTietHoaDon>();
 		for(int i=0; i<dscthdmaSp.size(); i++) {
@@ -223,6 +245,32 @@ public class AdminController {
 			dscthd.add(new ChiTietHoaDon(hoaDon, sanPham, dscthdsoLuong.get(i), sanPham.getGiaSauGiamGia()));
 		}
 		hoaDon.setDsCTHoaDon(dscthd);
+		if(bindingResult.hasErrors()) {
+			String path = request.getServletPath();
+			NguoiDung admin = nguoiDungService.findNguoiDungByEmail(principal.getName());
+			model.addAttribute("admin", admin);
+			
+			List<ChiTietHoaDon> dsCTHoaDon = ctHoaDonService.getChiTietHoaDonByMaHD(hoaDon.getMaHD());
+			hoaDon.setDsCTHoaDon(dsCTHoaDon);
+
+			List<SanPham> dsSanPham = sanPhamService.getDSSanPham(1);
+			List<NguoiDung> users = nguoiDungService.findAll();
+			List<HoaDon> orders = hoaDonService.findAll(1);
+			
+			model.addAttribute("error", true);
+			model.addAttribute("maHD", hoaDon.getMaHD());
+			model.addAttribute("dsCTHoaDon", dsCTHoaDon);
+			model.addAttribute("title", "Quản lý hóa đơn");
+			model.addAttribute("numberOfPage", hoaDonService.getNumberOfPage());
+			model.addAttribute("currentPage", 1);
+			model.addAttribute("path", path);
+			model.addAttribute("orders", orders);
+			model.addAttribute("users", users);
+			model.addAttribute("dsSanPham", dsSanPham);
+			model.addAttribute("order", hoaDon);
+			return "admin/order";
+		}
+		
 		if(hoaDon.getMaHD() == 0)
 			hoaDon.setNgayLHD(Datetime.getToday());
 		hoaDonService.saveHoaDon(hoaDon);
@@ -248,8 +296,13 @@ public class AdminController {
 	
 	/**************************** Product *******************************/
 	@GetMapping(value = "/product")
-	public String product(@RequestParam(name = "page", required = false) Integer page, Model model, HttpServletRequest request) {
+	public String product(
+			@RequestParam(name = "page", required = false) Integer page,
+			Principal principal, 
+			Model model, HttpServletRequest request) {
 		String path = request.getServletPath();
+		NguoiDung admin = nguoiDungService.findNguoiDungByEmail(principal.getName());
+		model.addAttribute("admin", admin);
 		
 		if(page == null)
 			page = 1;
@@ -271,12 +324,35 @@ public class AdminController {
 	}
 	
 	@PostMapping("/product")
-	public String addOrUpdateProduct(@ModelAttribute("sanPham") SanPham sanPham, 
-			Model model, HttpServletRequest request, RedirectAttributes redirectAttributes, 
-			@RequestParam(value = "dsLoaiSanPham") List<Integer> dsLoaiSanPham) {
-		System.out.println("hi");
-		System.out.println(sanPham);
-		System.out.println(dsLoaiSanPham);
+	public String addOrUpdateProduct(@Valid @ModelAttribute("sanPham") SanPham sanPham, 
+			BindingResult bindingResult, Model model, Principal principal, 
+			HttpServletRequest request, RedirectAttributes redirectAttributes, 
+			@RequestParam(value = "dsLoaiSanPham") List<Integer> dsLoaiSanPhamSelected) {
+		
+		List<ChiTietLoaiSP> ctlsp = new ArrayList<ChiTietLoaiSP>();
+		dsLoaiSanPhamSelected.forEach(lsp -> {
+			ctlsp.add(new ChiTietLoaiSP(new LoaiSanPham(lsp, null)));
+		});
+		sanPham.setDsLoaiSP(ctlsp);
+		
+		if(bindingResult.hasErrors()) {
+			String path = request.getServletPath();
+			NguoiDung admin = nguoiDungService.findNguoiDungByEmail(principal.getName());
+			model.addAttribute("admin", admin);
+			
+			List<SanPham> dsSanPham = sanPhamService.getDSSanPham(1);
+			List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+			model.addAttribute("error", true);
+			model.addAttribute("title", "Quản lý thiệp");
+			model.addAttribute("dsSanPham", dsSanPham);
+			model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+			model.addAttribute("dsLoaiSanPhamSelected", dsLoaiSanPhamSelected);
+			model.addAttribute("numberOfPage", sanPhamService.getNumberOfPage());
+			model.addAttribute("currentPage", 1);
+			model.addAttribute("path", path);
+			model.addAttribute("sanPham", sanPham);
+			return "admin/product";
+		}
 		
 		if(sanPham.getMaSp() == 0) {
 			redirectAttributes.addAttribute("msg", "Thêm sản phẩm thành công!");
@@ -286,11 +362,7 @@ public class AdminController {
 			redirectAttributes.addAttribute("status", 1);
 		}
 		
-		List<ChiTietLoaiSP> ctlsp = new ArrayList<ChiTietLoaiSP>();
-		dsLoaiSanPham.forEach(lsp -> {
-			ctlsp.add(new ChiTietLoaiSP(new LoaiSanPham(lsp, null)));
-		});
-		sanPham.setDsLoaiSP(ctlsp);
+		
 		try {
 			sanPhamService.save(sanPham);
 		}catch (Exception e) {
@@ -314,8 +386,13 @@ public class AdminController {
 	/**************************** Category *******************************/
 	
 	@GetMapping("/category")
-	public String category(@RequestParam(name = "page", required = false) Integer page, Model model, HttpServletRequest request) {
+	public String category(
+			@RequestParam(name = "page", required = false) Integer page, 
+			Principal principal,
+			Model model, HttpServletRequest request) {
 		String path = request.getServletPath();
+		NguoiDung admin = nguoiDungService.findNguoiDungByEmail(principal.getName());
+		model.addAttribute("admin", admin);
 		
 		if(page == null)
 			page = 1;
@@ -334,9 +411,28 @@ public class AdminController {
 	}
 	
 	@PostMapping("/category")
-	public String addOrUpdateCategory(@ModelAttribute("loaiSanPham") LoaiSanPham loaiSanPham, Model model, 
+	public String addOrUpdateCategory(@Valid @ModelAttribute("loaiSanPham") LoaiSanPham loaiSanPham, 
+			BindingResult bindingResult, Model model, Principal principal,
 			HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		System.out.println(loaiSanPham);
+		
+		System.out.println(bindingResult);
+		
+		if(bindingResult.hasErrors()) {
+			String path = request.getServletPath();
+			NguoiDung admin = nguoiDungService.findNguoiDungByEmail(principal.getName());
+			model.addAttribute("admin", admin);
+			
+			List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll(1);
+			model.addAttribute("error", true);
+			model.addAttribute("title", "Quản lý danh mục thiệp");
+			model.addAttribute("numberOfPage", loaiSanPhamService.getNumberOfPage());
+			model.addAttribute("currentPage", 1);
+			model.addAttribute("path", path);
+			model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+			model.addAttribute("loaiSanPham", loaiSanPham);
+			return "admin/category";
+		}
+		
 		loaiSanPhamService.save(loaiSanPham);
 		if(loaiSanPham.getMaLSP() == 0) {
 			redirectAttributes.addAttribute("msg", "Thêm danh mục sản phẩm thành công!");

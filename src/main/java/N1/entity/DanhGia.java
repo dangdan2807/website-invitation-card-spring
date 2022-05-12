@@ -44,7 +44,7 @@ public class DanhGia implements Serializable {
 	@Column(name = "thoiGian", nullable = false, columnDefinition = "DATETIME DEFAULT(GETDATE())")
 	private Date thoiGian;
 
-	@Column(name = "xepHang", nullable = false, columnDefinition = "INT DEFAULT(0) CHECK(xepHang >= 0 OR xepHang <= 5)")
+	@Column(name = "xepHang", nullable = false, columnDefinition = "INT DEFAULT(1) CHECK(xepHang >= 0 OR xepHang <= 5)")
 	@Min(value = 1)
 	@Max(value = 5)
 	private int xepHang;

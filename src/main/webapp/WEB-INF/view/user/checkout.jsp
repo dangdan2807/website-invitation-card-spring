@@ -24,7 +24,7 @@
 }
 </style>
 <script type="text/javascript">
-	function validateAdressNotNull() {
+	function validateAddressNotNull() {
 		var a = document.getElementById("input_address");
 		console.log("a>> ", a);
 		if (a.value === null || a.value === '') {
@@ -37,7 +37,7 @@
 
 	function submicForm() {
 		event.preventDefault();
-		const validate = validateAdressNotNull();
+		const validate = validateAddressNotNull();
 		if (validate == false)
 			return;
 		event.currentTarget.submit();
@@ -83,7 +83,7 @@
 		<div style="text-align: center;" class="mb-4">
 			<p>Giỏ hàng rỗng</p>
 			<a style="color: #326e51; background-color: transparent;"
-				href="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/">Tiếp
+				href='<c:url value = "/trang-chu" />'>Tiếp
 				tục mua hàng <i class="fa fa-shopping-cart" aria-hidden="true"></i>
 			</a>
 		</div>
@@ -142,7 +142,7 @@
 									<input id="input_address" name="diaChi" path="diaChi"
 										style="font-family: 'Roboto', sans-serif;" type="text"
 										placeholder="Địa chỉ của bạn ..." class="checkout__input__add"
-										onkeyUp="validateAdressNotNull()" />
+										onkeyUp="validateAddressNotNull()" />
 								</div>
 								<div class="checkout__input">
 									<p>

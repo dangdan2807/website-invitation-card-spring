@@ -18,5 +18,5 @@ public class SpringMvcDispatcherServlet extends AbstractAnnotationConfigDispatch
     protected String[] getServletMappings() {
         return new String[] { "/" };
     }
-
+    
 }

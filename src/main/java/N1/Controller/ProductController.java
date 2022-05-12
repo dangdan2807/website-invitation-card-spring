@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -36,16 +37,20 @@ public class ProductController {
 	private NguoiDungService nguoiDungService;
 
 	@RequestMapping(value = { "", "/tim-kiem" }, method = RequestMethod.GET)
-	public String showProductPage(Model model, Principal principal,
+	public String showProductPage(Model model,
 			@RequestParam(name = "ten-san-pham", required = false, defaultValue = "") String tenSanPham,
 			@RequestParam(name = "sort", required = false, defaultValue = "asc") String sort,
 			@RequestParam(name = "page", required = false, defaultValue = "1") Integer currentPage,
 			@RequestParam(name = "minPrice", required = false, defaultValue = "0") String minPriceStr,
 			@RequestParam(name = "maxPrice", required = false, defaultValue = "100000") String maxPriceStr) {
+		model.addAttribute("isCategoryPage", 0);
+		model.addAttribute("selectedCategoryId", 0);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("sort", sort);
+		model.addAttribute("pagingSize", new int[] { 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5 });
 
 		double minPrice = Double.parseDouble(minPriceStr.replaceAll("[/s.đ]", ""));
 		double maxPrice = Double.parseDouble(maxPriceStr.replaceAll("[/s.đ]", ""));
-
 		if (currentPage <= 0 || currentPage == null) {
 			currentPage = 1;
 		}
@@ -55,15 +60,17 @@ public class ProductController {
 		if (maxPrice <= 0) {
 			maxPrice = 0.0;
 		}
-		
+		model.addAttribute("minPrice", minPrice);
+		model.addAttribute("maxPrice", maxPrice);
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		NguoiDung nguoiDung = null; 
 		int soLuongSpGh = 0;
-		if (principal != null) {
-			String email = principal.getName();
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
 			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
 		}
-		
 		model.addAttribute("nguoiDung", nguoiDung);
 		model.addAttribute("soLuongSpGh", soLuongSpGh);
 
@@ -74,23 +81,14 @@ public class ProductController {
 		model.addAttribute("dsSanPham", dsSanPham);
 
 		int numberOfSanPham = sanPhamService.getNumberOfSanPhamsByTenSpAndPrice(tenSanPham, minPrice, maxPrice);
-
 		int pageOfNumber = 1;
 		if ((numberOfSanPham % pageSize) != 0) {
 			pageOfNumber = (numberOfSanPham / pageSize) + 1;
 		} else {
 			pageOfNumber = (numberOfSanPham / pageSize);
 		}
-
-		model.addAttribute("isCategoryPage", 0);
-		model.addAttribute("selectedCategoryId", 0);
 		model.addAttribute("slSanPham", numberOfSanPham);
 		model.addAttribute("pageOfNumber", pageOfNumber);
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("sort", sort);
-		model.addAttribute("minPrice", minPrice);
-		model.addAttribute("maxPrice", maxPrice);
-		model.addAttribute("pagingSize", new int[] { 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5 });
 
 		List<SanPham> dsSanPhamMoi = sanPhamService.getLatestSanPhams(6);
 		model.addAttribute("dsSanPhamMoi", dsSanPhamMoi);
@@ -102,25 +100,34 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/id={theId}", method = RequestMethod.GET)
-	public String getProductById(Model model, Principal principal,
+	public String getProductById(Model model,
 			@PathVariable(name = "theId", required = false) Integer id,
 			@RequestParam(name = "comment-page", required = false, defaultValue = "1") Integer currentPageComment,
 			@RequestParam(name = "msg", required = false, defaultValue = "") String msg,
 			@RequestParam(name = "status", required = false, defaultValue = "-1") Integer status) {
-		if (id <= 0 || id == null)
+		model.addAttribute("isCategoryPage", 0);
+		model.addAttribute("pagingSize", new int[] { 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5 });
+		model.addAttribute("msg", msg);
+		model.addAttribute("status", status);
+		model.addAttribute("danhGia", new DanhGia());
+		model.addAttribute("gioHang", new GioHang());
+
+		if (id <= 0 || id == null) {
 			id = 1;
+		}
 		if (currentPageComment <= 0 || currentPageComment == null) {
 			currentPageComment = 1;
 		}
-		
+		model.addAttribute("currentPageComment", currentPageComment);
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		NguoiDung nguoiDung = null; 
 		int soLuongSpGh = 0;
-		if (principal != null) {
-			String email = principal.getName();
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
 			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
 		}
-		
 		model.addAttribute("nguoiDung", nguoiDung);
 		model.addAttribute("soLuongSpGh", soLuongSpGh);
 
@@ -134,6 +141,8 @@ public class ProductController {
 		} else {
 			pageOfNumber = (numberOfDanhGia / pageCommentSize);
 		}
+		model.addAttribute("numberOfDanhGia", numberOfDanhGia);
+		model.addAttribute("pageOfNumber", pageOfNumber);
 
 		SanPham sanPham = sanPhamService.getSanPhamByIdSanPham(id);
 		List<DanhGia> danhGias = danhGiaService.getDanhGiasBySanPhamIdAndPageNumber(id, currentPageComment);
@@ -144,24 +153,13 @@ public class ProductController {
 		for (DanhGia danhGia : danhGias) {
 			star += danhGia.getXepHang();
 		}
-		
 		if (danhGias.size() > 0)
 			star /= danhGias.size();
 		else {
 			star = 5;
 		}
-		
-		model.addAttribute("isCategoryPage", 0);
 		model.addAttribute("starSize", new int[] { 1, 2, 3, 4, 5 });
 		model.addAttribute("star", star);
-		model.addAttribute("pagingSize", new int[] { 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5 });
-		model.addAttribute("currentPageComment", currentPageComment);
-		model.addAttribute("numberOfDanhGia", numberOfDanhGia);
-		model.addAttribute("pageOfNumber", pageOfNumber);
-		model.addAttribute("msg", msg);
-		model.addAttribute("status", status);
-		model.addAttribute("danhGia", new DanhGia());
-		model.addAttribute("gioHang", new GioHang());
 
 		LoaiSanPham loaiSanPham = sanPham.getDsLoaiSP().get(0).getLoaiSanPham();
 		model.addAttribute("loaiSanPham", loaiSanPham);
@@ -172,15 +170,15 @@ public class ProductController {
 
 		return "user/product-detail";
 	}
-	
+
 	@RequestMapping(value = "/id={theId}/them-vao-gio-hang", method = RequestMethod.POST)
-	public String addProductToCart(Model model, 
+	public String addProductToCart(Model model,
 			@PathVariable(name = "theId", required = false) Integer sanPhamId,
-			@ModelAttribute("gioHang") GioHang gioHang, 
+			@ModelAttribute("gioHang") GioHang gioHang,
 			RedirectAttributes redirectAttributes) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String currentPrincipalName = authentication.getName();
-		
+
 		NguoiDung nguoiDung = nguoiDungService.findNguoiDungByEmail(currentPrincipalName);
 		gioHang.setNguoiDung(nguoiDung);
 		gioHang.setSanPham(new SanPham(sanPhamId));
@@ -198,14 +196,13 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/id={theId}/them-danh-gia", method = RequestMethod.POST)
-	public String addReviewProductByProductId(Model model, 
+	public String addReviewProductByProductId(Model model,
 			@PathVariable(name = "theId", required = false) Integer sanPhamId,
-			@ModelAttribute("danhGia") DanhGia danhGia, 
+			@ModelAttribute("danhGia") DanhGia danhGia,
 			RedirectAttributes redirectAttributes) {
-		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String currentPrincipalName = authentication.getName();
-		
+
 		NguoiDung nguoiDung = nguoiDungService.findNguoiDungByEmail(currentPrincipalName);
 		danhGia.setNguoiDung(nguoiDung);
 		danhGia.setSanPham(new SanPham(sanPhamId));

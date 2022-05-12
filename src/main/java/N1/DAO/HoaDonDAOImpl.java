@@ -53,9 +53,9 @@ public class HoaDonDAOImpl implements HoaDonDAO {
 	@Override
 	public List<HoaDon> getHoaDonMoiNhat() {
 		List<HoaDon> hoaDons = new ArrayList<HoaDon>();
-		Session currenSession = sessionFactory.getCurrentSession();
+		Session currentSession = sessionFactory.getCurrentSession();
 
-		Query<HoaDon> theQuery = currenSession.createQuery("from HoaDon order by ngayLHD desc", HoaDon.class);
+		Query<HoaDon> theQuery = currentSession.createQuery("from HoaDon order by ngayLHD desc", HoaDon.class);
 		hoaDons = theQuery.getResultList();
 		return hoaDons;
 	}
@@ -63,7 +63,7 @@ public class HoaDonDAOImpl implements HoaDonDAO {
 	@Override
 	public List<HoaDon> findHoaDonByDate(Date ngayLapHoaDon) {
 		List<HoaDon> hoaDons = new ArrayList<HoaDon>();
-		Session currenSession = sessionFactory.getCurrentSession();
+		Session currentSession = sessionFactory.getCurrentSession();
 		// convert date to datetime
 		String pattern = "yyyy-MM-dd";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -72,7 +72,7 @@ public class HoaDonDAOImpl implements HoaDonDAO {
 
 		// java.sql.Timestamp ngayLap = new java.sql.Timestamp(ngayLapHoaDon.getTime());
 		String query = "SELECT * FROM HoaDon where ngayLHD BETWEEN " + dateBegin + "AND " + dateEnd;
-		hoaDons = currenSession.createQuery(query, HoaDon.class).getResultList();
+		hoaDons = currentSession.createQuery(query, HoaDon.class).getResultList();
 
 		return hoaDons;
 	}

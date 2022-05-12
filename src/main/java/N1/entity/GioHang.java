@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -15,12 +16,12 @@ import javax.persistence.Table;
 @Table(name = "GioHang")
 public class GioHang implements Serializable {
 	@Id
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "maND", columnDefinition = "INT")
 	private NguoiDung nguoiDung;
 
 	@Id
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "maSp", columnDefinition = "INT")
 	private SanPham sanPham;
 

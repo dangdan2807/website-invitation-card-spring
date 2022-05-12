@@ -47,13 +47,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setEncoding("UTF-8");
         filter.setForceEncoding(true);
         http.addFilterBefore(filter,CsrfFilter.class);
-      
+        
         http.authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-				.antMatchers("/user/**").hasAnyRole("ROLE_CUSTOMER", "ROLE_ADMIN")
-				.antMatchers("/san-pham/id=*/them-vao-gio-hang").hasAnyRole("ROLE_CUSTOMER", "ROLE_ADMIN")
-				.antMatchers("/san-pham/id=*/them-danh-gia").hasAnyRole("ROLE_CUSTOMER", "ROLE_ADMIN")
+				.antMatchers("/user/**").hasAnyRole("CUSTOMER", "ADMIN")
+				.antMatchers("/san-pham/id=*/them-vao-gio-hang").hasAnyRole("CUSTOMER", "ADMIN")
+				.antMatchers("/san-pham/id=*/them-danh-gia").hasAnyRole("CUSTOMER", "ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

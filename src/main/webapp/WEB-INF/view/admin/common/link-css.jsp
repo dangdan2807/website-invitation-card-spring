@@ -10,3 +10,10 @@
 <!-- Custom styles for this template-->
 <link href="<c:url value = '/resources/admin/css/sb-admin-2.min.css'/>" rel="stylesheet">
 <link href="<c:url value = '/resources/admin/css/style.css'/>" rel="stylesheet">
+<style>
+	.error-msg{
+		color: red;
+		font-size: smaller;
+    	font-style: italic;
+	}
+</style>

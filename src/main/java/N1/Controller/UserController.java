@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -41,30 +42,42 @@ public class UserController {
 
 	@Autowired
 	private CTHoaDonService ctHoaDonService;
-	
-	@Autowired 
+	@Autowired
 	private TaiKhoanService taiKhoanService;
 	@RequestMapping({ "/gio-hang", "/cart" })
-	public String showShoppingCartPage(Model model, Principal principal) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
-		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		model.addAttribute("isCategoryPage", 0);
-
-		NguoiDung nguoiDung = null;
+	public String showShoppingCartPage(Model model) {
+		String returnUrl = "";
+		returnUrl = "redirect:/dang-nhap";
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		NguoiDung nguoiDung = null; 
 		int soLuongSpGh = 0;
-		if (principal != null) {
-			String email = principal.getName();
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			model.addAttribute("isCategoryPage", 0);
+			String email = authentication.getName();
 			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+			model.addAttribute("nguoiDung", nguoiDung);
+			model.addAttribute("soLuongSpGh", soLuongSpGh);
+			
+			int maND = nguoiDung.getMaND();
+			List<GioHang> gioHang = gioHangService.findGioHangByUserId(maND);
+			double tongTien = 0;
+			for (GioHang gioHang2 : gioHang) {
+				tongTien += gioHang2.getSanPham().getGiaSP() * gioHang2.getSoLuong() *
+						(100 - gioHang2.getSanPham().getGiamGia()) / 100;
+			}
+			model.addAttribute("tongTien", tongTien);
+			
+			List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+			model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+			
+			List<GioHang> dsGioHang = gioHangService.findGioHangByUserId(maND);
+			model.addAttribute("dsSanPhamGioHang", dsGioHang);
+			returnUrl = "user/shopping-cart";
 		}
 
-		model.addAttribute("nguoiDung", nguoiDung);
-		model.addAttribute("soLuongSpGh", soLuongSpGh);
-
-		List<SanPham> dsSanPham = new ArrayList<SanPham>();
-		model.addAttribute("dsSanPham", dsSanPham);
-
-		return "user/shopping-cart";
+		return returnUrl;
 	}
 
 	@RequestMapping({ "/thanh-toan", "/checkout" })
@@ -87,11 +100,14 @@ public class UserController {
 		List<SanPhamMua> dsSanPhamMua = sanPhamService.getSanPhamMua(nguoiDung.getMaND());
 		int soLuong = dsSanPhamMua.size();
 		model.addAttribute("dsSanPhamMua", dsSanPhamMua);
+
 		model.addAttribute("soLuong", soLuong);
+
 		double tongTienHang = 0;
 		for (SanPhamMua sanPhamMua : dsSanPhamMua) {
 			tongTienHang += sanPhamMua.getThanhTien();
 		}
+
 		double giamGia = tongTienHang * 0.05;
 		double tongThanhToan = tongTienHang - giamGia;
 		model.addAttribute("tongTienHang", tongTienHang);
@@ -104,10 +120,15 @@ public class UserController {
 
 	@RequestMapping(value = "/orders/success", method = RequestMethod.POST)
 	public String createHoaDon(PayLoadCreateOrder payLoadCreateOrder, Model model, Principal principal) {
+		model.addAttribute("isCategoryPage", 0);
+
 		String username = "";
 		if (principal != null) {
 			username = principal.getName();
 		}
+		int soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(username);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
+
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		String diaChi = payLoadCreateOrder.getDiaChi();
@@ -146,7 +167,6 @@ public class UserController {
 		model.addAttribute("chiTietHoaDons", chiTietHoaDons);
 		model.addAttribute("tongTienHang", tongTienHang);
 		model.addAttribute("giamGia", tongTienHang * 0.05);
-		model.addAttribute("isCategoryPage", 0);
 		return "user/detail-order";
 	}
 
@@ -185,28 +205,36 @@ public class UserController {
 
 	@RequestMapping(value = { "/order/history", "/lich-su-mua-hang" })
 	public String showHoaDonByNguoiDung(Model model, Principal principal) {
+		String returnUrl = "";
+		returnUrl = "redirect:/dang-nhap";
+		
 		NguoiDung nguoiDung = null;
 		int soLuongSpGh = 0;
-		if (principal != null) {
-			String email = principal.getName();
+		Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
 			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+
+			model.addAttribute("nguoiDung", nguoiDung);
+			model.addAttribute("soLuongSpGh", soLuongSpGh);
+	
+			List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+			model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+	
+			List<HoaDon> hoaDons = hoaDonService.findHoaDonByUserId(nguoiDung.getMaND());
+			hoaDons.forEach(e -> {
+				List<ChiTietHoaDon> cthds = new ArrayList<ChiTietHoaDon>();
+				cthds = ctHoaDonService.getDSCTHoaDonByMaHD(e.getMaHD());
+				e.setDsCTHoaDon(cthds);
+			});
+			model.addAttribute("hoadons", hoaDons);
+			model.addAttribute("isCategoryPage", 0);
+			returnUrl = "user/history";
+			
 		}
-		model.addAttribute("nguoiDung", nguoiDung);
-		model.addAttribute("soLuongSpGh", soLuongSpGh);
-
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
-		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-
-		List<HoaDon> hoaDons = hoaDonService.findHoaDonByUserId(nguoiDung.getMaND());
-		hoaDons.forEach(e -> {
-			List<ChiTietHoaDon> cthds = new ArrayList<ChiTietHoaDon>();
-			cthds = ctHoaDonService.getDSCTHoaDonByMaHD(e.getMaHD());
-			e.setDsCTHoaDon(cthds);
-		});
-		model.addAttribute("hoadons", hoaDons);
-		model.addAttribute("isCategoryPage", 0);
-		return "user/history";
+		return returnUrl;
+	
 	}
 
 	@RequestMapping("/profile")

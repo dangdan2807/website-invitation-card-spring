@@ -37,14 +37,14 @@
 	border-radius: 7px;
     display: flex;
     align-items: center;
-     animation-name: appear-noti;
-  animation-duration: 2s;
+	animation-name: appear-noti;
+	animation-duration: 2s;
     
 }
 
 @keyframes appear-noti {
-  0%   {top: -50px;}
-  100% {top:20px;}
+	0%   {top: -50px;}
+	100% {top:20px;}
 }
 .thong-bao p {text-align: center; width: 100%;color: #326E52}
 

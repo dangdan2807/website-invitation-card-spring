@@ -2,7 +2,6 @@ package N1.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -19,7 +18,7 @@ public class ChiTietLoaiSP implements Serializable {
     private LoaiSanPham loaiSanPham;
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "maSp", columnDefinition = "INT")
     private SanPham sanPham;
 

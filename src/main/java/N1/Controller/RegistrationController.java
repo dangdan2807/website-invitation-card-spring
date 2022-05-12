@@ -1,15 +1,11 @@
 package N1.Controller;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
@@ -23,37 +19,29 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import N1.DAO.TaiKhoanDAO;
-import N1.Service.TaiKhoanService;
-import N1.entity.NguoiDung;
-import N1.entity.TaiKhoan;
+import N1.Service.*;
+import N1.entity.*;
 
 @Controller
 @RequestMapping("/dang-ky")
 public class RegistrationController {
 	@Autowired
 	private TaiKhoanService taiKhoanService;
-
 	@Autowired
 	private UserDetailsManager userDetailsManager;
 
 	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
 	private Logger logger = Logger.getLogger(getClass().getName());
 
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
-
 		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
-
 		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
 	}
 
 	@GetMapping("")
 	public String showRegistrationForm(Model theModel) {
-
 		theModel.addAttribute("crmUser", new TaiKhoan());
-
 		return "user/registration";
 
 	}
@@ -65,14 +53,11 @@ public class RegistrationController {
 			Model theModel) {
 
 		String tenDangNhap = theCrmUser.getTenDangNhap();
-
 		logger.info("Processing registration form for: " + tenDangNhap);
 
 		if (theBindingResult.hasErrors()) {
-
 			theModel.addAttribute("crmUser", new TaiKhoan());
 			theModel.addAttribute("registrationError", "User name/password can not be empty.");
-
 			logger.warning("User name/password can not be empty.");
 
 			return "user/registration";
@@ -83,7 +68,6 @@ public class RegistrationController {
 		if (userExitst) {
 			theModel.addAttribute("crmUser", new TaiKhoan());
 			theModel.addAttribute("registrationError", "Email đã được đăng ký.");
-
 			logger.warning("Email đã được đăng ký.");
 
 			return "user/registration";

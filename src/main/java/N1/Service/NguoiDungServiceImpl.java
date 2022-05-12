@@ -7,12 +7,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import N1.DAO.NguoiDungDAO;
+import N1.DAO.TaiKhoanDAO;
 import N1.entity.NguoiDung;
 
 @Service
 public class NguoiDungServiceImpl implements NguoiDungService {
 	@Autowired
 	private NguoiDungDAO nguoiDungDAO;
+	
+	@Autowired
+	private TaiKhoanDAO taiKhoanDAO;
 
 	@Override
 	@Transactional
@@ -23,14 +27,12 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	@Override
 	@Transactional
 	public List<NguoiDung> findAll(int page) {
-		// TODO Auto-generated method stub
 		return nguoiDungDAO.findAll(page);
 	}
 
 	@Override
 	@Transactional
 	public int getNumberOfPage() {
-		// TODO Auto-generated method stub
 		return nguoiDungDAO.getNumberOfPage();
 	}
 
@@ -38,6 +40,7 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	@Transactional
 	public void save(NguoiDung nguoiDung) {
 		nguoiDungDAO.updateNguoiDung(nguoiDung);
+		taiKhoanDAO.updateTaiKhoan(nguoiDung.getTaiKhoan());
 	}
 
 	@Override
@@ -49,7 +52,6 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	@Override
 	@Transactional
 	public NguoiDung findNguoiDungByEmail(String email) {
-		
 		return nguoiDungDAO.findNguoiDungByEmail(email);
 	}
 

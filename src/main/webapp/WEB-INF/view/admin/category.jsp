@@ -172,17 +172,17 @@
 							<form:label path="maLSP" cssClass="form-label">Mã danh mục</form:label>
 							<form:input path="maLSP" type="text" cssClass="form-control"
 								readonly="true" />
-							<form:errors path="maLSP" cssClass="form-text" />
+							<form:errors path="maLSP" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<form:label path="tenLSP" cssClass="form-label">Tên danh mục</form:label>
 							<form:input path="tenLSP" type="text" cssClass="form-control" />
-							<form:errors path="tenLSP" cssClass="form-text" />
+							<form:errors path="tenLSP" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<form:label path="hinhAnh" cssClass="form-label">Hình ảnh</form:label>
 							<form:input path="hinhAnh" type="text" cssClass="form-control" />
-							<form:errors path="hinhAnh" cssClass="form-text" />
+							<form:errors path="hinhAnh" cssClass="form-text error-msg" />
 						</div>
 
 					</form:form>
@@ -212,6 +212,8 @@
 							.getElementById('categoryModal'), {
 						keyboard : false
 					});
+					/* modal */
+					${error == true ? "modal.show();": ""}
 					
 					$(".btn-edit").click(function() {
 						$(".btn-form").text("Sửa");

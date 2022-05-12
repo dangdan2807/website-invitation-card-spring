@@ -12,8 +12,10 @@
 				<div class="col-lg-6">
 					<div class="header__top__left">
 						<ul>
-							<li><i class="fa fa-envelope"></i> <a
-								href="mailto:hello@code.com">hello@code.com</a></li>
+							<li>
+								<i class="fa fa-envelope"></i> 
+								<a href="mailto:hello@code.com">hello@code.com</a>
+							</li>
 							<li>Miễn phí ship cho tất cả đơn hàng từ 99.000đ</li>
 						</ul>
 					</div>
@@ -21,8 +23,8 @@
 				<div class="col-lg-6">
 					<div class="header__top__right">
 						<div class="header__top__right__social">
-							<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
-								class="fa fa-twitter"></i></a>
+							<a href="#"><i class="fa fa-facebook"></i></a> 
+							<a href="#"><i class="fa fa-twitter"></i></a>
 						</div>
 						<div class="header__top__right__auth">
 							<security:authorize access="!hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')">
@@ -40,6 +42,7 @@
 									<div class="dropdown-menu">
 										<a class="dropdown-item" href='<c:url value = "/user/profile" />'>Tài khoản của tôi</a>
 										<a class="dropdown-item" href='<c:url value = "/user/gio-hang" />'>Giỏ hàng</a>
+										<a class="dropdown-item" href='<c:url value = "/user/danh-sach-mua-hang" />'>Danh sách đơn hàng</a>
 										<a class="dropdown-item" href='<c:url value = "/user/lich-su-mua-hang" />'>Lịch sử mua hàng</a>
 										<div class="dropdown-divider"></div>
 										<a class="dropdown-item" href='<c:url value = "/dang-xuat" />'>Đăng xuất</a>
@@ -111,9 +114,9 @@
 				<div class="header__cart">
 					<ul>
 						<li>
-							<a href="<c:url value = '/gio-hang' />">
+							<a href="<c:url value = '/user/gio-hang' />">
 								<i class="fa-solid fa-cart-shopping"></i>
-								<security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')">
+								<security:authorize access="hasAnyRole('ADMIN', 'CUSTOMER')">
 									<span>${soLuongSpGh}</span>
 		                        </security:authorize>
 							</a>
