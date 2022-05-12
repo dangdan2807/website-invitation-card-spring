@@ -50,8 +50,14 @@
 <link rel="stylesheet" type="text/css"
 	href="<c:url value ='/resources/user/css/login/main.css'/>" />
 <!--===============================================================================================-->
+<jsp:include page="./module/link-css.jsp" />
 </head>
-<body style="background-color: #666666;">
+<body>
+	<!-- Header Section Begin -->
+	<jsp:include page="./module/header.jsp">
+		<jsp:param name="activePage" value="home" />
+	</jsp:include>
+	<!-- Header Section End -->
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
@@ -73,31 +79,32 @@
 							</div>
 						</div>
 					</div>
-
-					<div class="wrap-input100 validate-input"
-						data-validate="Email hợp lệ có dạng: ex@abc.xyz">
-						<form:input path="tenDangNhap" type="text" class="input100"
-							name="email" />
-						<span class="focus-input100"></span> <span class="label-input100">Email</span>
-					</div>
-
-
-					<div class="wrap-input100 validate-input"
-						data-validate="Chưa nhập mật khẩu">
-						<form:password class="input100" path="matKhau" name="password" />
-						<span class="focus-input100"></span> <span class="label-input100">Mật
-							khẩu</span>
-					</div>
+					<div class="form-group">
+						<div class="wrap-input100 validate-input"
+							data-validate="Email hợp lệ có dạng: ex@abc.xyz">
+							<form:input path="tenDangNhap" type="text" class="input100"
+								name="email" />
+							<span class="focus-input100"></span> <span class="label-input100">Email</span>
+						</div>
 
 
-					<div class="container-login100-form-btn">
-						<button type="submit" class="login100-form-btn">Đăng ký</button>
-					</div>
+						<div class="wrap-input100 validate-input"
+							data-validate="Chưa nhập mật khẩu">
+							<form:password class="input100" path="matKhau" name="password" />
+							<span class="focus-input100"></span> <span class="label-input100">Mật
+								khẩu</span>
+						</div>
 
-					<div class="text-center p-t-46 p-b-20">
-						<span class="txt2"> Đã có tài khoản ? </span><span class="txt2">
-							<a href="<c:url value ='/login' />"> Đăng nhập </a>
-						</span>
+
+						<div class="container-login100-form-btn">
+							<button type="submit" class="login100-form-btn">Đăng ký</button>
+						</div>
+
+						<div class="text-center p-t-46 p-b-20">
+							<span class="txt2"> Đã có tài khoản ? </span><span class="txt2">
+								<a href="<c:url value ='/login' />"> Đăng nhập </a>
+							</span>
+						</div>
 					</div>
 				</form:form>
 				<div class="login100-more"
@@ -108,7 +115,10 @@
 		</div>
 	</div>
 
-
+	<!-- Footer Section Begin -->
+	<jsp:include page="./module/footer.jsp" />
+	<!-- Footer Section End -->
+	<jsp:include page="./module/link-js.jsp" />
 
 	<!--===============================================================================================-->
 	<script
