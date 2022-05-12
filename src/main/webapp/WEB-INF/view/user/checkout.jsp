@@ -142,7 +142,7 @@
 									<input id="input_address" name="diaChi" path="diaChi"
 										style="font-family: 'Roboto', sans-serif;" type="text"
 										placeholder="Địa chỉ của bạn ..." class="checkout__input__add"
-										onkeyUp="validateAddressNotNull()" />
+										onkeyUp="validateAddressNotNull()" value="${nguoiDung.diaChi}" />
 								</div>
 								<div class="checkout__input">
 									<p>

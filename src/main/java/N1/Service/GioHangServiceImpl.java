@@ -29,6 +29,12 @@ public class GioHangServiceImpl implements GioHangService {
 		gioHangDAO.deleteGioHangByIdNguoiDungAndSanPhamMuas(maND, sanPhamMuas);
 		
 	}
+	
+	@Override
+	@Transactional
+	public void deleteGioHangByIdNguoiDungAndIdSanPham(int maND, int idSanPham) {
+		gioHangDAO.deleteGioHangByIdNguoiDungAndIdSanPham(maND, idSanPham);
+	}
 
 	@Override
 	@Transactional

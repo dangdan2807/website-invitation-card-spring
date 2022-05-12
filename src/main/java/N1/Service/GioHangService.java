@@ -9,6 +9,8 @@ public interface GioHangService {
 	public void deleteGioHangByIdNguoiDung(int maND);
 	
 	public void deleteGioHangByIdNguoiDungAndSanPhamMuas(int maND, List<SanPhamMua> sanPhamMuas);
+	
+	public void deleteGioHangByIdNguoiDungAndIdSanPham(int maND, int idSanPham);
 
 	public List<GioHang> getDSGioHang();
 

@@ -1,6 +1,5 @@
 package N1.Controller;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,24 +35,20 @@ import N1.utils.Datetime;
 public class UserController {
 	@Autowired
 	private SanPhamService sanPhamService;
-
 	@Autowired
 	private NguoiDungService nguoiDungService;
-
 	@Autowired
 	private LoaiSanPhamService loaiSanPhamService;
-
 	@Autowired
 	private HoaDonService hoaDonService;
-
 	@Autowired
 	private GioHangService gioHangService;
-
 	@Autowired
 	private CTHoaDonService ctHoaDonService;
 	@Autowired
 	private TaiKhoanService taiKhoanService;
-	@RequestMapping({ "/gio-hang", "/cart" })
+	
+	@RequestMapping(value = { "/gio-hang", "/cart" }, method = RequestMethod.GET)
 	public String showShoppingCartPage(Model model) {
 		String returnUrl = "";
 		returnUrl = "redirect:/dang-nhap";
@@ -88,7 +84,26 @@ public class UserController {
 		return returnUrl;
 	}
 	
-	@PostMapping({ "/gio-hang", "/cart" })
+	@PostMapping(value = { "/gio-hang/id={id}", "/cart/id={id}" })
+	public String deleteShoppingCartById(Model model, @PathVariable(name = "id", required = false) Integer idSanPham) {
+		String returnUrl = "";
+		returnUrl = "redirect:/dang-nhap";
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		NguoiDung nguoiDung = new NguoiDung(); 
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			model.addAttribute("nguoiDung", nguoiDung);
+			
+			if (idSanPham != null || idSanPham > 0) {
+				gioHangService.deleteGioHangByIdNguoiDungAndIdSanPham(nguoiDung.getMaND(), idSanPham);
+			}
+			
+			returnUrl = "redirect:/user/gio-hang";
+		}
+  
+  @PostMapping({ "/gio-hang", "/cart" })
 	public String addOrUpdateOrder(Principal principal,
 			@RequestParam("dscthdmaSp") List<Integer> dscthdmaSp,
 			@RequestParam("dscthdsoLuong") List<Integer> dscthdsoLuong, 
@@ -111,6 +126,9 @@ public class UserController {
 		return "redirect:/user/gio-hang";
 	}
 
+		return returnUrl;
+	}
+	
 	@RequestMapping({ "/thanh-toan", "/checkout" })
 	public String showCheckoutPage(Model model) {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

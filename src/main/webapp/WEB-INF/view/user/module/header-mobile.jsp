@@ -18,7 +18,7 @@
 						<i class="fa-solid fa-cart-shopping"></i>
 						<security:authorize access="hasAnyRole('ADMIN', 'CUSTOMER')">
 							<span>${soLuongSpGh}</span>
-	                   </security:authorize>
+						</security:authorize>
 					</a>
 				</li>
 			</ul>

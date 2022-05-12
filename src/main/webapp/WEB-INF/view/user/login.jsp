@@ -141,7 +141,7 @@
 				</form>
 
 				<div class="login100-more"
-					style="background-image: url('resources/user/img/bg.jpg');"></div>
+					style="background-image: url('<c:url value ="https://microlancer.lancerassets.com/v2/services/fe/2c457042ef11e6a3db8fad360b0fb2/large_Wedding_20Invitation_20Vol2-1390973102.jpg"/>');"></div>
 			</div>
 		</div>
 	</div>
