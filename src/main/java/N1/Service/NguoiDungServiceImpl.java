@@ -27,14 +27,12 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	@Override
 	@Transactional
 	public List<NguoiDung> findAll(int page) {
-		// TODO Auto-generated method stub
 		return nguoiDungDAO.findAll(page);
 	}
 
 	@Override
 	@Transactional
 	public int getNumberOfPage() {
-		// TODO Auto-generated method stub
 		return nguoiDungDAO.getNumberOfPage();
 	}
 
@@ -56,7 +54,4 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	public NguoiDung findNguoiDungByEmail(String email) {
 		return nguoiDungDAO.findNguoiDungByEmail(email);
 	}
-
-	
-
 }

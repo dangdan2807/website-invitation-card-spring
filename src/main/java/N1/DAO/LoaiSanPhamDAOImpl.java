@@ -8,8 +8,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import N1.entity.LoaiSanPham;
-import N1.entity.NguoiDung;
+import N1.entity.*;
 
 @Repository
 public class LoaiSanPhamDAOImpl implements LoaiSanPhamDAO {
@@ -61,15 +60,8 @@ public class LoaiSanPhamDAOImpl implements LoaiSanPhamDAO {
 
     @Override
     public boolean addLoaiSanPham(LoaiSanPham loaiSanPham) {
-       Session currentSession=sessionFactory.getCurrentSession();
-       currentSession.saveOrUpdate(loaiSanPham);
+		Session currentSession=sessionFactory.getCurrentSession();
+		currentSession.saveOrUpdate(loaiSanPham);
         return true;
     }
-
-
-	@Override
-	public List<LoaiSanPham> getDSLoaiSanPham() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

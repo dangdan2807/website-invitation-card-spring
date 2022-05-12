@@ -1,8 +1,6 @@
 package N1.Service;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import N1.Service.ThongKeServiceImpl.LineChartObject;
 import N1.Service.ThongKeServiceImpl.LabelCount;

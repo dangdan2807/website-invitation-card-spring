@@ -1,16 +1,17 @@
 package N1.Controller;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import N1.DTO.SanPhamMua;
 import N1.Service.*;
 import N1.entity.*;
 
@@ -19,16 +20,27 @@ import N1.entity.*;
 public class HomeController {
 	@Autowired
 	private SanPhamService sanPhamService;
-
 	@Autowired
 	private LoaiSanPhamService loaiSanPhamService;
-
 	@Autowired
 	private HoaDonService hoaDonService;
+	@Autowired
+	private NguoiDungService nguoiDungService;
+	@Autowired
+	private GioHangService gioHangService;
 	
 	@RequestMapping({ "/", "/trang-chu", "/home" })
-	public String showHomePage(Model model, Principal principal) {
-		System.out.println(principal);
+	public String showHomePage(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		NguoiDung nguoiDung = null; 
+		int soLuongSpGh = 0;
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		}
+		model.addAttribute("nguoiDung", nguoiDung);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
 		
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
@@ -50,17 +62,6 @@ public class HomeController {
 
 		model.addAttribute("tenSanPham", "");
 		model.addAttribute("isCategoryPage", 0);
-
-		// Mặc định userId=1
-		List<SanPhamMua> dsSanPhamMua = sanPhamService.getSanPhamMua(1);
-		int soLuong = dsSanPhamMua.size();
-
-		double tongTienHang = 0;
-		for (SanPhamMua sanPhamMua : dsSanPhamMua) {
-			tongTienHang += sanPhamMua.getThanhTien();
-		}
-		model.addAttribute("soLuong", soLuong);
-		model.addAttribute("tongTienHang", tongTienHang);
 
 		return "user/index";
 	}
@@ -94,6 +95,17 @@ public class HomeController {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		model.addAttribute("isCategoryPage", 0);
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		NguoiDung nguoiDung = null; 
+		int soLuongSpGh = 0;
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+		}
+		model.addAttribute("nguoiDung", nguoiDung);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
 
 		return "user/contact";
 	}

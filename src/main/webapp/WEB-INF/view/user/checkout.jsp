@@ -10,7 +10,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge;charset="UTF-8" />
 <title>Thanh toán</title>
 
 <jsp:include page="./module/link-css.jsp" />
@@ -24,7 +24,7 @@
 }
 </style>
 <script type="text/javascript">
-	function validateAdressNotNull() {
+	function validateAddressNotNull() {
 		var a = document.getElementById("input_address");
 		console.log("a>> ", a);
 		if (a.value === null || a.value === '') {
@@ -37,7 +37,7 @@
 
 	function submicForm() {
 		event.preventDefault();
-		const validate = validateAdressNotNull();
+		const validate = validateAddressNotNull();
 		if (validate == false)
 			return;
 		event.currentTarget.submit();
@@ -58,15 +58,15 @@
 		<jsp:param name="tongTienHang" value="${tongTienHang}" />
 	</jsp:include>
 	<!-- Humberger End -->
-	
+
 	<!-- Header Section Begin -->
 	<jsp:include page="./module/header.jsp">
-	<jsp:param name="activePage" value="shoppingCart" />
+		<jsp:param name="activePage" value="shoppingCart" />
 		<jsp:param name="soLuong" value="${soLuong}" />
 		<jsp:param name="tongTienHang" value="${tongTienHang}" />
 	</jsp:include>
 	<!-- Header Section End -->
-	
+
 	<!-- Header Section End -->
 
 	<!-- Search bar Begin -->
@@ -83,8 +83,9 @@
 		<div style="text-align: center;" class="mb-4">
 			<p>Giỏ hàng rỗng</p>
 			<a style="color: #326e51; background-color: transparent;"
-				href="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/">Tiếp
-				tục mua hàng <i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+				href='<c:url value = "/trang-chu" />'>Tiếp
+				tục mua hàng <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+			</a>
 		</div>
 	</c:if>
 
@@ -92,10 +93,7 @@
 		<section class="checkout spad">
 			<div class="container">
 				<div class="checkout__form">
-					<c:url var="toUrl"
-						value="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/user/orders/success">
-						<c:param name="maND" value="${nguoiDung.getMaND() }"></c:param>
-					</c:url>
+					<c:url var="toUrl" value="/user/orders/success" />
 					<form:form id="form-create-order" action="${toUrl}" method="post"
 						onsubmit="return submicForm()">
 						<div class="row">
@@ -141,7 +139,7 @@
 									<input id="input_address" name="diaChi" path="diaChi"
 										style="font-family: 'Roboto', sans-serif;" type="text"
 										placeholder="Địa chỉ của bạn ..." class="checkout__input__add"
-										onkeyUp="validateAdressNotNull()" />
+										onkeyUp="validateAddressNotNull()" />
 								</div>
 								<div class="checkout__input">
 									<p>
@@ -193,9 +191,12 @@
 										</div>
 									</div>
 									<div class="checkout__order__total">
-										Tổng thanh toán <span> <c:out value="${tongThanhToan}"></c:out>
+										Tổng thanh toán <strong style="float: right; color:#dd2222;" >
 
-										</span>
+											<fmt:formatNumber value="${tongThanhToan}" type="currency"
+												currencySymbol="" />đ
+
+										</strong>
 									</div>
 									<button type="submit" class="site-btn">Đặt hàng</button>
 								</div>

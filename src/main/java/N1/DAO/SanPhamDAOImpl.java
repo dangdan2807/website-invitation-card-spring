@@ -147,7 +147,7 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 		Session currentSession = sessionFactory.getCurrentSession();
 		String query = "select * from SanPham sp " 
 				+ "where sp.maSp in ( " 
-					+ "	select TOP " + numOfLines + " dg.maSP from DanhGia dg " 
+					+ "	select TOP (" + numOfLines + ") dg.maSP from DanhGia dg " 
 					+ "	group by dg.maSP order by AVG(dg.xepHang) desc )";
 		Query<SanPham> results = currentSession.createNativeQuery(query, SanPham.class);
 		results.setMaxResults(numOfLines);
@@ -174,20 +174,20 @@ public class SanPhamDAOImpl implements SanPhamDAO {
 	@Override
 	public List<SanPhamMua> getSanPhamMua(int maNguoiDung) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		String query="select sp.maSp, sp.tenSp,sp.giaSP,gh.soLuong from SanPham sp join GioHang gh on sp.maSp=gh.maSp where gh.maND="+maNguoiDung;
+		String query="select sp.maSp, sp.tenSp, sp.giaSP, gh.soLuong from SanPham sp join GioHang gh on sp.maSp=gh.maSp where gh.maND="+maNguoiDung;
 		List<Object []> objects=currentSession.createNativeQuery(query).getResultList();
 		
-	        List<SanPhamMua> sanPhamMuas = new ArrayList<>();
+			List<SanPhamMua> sanPhamMuas = new ArrayList<>();
 
-	        objects.stream().forEach(o -> {
-	            int maSp = Integer.parseInt(o[0].toString());
-	            String tenSp = o[1].toString();
-	            double giaSp = Double.parseDouble(o[2].toString());
-	            int soLuong = Integer.parseInt(o[3].toString());
+			objects.stream().forEach(o -> {
+				int maSp = Integer.parseInt(o[0].toString());
+				String tenSp = o[1].toString();
+				double giaSp = Double.parseDouble(o[2].toString());
+				int soLuong = Integer.parseInt(o[3].toString());
 
-	           SanPhamMua sanPhamMua=new SanPhamMua(maSp, tenSp, giaSp, soLuong);
-	           sanPhamMuas.add(sanPhamMua);
-	        });
+				SanPhamMua sanPhamMua=new SanPhamMua(maSp, tenSp, giaSp, soLuong);
+				sanPhamMuas.add(sanPhamMua);
+			});
 		return sanPhamMuas;
 	}
 	

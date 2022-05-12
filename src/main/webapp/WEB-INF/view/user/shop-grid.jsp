@@ -240,8 +240,8 @@
         }
 
         $('button.sidebar__item__btn-submit').click(function() {
-            let minPrice = $('#minamount').val().replaceAll(/[/s.đ]/ig, '');
-            let maxPrice = $('#maxamount').val().replaceAll(/[/s.đ]/ig, '');
+            let minPrice = $('#minamount').val().replaceAll(/[\s.đ]/ig, '');
+            let maxPrice = $('#maxamount').val().replaceAll(/[\s.đ]/ig, '');
             var url = getUrl();
 
             if (url.includes('minPrice')) {

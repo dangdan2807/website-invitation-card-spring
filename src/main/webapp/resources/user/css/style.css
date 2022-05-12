@@ -24,7 +24,7 @@
 html,
 body {
     height: 100%;
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Roboto', 'Open Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     font-smoothing: antialiased;
 }
@@ -403,6 +403,57 @@ ol {
     margin-right: 6px;
 }
 
+/* uck - vc */
+.header__top__right__auth .account__container {
+    position: relative;
+}
+
+/* uck - vc */
+.header__top__right__auth .account__container .account_avatar {
+    width: 25px;
+    height: 25px;
+    margin-right: 4px;
+}
+
+/* uck - vc */
+.header__top__right__auth .account__container:hover .account_name {
+    opacity: 0.6;
+}
+
+/* uck - vc */
+.header__top__right__auth .account__container .dropdown-menu {
+    display: none;
+    position: absolute;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    top: 30px;
+}
+
+.header__top__right__auth .account__container .dropdown-menu::before {
+    content: "";
+    border-width: 10px 14px;
+    border-style: solid;
+    border-color: transparent transparent #fff transparent;
+    position: absolute;
+    right: 100px;
+    top: -20px;
+}
+
+.header__top__right__auth .account__container .dropdown-menu::after  {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -8px;
+    right: 0;
+    width: 100%;
+    height: 14px;
+}
+
+/* uck - vc */
+.header__top__right__auth .account__container:hover .dropdown-menu {
+    display: block;
+}
+
 .header__logo {
     padding: 15px 0;
 }
@@ -488,60 +539,56 @@ ol {
     display: block;
 }
 
+.header__cart-mobile,
 .header__cart {
     text-align: right;
     padding: 24px 0;
 }
 
+.header__cart-mobile ul,
 .header__cart ul {
     display: inline-block;
     margin-right: 25px;
 }
 
+.header__cart-mobile ul li,
 .header__cart ul li {
     list-style: none;
     display: inline-block;
     margin-right: 15px;
 }
 
+.header__cart-mobile ul li:last-child,
 .header__cart ul li:last-child {
     margin-right: 0;
 }
 
+.header__cart-mobile ul li a,
 .header__cart ul li a {
     position: relative;
 }
 
+.header__cart-mobile ul li a i,
 .header__cart ul li a i {
-    font-size: 18px;
+    font-size: 20px;
     color: #1c1c1c;
 }
 
+.header__cart-mobile ul li a span,
 .header__cart ul li a span {
-    height: 13px;
-    width: 13px;
+    height: 16px;
+    width: 16px;
     background: #7fad39;
-    font-size: 10px;
+    font-size: 12px;
     color: #ffffff;
-    line-height: 13px;
+    line-height: 16px;
     text-align: center;
     font-weight: 700;
     display: inline-block;
     border-radius: 50%;
     position: absolute;
-    top: 0;
-    right: -12px;
-}
-
-.header__cart .header__cart__price {
-    font-size: 14px;
-    color: #6f6f6f;
-    display: inline-block;
-}
-
-.header__cart .header__cart__price span {
-    color: #252525;
-    font-weight: 700;
+    top: -8px;
+    right: -10px;
 }
 
 .humberger__menu__wrapper {
@@ -2125,7 +2172,7 @@ ol {
 }
 
 .shoping__cart__table table tbody tr td.shoping__cart__item {
-    width: 430px;
+    width: 630px;
     text-align: left;
 }
 
@@ -2918,6 +2965,19 @@ ol {
     }
 }
 
+/* uck - vc */
+@media only screen and (min-width: 1023px) and (max-width: 1199px) {
+    .header__top__left ul li,
+    .header__menu ul li {
+        margin-right: 32px;
+    }
+
+    .shoping__cart__table table tbody tr td.shoping__cart__item {
+        width: 430px;
+        text-align: left;
+    }
+}
+
 /* Tablet Device = 768px */
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -2949,10 +3009,7 @@ ol {
     .product__details__tab .nav-tabs:after {
         width: 150px;
     }
-    .blog__details__author {
-        overflow: hidden;
-        margin-bottom: 25px;
-    }
+    
     .humberger__open {
         display: block;
         font-size: 22px;
@@ -3051,15 +3108,6 @@ ol {
         top: 0;
         right: -12px;
     }
-    .humberger__menu__cart .header__cart__price {
-        font-size: 14px;
-        color: #6f6f6f;
-        display: inline-block;
-    }
-    .humberger__menu__cart .header__cart__price span {
-        color: #252525;
-        font-weight: 700;
-    }
     .humberger__menu__cart {
         margin-bottom: 25px;
     }
@@ -3137,8 +3185,22 @@ ol {
         display: none;
     }
     .header__cart {
+        display: none;
         text-align: center;
         padding: 10px 0 24px;
+    }
+    .header__top__right__auth {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .header__cart-mobile {
+        text-align: right;
+        padding: 24px 12px;
+        margin-right: -36px;
+    }
+    .header__cart-mobile ul li a span {
+        right: -4px;
     }
     .over_hid {
         overflow: hidden;
@@ -3211,6 +3273,26 @@ ol {
     .shoping__discount form input {
         margin-bottom: 15px;
     }
+    .header__cart {
+        display: none;
+    }
+    .header__top__right__auth {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .header__cart-mobile {
+        text-align: right;
+        padding: 24px 12px;
+        margin-right: -36px;
+    }
+    .header__cart-mobile ul li a span {
+        right: -4px;
+    }
+    /* uck - vc */
+    .header__top__right__auth .account__container .dropdown-menu {
+        display: block;
+    }
 
     /*---------------------
 		Shop Cart Mobile
@@ -3220,9 +3302,20 @@ ol {
         display: none;
     }
 
+	/* uck -vc */
     .shoping__cart-mobile {
         display: block;
         margin-bottom: 12px;
+    }
+    
+    /* uck -vc */
+    .shoping__cart-mobile__title {
+        font-size: 40px;
+        font-weight: 700;
+        text-align: center;
+        color: #fff;
+        background: #7fad39;
+        padding: 16px 0;
     }
 
     /* uck -vc */
@@ -3419,15 +3512,6 @@ ol {
         position: absolute;
         top: 0;
         right: -12px;
-    }
-    .humberger__menu__cart .header__cart__price {
-        font-size: 14px;
-        color: #6f6f6f;
-        display: inline-block;
-    }
-    .humberger__menu__cart .header__cart__price span {
-        color: #252525;
-        font-weight: 700;
     }
     .humberger__menu__cart {
         margin-bottom: 25px;
