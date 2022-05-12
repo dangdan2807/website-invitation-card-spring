@@ -162,6 +162,10 @@ ol {
     letter-spacing: 2px;
 }
 
+.primary-btn ~ .primary-btn {
+    margin-top: 10px;
+}
+
 .site-btn {
     font-size: 14px;
     color: #ffffff;
@@ -2397,8 +2401,11 @@ ol {
     border: 1px solid #ebebeb;
     padding-left: 20px;
     font-size: 16px;
-    color: #b2b2b2;
     border-radius: 4px;
+}
+
+.checkout__input input:read-only {
+    color: #b2b2b2;
 }
 
 .checkout__input input.checkout__input__add {
