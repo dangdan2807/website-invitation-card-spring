@@ -48,8 +48,8 @@ public class ProductController {
 		model.addAttribute("sort", sort);
 		model.addAttribute("pagingSize", new int[] { 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5 });
 
-		double minPrice = Double.parseDouble(minPriceStr.replaceAll("[/s.đ]", ""));
-		double maxPrice = Double.parseDouble(maxPriceStr.replaceAll("[/s.đ]", ""));
+		double minPrice = Double.parseDouble(minPriceStr.replaceAll("[\\s.đ]", ""));
+		double maxPrice = Double.parseDouble(maxPriceStr.replaceAll("[\\s.đ]", ""));
 		if (currentPage <= 0 || currentPage == null) {
 			currentPage = 1;
 		}
