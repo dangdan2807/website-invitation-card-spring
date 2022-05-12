@@ -1,14 +1,12 @@
 package N1.Service;
 
 import java.util.List;
-
 import N1.entity.HoaDon;
 
 public interface HoaDonService {
     public List<HoaDon> getDSHoaDon();
     public HoaDon addHoaDon(HoaDon hoaDon);
     public void saveHoaDon(HoaDon hoaDon);
-    public HoaDon findHoaDonById(int maHD);
     public void delete(int maHD);
     public List<HoaDon> findAll();
     public List<HoaDon> findAll(int page);

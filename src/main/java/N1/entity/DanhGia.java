@@ -35,7 +35,7 @@ public class DanhGia implements Serializable {
 	@JoinColumn(name = "maSP", columnDefinition = "INT")
 	private SanPham sanPham;
 
-	@Column(name = "noiDung", nullable = false, columnDefinition = "TEXT DEFAULT(N'')")
+	@Column(name = "noiDung", nullable = false, columnDefinition = "NTEXT DEFAULT(N'')")
 	@NotNull(message = "Nội dung không được để trống")
 	@NotBlank(message = "Nội dung không được để trống")
 	private String noiDung;

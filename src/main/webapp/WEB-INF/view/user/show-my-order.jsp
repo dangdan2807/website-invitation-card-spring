@@ -15,7 +15,6 @@
 <title>Chi Tiết Hóa Đơn</title>
 
 <jsp:include page="./module/link-css.jsp" />
-
 <style type="text/css">
 .content_box_profile_page {
 	border: solid 1px #e5e5e5;;
@@ -120,13 +119,7 @@ img {
 </style>
 </head>
 <body>
-		<div class="thong-bao">
-					<p>Bạn đã đặt hàng thành công
-				<span class="icon-check ml-2">	<i class="fa fa-check-circle" aria-hidden="true"></i></span>
-			</p>
-
-		</div>
-
+		
 		<!-- Humberger Begin -->
 		<jsp:include page="./module/header-mobile.jsp">
 			<jsp:param name="activePage" value="shoppingCart" />
@@ -179,11 +172,12 @@ img {
 							<c:out value="${hoadonThanhToan.getNguoiDung().getTenND()}"></c:out>
 						</div>
 						<div>
-							Điện thoại :
+							Điện thoại : 
 							<c:out value="${hoadonThanhToan.getNguoiDung().getSdt() }"></c:out>
+							
 						</div>
 						<div>
-							<c:out value="${hoadonThanhToan.getDiaChiGiaoHang()}"></c:out>
+						<span> <c:out value="${hoadonThanhToan.getDiaChiGiaoHang()}"></c:out></span>
 						</div>
 					</div>
 
@@ -301,7 +295,9 @@ img {
 		<jsp:include page="./module/footer.jsp" />
 		<!-- Footer Section End -->
 			<!-- Js Plugins -->
-		<jsp:include page="./module/link-js.jsp" />
+	<jsp:include page="./module/link-js.jsp" />
+	
+	
 	
 
 </body>

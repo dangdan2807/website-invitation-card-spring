@@ -52,7 +52,6 @@ public class HoaDonServiceImpl implements HoaDonService {
 	@Override
 	@Transactional
 	public HoaDon findHoaDonById(int maHD) {
-		// TODO Auto-generated method stub
 		return hoaDonDAO.findHoaDonById(maHD);
 	}
 
