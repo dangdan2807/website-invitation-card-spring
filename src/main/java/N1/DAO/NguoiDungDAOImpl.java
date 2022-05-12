@@ -49,6 +49,7 @@ public class NguoiDungDAOImpl implements NguoiDungDAO {
     
 
     @Override
+    @Transactional
     public boolean updateNguoiDung(NguoiDung nguoiDung) {
         Session currentSession=sessionFactory.getCurrentSession();
         currentSession.saveOrUpdate(nguoiDung);

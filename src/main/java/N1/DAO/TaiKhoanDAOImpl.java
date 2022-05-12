@@ -83,4 +83,12 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
 		return id;
 	}
 
+	@Override
+	@Transactional
+	public boolean updateTaiKhoan(TaiKhoan taiKhoan) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		currentSession.saveOrUpdate(taiKhoan);
+		return true;
+	}
+
 }
