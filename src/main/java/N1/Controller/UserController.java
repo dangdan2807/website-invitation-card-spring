@@ -50,7 +50,7 @@ public class UserController {
 		returnUrl = "redirect:/dang-nhap";
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		NguoiDung nguoiDung = null; 
+		NguoiDung nguoiDung = new NguoiDung(); 
 		int soLuongSpGh = 0;
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
 			model.addAttribute("isCategoryPage", 0);
@@ -172,7 +172,7 @@ public class UserController {
 
 	@RequestMapping(value = { "/show-order" })
 	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD, Model model, Principal principal) {
-		NguoiDung nguoiDungLogin = null;
+		NguoiDung nguoiDungLogin = new NguoiDung();
 		int soLuongSpGh = 0;
 		if (principal != null) {
 			String email = principal.getName();
@@ -208,7 +208,7 @@ public class UserController {
 		String returnUrl = "";
 		returnUrl = "redirect:/dang-nhap";
 		
-		NguoiDung nguoiDung = null;
+		NguoiDung nguoiDung = new NguoiDung();
 		int soLuongSpGh = 0;
 		Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
@@ -241,7 +241,7 @@ public class UserController {
 	public String showMyProfile(Model model, Principal principal) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		
-		NguoiDung nguoiDung = null;
+		NguoiDung nguoiDung = new NguoiDung();
 		int soLuongSpGh = 0;
 		String email = "";
 		if (principal != null) {
@@ -264,7 +264,7 @@ public class UserController {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		
-		NguoiDung nguoiDung = null;
+		NguoiDung nguoiDung = new NguoiDung();
 		int soLuongSpGh = 0;
 		String email = "";
 		if (principal != null) {

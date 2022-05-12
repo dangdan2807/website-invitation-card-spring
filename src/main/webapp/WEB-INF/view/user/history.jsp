@@ -153,7 +153,8 @@
 				</div>
 				
 				<div class="text-center">
-					<a href="/trang-chu"
+				<c:url var="backUrl" value="/trang-chu"></c:url>
+					<a href="${backUrl }"
 						style="color: #326e51; background-color: transparent;"> <i
 						class="fa fa-caret-left"></i> Quay lại 
 					</a>
