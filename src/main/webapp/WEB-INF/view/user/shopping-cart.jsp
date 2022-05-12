@@ -82,7 +82,11 @@
 										<td class="shoping__cart__total">${gioHang.sanPham.giaSP * gioHang.soLuong * (100 - gioHang.sanPham.giamGia) / 100}
 										</td>
 										<td class="shoping__cart__item__close">
-											<span class="icon_close btn-delete"></span>
+											<form:form method="POST"
+												action="${pageContext.request.contextPath}/user/gio-hang/id=${gioHang.sanPham.maSp}"
+												accept-charset="UTF-8">
+												<span id="btn-delete" class="icon_close"></span>
+											</form:form>
 										</td>
 									</tr>
 								</c:forEach>
@@ -126,9 +130,14 @@
 
 	<jsp:include page="./module/link-js.jsp" />
 	
-	<script>
-		$(".btn-delete").click(function(){
-			$(this).parent().parent().remove();
+	<script type="text/javascript">
+		$('#btn-delete').click(function() {
+			if(!confirm('Bạn có muốn xóa sản phẩm này không?')){
+				return false;
+			} else {
+				$(this).parent().submit();
+				return true;
+			}
 		});
 	</script>
 
