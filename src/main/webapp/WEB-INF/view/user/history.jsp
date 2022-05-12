@@ -106,7 +106,7 @@
 								</strong>
 								</span>
 								<c:url var="xemChiTietUrl"
-									value="/user/show-order">
+									value="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/user/show-order">
 									<c:param name="maHD"
 										value="${hoadon.getMaHD() }"></c:param>
 										
@@ -153,8 +153,7 @@
 				</div>
 				
 				<div class="text-center">
-				<c:url var="backUrl" value="/trang-chu"></c:url>
-					<a href="${backUrl }"
+					<a href="http://localhost:8080/N1_DeTai39_WebsiteBanThiep/"
 						style="color: #326e51; background-color: transparent;"> <i
 						class="fa fa-caret-left"></i> Quay lại 
 					</a>

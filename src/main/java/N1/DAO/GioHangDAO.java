@@ -2,13 +2,10 @@ package N1.DAO;
 
 import java.util.List;
 
-import N1.DTO.SanPhamMua;
 import N1.entity.*;
 
 public interface GioHangDAO {
 	public void deleteGioHangByIdNguoiDung(int maND);
-	
-	public void deleteGioHangByIdNguoiDungAndSanPhamMuas(int maND, List<SanPhamMua> sanPhamMuas);
 
 	public List<GioHang> getDSGioHang();
 

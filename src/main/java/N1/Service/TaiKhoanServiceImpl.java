@@ -33,11 +33,4 @@ public class TaiKhoanServiceImpl implements TaiKhoanService {
 		return TaiKhoanDAO.createUser(nguoiDung);
 	}
 
-	@Override
-	@Transactional
-	public boolean updateTaiKhoan(TaiKhoan taiKhoan) {
-		
-		return TaiKhoanDAO.updateTaiKhoan(taiKhoan);
-	}
-
 }

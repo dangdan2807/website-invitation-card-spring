@@ -54,10 +54,4 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 	public NguoiDung findNguoiDungByEmail(String email) {
 		return nguoiDungDAO.findNguoiDungByEmail(email);
 	}
-
-	@Override
-	public boolean updateNguoiDung(NguoiDung nguoiDung) {
-		
-		return nguoiDungDAO.updateNguoiDung(nguoiDung);
-	}
 }

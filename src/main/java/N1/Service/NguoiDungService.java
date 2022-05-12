@@ -11,5 +11,4 @@ public interface NguoiDungService {
     public void save(NguoiDung nguoiDung);
     public NguoiDung findNguoiDungById(int id);
     public NguoiDung findNguoiDungByEmail(String email);
-    public boolean updateNguoiDung(NguoiDung nguoiDung);
 }

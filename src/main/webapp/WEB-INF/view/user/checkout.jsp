@@ -93,10 +93,7 @@
 		<section class="checkout spad">
 			<div class="container">
 				<div class="checkout__form">
-					<c:url var="toUrl"
-						value="/user/orders/success">
-						
-					</c:url>
+					<c:url var="toUrl" value="/user/orders/success" />
 					<form:form id="form-create-order" action="${toUrl}" method="post"
 						onsubmit="return submicForm()">
 						<div class="row">

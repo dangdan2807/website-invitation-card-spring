@@ -1,6 +1,5 @@
 package N1.Controller;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,15 +39,14 @@ public class UserController {
 
 	@Autowired
 	private CTHoaDonService ctHoaDonService;
-	@Autowired
-	private TaiKhoanService taiKhoanService;
+
 	@RequestMapping({ "/gio-hang", "/cart" })
 	public String showShoppingCartPage(Model model) {
 		String returnUrl = "";
 		returnUrl = "redirect:/dang-nhap";
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		NguoiDung nguoiDung = new NguoiDung(); 
+		NguoiDung nguoiDung = null; 
 		int soLuongSpGh = 0;
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
 			model.addAttribute("isCategoryPage", 0);
@@ -82,6 +78,8 @@ public class UserController {
 
 	@RequestMapping({ "/thanh-toan", "/checkout" })
 	public String showCheckoutPage(Model model) {
+		model.addAttribute("isCategoryPage", 0);
+
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = "";
 		if (principal instanceof UserDetails) {
@@ -89,18 +87,19 @@ public class UserController {
 		} else {
 			username = principal.toString();
 		}
-		NguoiDung nguoiDung = nguoiDungService.findNguoiDungByEmail(username);
 		int soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(username);
 		model.addAttribute("soLuongSpGh", soLuongSpGh);
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
-		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		// NguoiDung nguoiDung = nguoiDungService.findNguoiDungById(maND);
+
+		NguoiDung nguoiDung = nguoiDungService.findNguoiDungByEmail(username);
 		model.addAttribute("nguoiDung", nguoiDung);
 
+		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+
 		List<SanPhamMua> dsSanPhamMua = sanPhamService.getSanPhamMua(nguoiDung.getMaND());
-		int soLuong = dsSanPhamMua.size();
 		model.addAttribute("dsSanPhamMua", dsSanPhamMua);
 
+		int soLuong = dsSanPhamMua.size();
 		model.addAttribute("soLuong", soLuong);
 
 		double tongTienHang = 0;
@@ -113,7 +112,6 @@ public class UserController {
 		model.addAttribute("tongTienHang", tongTienHang);
 		model.addAttribute("giamGia", giamGia);
 		model.addAttribute("tongThanhToan", tongThanhToan);
-		model.addAttribute("isCategoryPage", 0);
 
 		return "user/checkout";
 	}
@@ -170,18 +168,21 @@ public class UserController {
 		return "user/detail-order";
 	}
 
-	@RequestMapping(value = { "/show-order" })
-	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD, Model model, Principal principal) {
-		NguoiDung nguoiDungLogin = new NguoiDung();
+	@RequestMapping(value = { "/show-order", "/danh-sach-mua-hang" })
+	public String showHoaDonChiTiet(@RequestParam("maHD") int maHD, Model model) {
+		String returnUrl = "redirect:/dang-nhap";
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		NguoiDung nguoiDung = null; 
 		int soLuongSpGh = 0;
-		if (principal != null) {
-			String email = principal.getName();
-			nguoiDungLogin = nguoiDungService.findNguoiDungByEmail(email);
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
 		}
-		model.addAttribute("nguoiDung", nguoiDungLogin);
+		model.addAttribute("nguoiDung", nguoiDung);
 		model.addAttribute("soLuongSpGh", soLuongSpGh);
-
+			
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		// Tìm hóa đơn theo mã hóa đơn
@@ -198,30 +199,29 @@ public class UserController {
 		model.addAttribute("chiTietHoaDons", cthds);
 		model.addAttribute("tongTienHang", tongTienHang);
 		model.addAttribute("giamGia", tongTienHang * 0.05);
-
-		model.addAttribute("isCategoryPage", 0);
-		return "user/show-my-order";
+			
+		returnUrl = "user/show-my-order";
+		return returnUrl;
 	}
 
 	@RequestMapping(value = { "/order/history", "/lich-su-mua-hang" })
-	public String showHoaDonByNguoiDung(Model model, Principal principal) {
-		String returnUrl = "";
-		returnUrl = "redirect:/dang-nhap";
+	public String showHoaDonByNguoiDung(@RequestParam("maND") int userId, Model model) {
+		String returnUrl = "redirect:/dang-nhap";
 		
-		NguoiDung nguoiDung = new NguoiDung();
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		NguoiDung nguoiDung = null; 
 		int soLuongSpGh = 0;
-		Authentication authentication =SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
 			String email = authentication.getName();
 			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
-
-			model.addAttribute("nguoiDung", nguoiDung);
-			model.addAttribute("soLuongSpGh", soLuongSpGh);
-	
+		}
+		model.addAttribute("nguoiDung", nguoiDung);
+		model.addAttribute("soLuongSpGh", soLuongSpGh);
+			
 			List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 			model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-	
+			
 			List<HoaDon> hoaDons = hoaDonService.findHoaDonByUserId(nguoiDung.getMaND());
 			hoaDons.forEach(e -> {
 				List<ChiTietHoaDon> cthds = new ArrayList<ChiTietHoaDon>();
@@ -229,74 +229,9 @@ public class UserController {
 				e.setDsCTHoaDon(cthds);
 			});
 			model.addAttribute("hoadons", hoaDons);
-			model.addAttribute("isCategoryPage", 0);
-			returnUrl = "user/history";
 			
-		}
+		returnUrl = "user/history";
 		return returnUrl;
-	
 	}
 
-	@RequestMapping("/profile")
-	public String showMyProfile(Model model, Principal principal) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
-		
-		NguoiDung nguoiDung = new NguoiDung();
-		int soLuongSpGh = 0;
-		String email = "";
-		if (principal != null) {
-			email = principal.getName();
-			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
-			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
-		}
-		boolean kq=false;
-		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		model.addAttribute("kq", kq);
-		model.addAttribute("nguoiDung", nguoiDung);
-		model.addAttribute("soLuongSpGh", soLuongSpGh);
-		model.addAttribute("email", email);
-		model.addAttribute("isCategoryPage", 0);
-		return "user/form-update-profile";
-	}
-
-	@RequestMapping("/profile/edit")
-	public String updateProfile(ThongTinCapNhat thongTinCapNhat, Model model,Principal principal) {
-		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
-		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
-		
-		NguoiDung nguoiDung = new NguoiDung();
-		int soLuongSpGh = 0;
-		String email = "";
-		if (principal != null) {
-			email = principal.getName();
-			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
-			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
-		}
-		String sdt=thongTinCapNhat.getSdt();
-		String tenND=thongTinCapNhat.getTenND();
-		
-		// Cập nhật mật khẩu mà mật khẩu cần phải băm
-		String matKhau=thongTinCapNhat.getMatKhau();
-		System.out.println(matKhau);
-		TaiKhoan taiKhoan=nguoiDung.getTaiKhoan();
-		if(!matKhau.equals("")) {
-			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-				String encodedPassword = passwordEncoder.encode(matKhau);
-				encodedPassword = "{bcrypt}" + encodedPassword;
-				taiKhoan.setMatKhau(encodedPassword);
-				taiKhoanService.updateTaiKhoan(taiKhoan);
-		}
-		nguoiDung.setSdt(sdt);
-		nguoiDung.setTenND(tenND);
-		nguoiDung.setTaiKhoan(taiKhoan);
-		boolean kq=nguoiDungService.updateNguoiDung(nguoiDung);
-		
-		model.addAttribute("email", email);
-		model.addAttribute("nguoiDung", nguoiDung);
-		model.addAttribute("soLuongSpGh", soLuongSpGh);
-		model.addAttribute("kq", kq);
-		model.addAttribute("isCategoryPage", 0);
-		return "user/form-update-profile";
-	}
-	
 }

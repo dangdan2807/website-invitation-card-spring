@@ -124,7 +124,7 @@
 						<a href="<c:url value = '/san-pham' />" class="primary-btn cart-btn">
 							TIẾP TỤC MUA SẮM
 						</a> 
-						<a href="<c:url value = '/user/gio-hang' />" class="primary-btn cart-btn cart-btn-right"> 
+						<a href="<c:url value = '/gio-hang' />" class="primary-btn cart-btn cart-btn-right"> 
 							<span class="icon_loading"></span> 
 							CẬP NHẬT GIỎ HÀNG
 						</a>
@@ -137,8 +137,7 @@
 							<li>Thành Tiền <span>${tongTien}</span></li>
 							<li>Total <span>${tongTien}</span></li>
 						</ul>
-						<a href="<c:url value = '/user/gio-hang' />" class="primary-btn">TIẾN HÀNH KIỂM TRA</a>
-						<a href="<c:url value = '/user/thanh-toan' />" class="primary-btn">THANH TOÁN</a>
+						<a href="#" class="primary-btn">TIẾN HÀNH KIỂM TRA</a>
 					</div>
 				</div>
 			</div>

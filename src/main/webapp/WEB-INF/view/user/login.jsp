@@ -51,14 +51,9 @@
 <link rel="stylesheet" type="text/css"
 	href="<c:url value ='/resources/user/css/login/main.css'/>" />
 <!--===============================================================================================-->
-<jsp:include page="./module/link-css.jsp" />
 </head>
-<body>
-	<!-- Header Section Begin -->
-	<jsp:include page="./module/header.jsp">
-		<jsp:param name="activePage" value="home" />
-	</jsp:include>
-	<!-- Header Section End -->
+<body style="background-color: #666666;">
+
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
@@ -83,8 +78,7 @@
 
 								<c:if test="${param.logout != null}">
 
-									<div class="alert alert-success col-xs-offset-1 col-xs-10">Đã
-										đăng xuất.</div>
+									<div class="alert alert-success col-xs-offset-1 col-xs-10">Đã đăng xuất.</div>
 
 								</c:if>
 
@@ -146,10 +140,7 @@
 		</div>
 	</div>
 
-	<!-- Footer Section Begin -->
-	<jsp:include page="./module/footer.jsp" />
-	<!-- Footer Section End -->
-	<jsp:include page="./module/link-js.jsp" />
+
 
 	<!--===============================================================================================-->
 	<script

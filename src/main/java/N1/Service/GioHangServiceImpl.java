@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import N1.DAO.GioHangDAO;
-import N1.DTO.SanPhamMua;
 import N1.entity.GioHang;
 
 @Service
@@ -20,13 +19,6 @@ public class GioHangServiceImpl implements GioHangService {
 	@Transactional
 	public void deleteGioHangByIdNguoiDung(int maND) {
 		gioHangDAO.deleteGioHangByIdNguoiDung(maND);
-		
-	}
-	
-	@Override
-	@Transactional
-	public void deleteGioHangByIdNguoiDungAndSanPhamMuas(int maND, List<SanPhamMua> sanPhamMuas) {
-		gioHangDAO.deleteGioHangByIdNguoiDungAndSanPhamMuas(maND, sanPhamMuas);
 		
 	}
 
