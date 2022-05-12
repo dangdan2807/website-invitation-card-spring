@@ -1,6 +1,5 @@
 package N1.Controller;
 
-import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +48,8 @@ public class ProductController {
 		model.addAttribute("sort", sort);
 		model.addAttribute("pagingSize", new int[] { 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5 });
 
-		double minPrice = Double.parseDouble(minPriceStr.replaceAll("[/s.đ]", ""));
-		double maxPrice = Double.parseDouble(maxPriceStr.replaceAll("[/s.đ]", ""));
+		double minPrice = Double.parseDouble(minPriceStr.replaceAll("[\\s.đ]", ""));
+		double maxPrice = Double.parseDouble(maxPriceStr.replaceAll("[\\s.đ]", ""));
 		if (currentPage <= 0 || currentPage == null) {
 			currentPage = 1;
 		}
@@ -64,7 +63,7 @@ public class ProductController {
 		model.addAttribute("maxPrice", maxPrice);
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		NguoiDung nguoiDung = null; 
+		NguoiDung nguoiDung = new NguoiDung(); 
 		int soLuongSpGh = 0;
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
 			String email = authentication.getName();
@@ -121,7 +120,7 @@ public class ProductController {
 		model.addAttribute("currentPageComment", currentPageComment);
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		NguoiDung nguoiDung = null; 
+		NguoiDung nguoiDung = new NguoiDung(); 
 		int soLuongSpGh = 0;
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
 			String email = authentication.getName();
@@ -176,14 +175,17 @@ public class ProductController {
 			@PathVariable(name = "theId", required = false) Integer sanPhamId,
 			@ModelAttribute("gioHang") GioHang gioHang,
 			RedirectAttributes redirectAttributes) {
+		boolean resultSave = false;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String currentPrincipalName = authentication.getName();
+		NguoiDung nguoiDung = new NguoiDung(); 
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			gioHang.setNguoiDung(nguoiDung);
+			gioHang.setSanPham(new SanPham(sanPhamId));
+			resultSave = gioHangService.saveGioHang(gioHang);
+		}
 
-		NguoiDung nguoiDung = nguoiDungService.findNguoiDungByEmail(currentPrincipalName);
-		gioHang.setNguoiDung(nguoiDung);
-		gioHang.setSanPham(new SanPham(sanPhamId));
-
-		boolean resultSave = gioHangService.saveGioHang(gioHang);
 		if (resultSave) {
 			redirectAttributes.addAttribute("msg", "Thêm sản phẩm vào giỏ hàng thành công");
 			redirectAttributes.addAttribute("status", 1);
@@ -200,15 +202,18 @@ public class ProductController {
 			@PathVariable(name = "theId", required = false) Integer sanPhamId,
 			@ModelAttribute("danhGia") DanhGia danhGia,
 			RedirectAttributes redirectAttributes) {
+		boolean resultSave = false;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String currentPrincipalName = authentication.getName();
-
-		NguoiDung nguoiDung = nguoiDungService.findNguoiDungByEmail(currentPrincipalName);
-		danhGia.setNguoiDung(nguoiDung);
-		danhGia.setSanPham(new SanPham(sanPhamId));
+		NguoiDung nguoiDung = new NguoiDung(); 
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			String email = authentication.getName();
+			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+			danhGia.setSanPham(new SanPham(sanPhamId));
+			danhGia.setNguoiDung(nguoiDung);
+			resultSave = danhGiaService.addDanhGia(danhGia);
+		}
 
 		model.addAttribute("danhGia", new DanhGia());
-		boolean resultSave = danhGiaService.addDanhGia(danhGia);
 		if (resultSave) {
 			redirectAttributes.addAttribute("msg", "Đánh giá sản phẩm thành công");
 			redirectAttributes.addAttribute("status", 1);
