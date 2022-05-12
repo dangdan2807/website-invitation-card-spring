@@ -90,14 +90,16 @@ public class UserController {
 	
 	@PostMapping({ "/gio-hang", "/cart" })
 	public String addOrUpdateOrder(Principal principal,
-			@RequestParam("dscthdmaSp") List<Integer> dscthdmaSp,
-			@RequestParam("dscthdsoLuong") List<Integer> dscthdsoLuong, 
+			@RequestParam(name = "dscthdmaSp", required = false) List<Integer> dscthdmaSp,
+			@RequestParam(name = "dscthdsoLuong", required = false) List<Integer> dscthdsoLuong, 
 			Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		
 		
-		
-		System.out.println(dscthdmaSp);
-		System.out.println(dscthdsoLuong);
+		if(dscthdmaSp == null) {
+			dscthdmaSp = new ArrayList<Integer>();
+			dscthdsoLuong = new ArrayList<Integer>();
+		}
+
 		NguoiDung user = nguoiDungService.findNguoiDungByEmail(principal.getName());
 		
 		
