@@ -19,6 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import N1.utils.Datetime;
@@ -42,14 +43,16 @@ public class HoaDon implements Serializable {
 	@Column(name = "tongSoLuong", nullable = false, columnDefinition = "INT DEFAULT(0) CHECK(tongSoLuong >= 0)")
 	private double tongSoLuong;
 
-	@Column(name = "trangThaiDonHang", nullable = false, columnDefinition = "NVARCHAR(100) DEFAULT(N'Chưa thanh toán')")
-	private String trangThaiDonHang;
+    @NotBlank(message = "Trạng thái đơn hàng không được để trống")
+    @Column(name = "trangThaiDonHang", nullable = false, columnDefinition = "NVARCHAR(100) DEFAULT(N'pending')")
+    private String trangThaiDonHang;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Temporal(value = TemporalType.TIMESTAMP)
 	@Column(name = "ngayGiaoHang", columnDefinition = "DATETIME")
 	private Date ngayGiaoHang;
 
+    @NotBlank(message = "Địa chỉ giao hàng không được để trống")
     @Column(name = "diaChiGiaoHang", columnDefinition = "NTEXT DEFAULT('')")
     private String diaChiGiaoHang;
     

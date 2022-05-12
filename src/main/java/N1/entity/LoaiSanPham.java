@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity
 @Table(name = "LoaiSanPham")
 public class LoaiSanPham implements Serializable {
@@ -20,7 +22,8 @@ public class LoaiSanPham implements Serializable {
 	@Column(name = "maLSP")
 	private int maLSP;
 
-	@Column(name = "tenLSP", nullable = false, columnDefinition = "nvarchar(100)")
+	@NotBlank(message = "Tên loại thiệp không được để trống")
+    @Column(name = "tenLSP", nullable = false, columnDefinition = "nvarchar(100)")
 	private String tenLSP;
 
     @Column(name = "hinhAnh", columnDefinition = "text DEFAULT (N'')")

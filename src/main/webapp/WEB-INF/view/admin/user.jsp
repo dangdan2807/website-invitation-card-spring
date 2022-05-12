@@ -83,6 +83,7 @@
 											<th>Email</th>
 											<th>Số điện thoại</th>
 											<th>Địa chỉ</th>
+											<th>Vai trò</th>
 											<th class="text-center">Hành động</th>
 										</tr>
 									</thead>
@@ -94,6 +95,7 @@
 											<th>Email</th>
 											<th>Số điện thoại</th>
 											<th>Địa chỉ</th>
+											<th>Vai trò</th>
 											<th class="text-center">Hành động</th>
 										</tr>
 									</tfoot>
@@ -109,10 +111,12 @@
 												<td>${user.taiKhoan.tenDangNhap}</td>
 												<td>${user.sdt}</td>
 												<td>${user.diaChi}</td>
+												<td>${user.taiKhoan.chucVu.tenChucVu == "ROLE_ADMIN" ? "Admin" : "Khách hàng"}</td>
 												<td class="text-center">
 													<button class="btn btn-warning btn-edit" 
 														data-maND="${user.maND}" data-tenND="${user.tenND}" data-sdt="${user.sdt}" 
-														data-diaChi="${user.diaChi}" data-hinhAnh="${user.hinhAnh}">Sửa</button>
+														data-diaChi="${user.diaChi}" data-hinhAnh="${user.hinhAnh}"
+														data-chucVu="${user.taiKhoan.chucVu.maChucVu}">Sửa</button>
 												</td>
 											</tr>
 										</c:forEach>
@@ -161,27 +165,34 @@
 							<form:label path="maND" cssClass="form-label">Mã người dùng</form:label>
 							<form:input path="maND" type="text" cssClass="form-control"
 								readonly="true" />
-							<form:errors path="maND" cssClass="form-text" />
+							<form:errors path="maND" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<form:label path="tenND" cssClass="form-label">Tên người dùng</form:label>
 							<form:input path="tenND" type="text" cssClass="form-control" />
-							<form:errors path="tenND" cssClass="form-text" />
+							<form:errors path="tenND" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<form:label path="sdt" cssClass="form-label">Số điện thoại</form:label>
 							<form:input path="sdt" type="text" cssClass="form-control" />
-							<form:errors path="sdt" cssClass="form-text" />
+							<form:errors path="sdt" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<form:label path="diaChi" cssClass="form-label">Địa chỉ</form:label>
 							<form:input path="diaChi" type="text" cssClass="form-control" />
-							<form:errors path="diaChi" cssClass="form-text" />
+							<form:errors path="diaChi" cssClass="form-text error-msg" />
 						</div>
 						<div class="mb-3">
 							<form:label path="hinhAnh" cssClass="form-label">Hình ảnh</form:label>
 							<form:input path="hinhAnh" type="text" cssClass="form-control" />
-							<form:errors path="hinhAnh" cssClass="form-text" />
+							<form:errors path="hinhAnh" cssClass="form-text error-msg" />
+						</div>
+						<div class="mb-3">
+							<form:label path="taiKhoan.chucVu.maChucVu" cssClass="form-label">Vai trò</form:label>
+							<form:select path="taiKhoan.chucVu.maChucVu" cssClass="form-control chucVu">
+								<option value="1">Admin</option>
+								<option value="2">Khách hàng</option>
+							</form:select>
 						</div>
 
 					</form:form>
@@ -214,7 +225,7 @@
 							.getElementById('userModal'), {
 						keyboard : false
 					});
-					
+					${error == true ? "modal.show();": ""}
 					$(".btn-edit").click(function() {
 						$("#maND").attr('value',
 								$(this).attr("data-maND"));
@@ -226,11 +237,21 @@
 								$(this).attr("data-diaChi"));
 						$("#hinhAnh").attr('value',
 								$(this).attr("data-hinhAnh"));
+						console.log(".chucVu > option[value='"+$(this).attr("data-chucVu")+"']");
+						console.log($(".chucVu > option[value='"+$(this).attr("data-chucVu")+"']"));
+						$(".chucVu > option").prop('selected', false);
+						$(".chucVu > option[value='"+$(this).attr("data-chucVu")+"']").prop('selected', true);
 						modal.show();
 					});
+					
 
 					
-					
+					/* const checkEmpty = function () {
+					    var val = $(this).val();
+					    if(val == ""){
+					    	$(this).parent().find("")
+					    }
+					} */
 				});
 	</script>
 </body>
