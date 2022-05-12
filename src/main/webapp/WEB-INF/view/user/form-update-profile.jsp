@@ -151,7 +151,7 @@
 			<div class="row container-form-tt">
 				<div class="col-lg-12">
 					<c:url var="toUrl" value="/user/profile/edit"></c:url>
-					<form:form id="form-update-profile" action="${toUrl }"
+					<form:form id="form-update-profile" action="${toUrl }" modelAttribute="thongTinCapNhat"
 						method="post">
 						<div class="title-profile-page">Thông tin tài khoản</div>
 						<div class="content-box-profile row">
@@ -165,7 +165,6 @@
 								<input type="file" name="hinhAnh" id="hinhAnh" class="hide"
 									hidden="true">
 							</div>
-
 							<div class="content-info col-lg-9 ">
 								<div class="row">
 									<div class="col-lg-6">
@@ -173,23 +172,29 @@
 											<div class="col-lg-12 block_icon_form"
 												style="margin-bottom: 15px">
 												<span class="icon_form"> <i class="fa fa-envelope-o"></i>
-												</span> <input type="email" class="form-control" id="email"
+												</span> 
+													<input type="email" class="form-control" id="email"
 													name="email" placeholder="Nhập địa chỉ email"
-													value="${email}" disabled="disabled">
+													value="${email}" disabled="disabled"/>
 											</div>
 											<div class="col-lg-12 block_icon_form"
 												style="margin-bottom: 15px">
-												<input type="tel" class="form-control" id="sdt" name="sdt"
-													placeholder="Nhập số điện thoại"
-													value="${nguoiDung.getSdt() }"> <i
-													class="fa fa-phone"></i>
+												<form:input path="sdt" type="tel" class="form-control"
+													placeholder="Nhập số điện thoại"/> 
+												<i class="fa fa-phone"></i>
+												<form:errors path="sdt" cssClass="form-text error-msg" />
 											</div>
 											<div class="col-lg-12 block_icon_form"
 												style="margin-bottom: 15px">
-												<input type="text" class="form-control" id="tenND"
-													name="tenND" placeholder="Nhập họ và tên"
-													value="${nguoiDung.getTenND()}"> <i
-													class="fa fa-user"></i>
+												<form:input path="tenND" type="text" class="form-control" placeholder="Nhập họ và tên"/> 
+												<i class="fa fa-user"></i>
+												<form:errors path="tenND" cssClass="form-text error-msg" />
+											</div>
+											<div class="col-lg-12 block_icon_form"
+												style="margin-bottom: 15px">
+												<form:input path="diaChi" type="text" class="form-control" placeholder="Nhập địa chỉ"/> 
+												<i class="fa fa-user"></i>
+												<form:errors path="diaChi" cssClass="form-text error-msg" />
 											</div>
 											<div class="col-lg-12 block_icon_form"
 												style="margin-bottom: 15px">

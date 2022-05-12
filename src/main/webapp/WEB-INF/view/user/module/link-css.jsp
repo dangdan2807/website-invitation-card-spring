@@ -21,3 +21,10 @@
 <link rel="stylesheet" href="<c:url value = '/resources/user/css/owl.carousel.min.css'/>" type="text/css" />
 <link rel="stylesheet" href="<c:url value = '/resources/user/css/slicknav.min.css'/>" type="text/css" />
 <link rel="stylesheet" href="<c:url value = '/resources/user/css/style.css'/>" type="text/css" />
+<style>
+	.error-msg{
+		color: red;
+		font-size: smaller;
+    	font-style: italic;
+	}
+</style>

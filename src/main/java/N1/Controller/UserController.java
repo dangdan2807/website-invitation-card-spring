@@ -280,6 +280,9 @@ public class UserController {
 			nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
 			soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
 		}
+		ThongTinCapNhat thongTinCapNhat = new ThongTinCapNhat(nguoiDung.getHinhAnh(), 
+				nguoiDung.getSdt(), nguoiDung.getTenND(), nguoiDung.getTaiKhoan().getMatKhau(), 
+				nguoiDung.getDiaChi());
 		boolean kq=false;
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		model.addAttribute("kq", kq);
@@ -287,11 +290,35 @@ public class UserController {
 		model.addAttribute("soLuongSpGh", soLuongSpGh);
 		model.addAttribute("email", email);
 		model.addAttribute("isCategoryPage", 0);
+		model.addAttribute("thongTinCapNhat", thongTinCapNhat);
 		return "user/form-update-profile";
 	}
 
 	@RequestMapping("/profile/edit")
-	public String updateProfile(ThongTinCapNhat thongTinCapNhat, Model model,Principal principal) {
+	public String updateProfile(@Valid ThongTinCapNhat thongTinCapNhat, BindingResult bindingResult, 
+		Model model,Principal principal) {
+		if(bindingResult.hasErrors()) {
+			List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
+			
+			NguoiDung nguoiDung = null;
+			int soLuongSpGh = 0;
+			String email = "";
+			if (principal != null) {
+				email = principal.getName();
+				nguoiDung = nguoiDungService.findNguoiDungByEmail(email);
+				soLuongSpGh = gioHangService.getNumOfSanPhamInGioHangByEmail(email);
+			}
+			boolean kq=false;
+			model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
+			model.addAttribute("kq", kq);
+			model.addAttribute("nguoiDung", nguoiDung);
+			model.addAttribute("soLuongSpGh", soLuongSpGh);
+			model.addAttribute("email", email);
+			model.addAttribute("isCategoryPage", 0);
+			model.addAttribute("thongTinCapNhat", thongTinCapNhat);
+			return "user/form-update-profile";
+		}
+		
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
 		model.addAttribute("dsLoaiSanPham", dsLoaiSanPham);
 		
@@ -305,6 +332,7 @@ public class UserController {
 		}
 		String sdt=thongTinCapNhat.getSdt();
 		String tenND=thongTinCapNhat.getTenND();
+		String diaChi=thongTinCapNhat.getDiaChi();
 		
 		// Cập nhật mật khẩu mà mật khẩu cần phải băm
 		String matKhau=thongTinCapNhat.getMatKhau();
@@ -319,6 +347,7 @@ public class UserController {
 		}
 		nguoiDung.setSdt(sdt);
 		nguoiDung.setTenND(tenND);
+		nguoiDung.setDiaChi(diaChi);
 		nguoiDung.setTaiKhoan(taiKhoan);
 		boolean kq=nguoiDungService.updateNguoiDung(nguoiDung);
 		
