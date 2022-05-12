@@ -51,7 +51,6 @@
                                 <span>${sanPhamMoi.dsLoaiSP.get(0).loaiSanPham.tenLSP}</span>
                                 <h3>${sanPhamMoi.tenSp}</h3>
                                 <br />
-                                <!-- <p>Free Pickup and Delivery Available</p> -->
                                 <a href='<c:url value = "/san-pham/id=${sanPhamMoi.maSp}" />' 
                                 class="primary-btn">MUA NGAY</a>
                             </div>

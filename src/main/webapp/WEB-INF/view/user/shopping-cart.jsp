@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -75,8 +76,13 @@
 										</td>
 										<td class="shoping__cart__total">${gioHang.sanPham.giaSP * gioHang.soLuong * (100 - gioHang.sanPham.giamGia) / 100}
 										</td>
-										<td class="shoping__cart__item__close"><span
-											class="icon_close"></span></td>
+										<td class="shoping__cart__item__close">
+											<form:form method="POST"
+												action="${pageContext.request.contextPath}/user/gio-hang/id=${gioHang.sanPham.maSp}"
+												accept-charset="UTF-8">
+												<span id="btn-delete" class="icon_close"></span>
+											</form:form>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -151,6 +157,17 @@
 	<!-- Footer Section End -->
 
 	<jsp:include page="./module/link-js.jsp" />
+	
+	<script type="text/javascript">
+		$('#btn-delete').click(function() {
+			if(!confirm('Bạn có muốn xóa sản phẩm này không?')){
+				return false;
+			} else {
+				$(this).parent().submit();
+				return true;
+			}
+		});
+	</script>
 
 </body>
 

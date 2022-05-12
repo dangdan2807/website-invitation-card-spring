@@ -47,9 +47,17 @@ public class GioHangDAOImpl implements GioHangDAO {
 		
 		List<GioHang> gioHang = currentSession.createNativeQuery(query, GioHang.class).getResultList();
 		gioHang.forEach(e -> {
-//			currentSession.delete(e);
+			currentSession.delete(e);
 		});
 
+	}
+	
+	@Override
+	public void deleteGioHangByIdNguoiDungAndIdSanPham(int maND, int idSanPham) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		String query = "select * from GioHang where maND=" + maND + " and maSp = " + idSanPham; 
+		GioHang gioHang = currentSession.createNativeQuery(query, GioHang.class).getSingleResult();
+		currentSession.delete(gioHang);
 	}
 
 	@Override
