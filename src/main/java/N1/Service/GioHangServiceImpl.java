@@ -77,5 +77,13 @@ public class GioHangServiceImpl implements GioHangService {
 	public int getNumOfSanPhamInGioHangByEmail(String email) {
 		return gioHangDAO.getNumOfSanPhamInGioHangByEmail(email);
 	}
-
+	
+	@Override
+	@Transactional
+	public void updateDanhSachGioHang(int maND, List<GioHang> dsgh) {
+		gioHangDAO.deleteGioHangByIdNguoiDung(maND);
+		dsgh.forEach(gioHang -> {
+			gioHangDAO.addGioHang(gioHang);
+		});
+	}
 }

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page import="org.springframework.web.servlet.tags.Param"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -45,6 +47,8 @@
 			<div class="row shoping__cart-desktop">
 				<div class="col-lg-12">
 					<div class="shoping__cart__table">
+					<form:form id="gioHangForm"
+								action="${pageContext.request.contextPath}/user/gio-hang" method="POST">
 						<table>
 							<thead>
 								<tr>
@@ -58,7 +62,9 @@
 							</thead>
 							<tbody>
 								<c:forEach var="gioHang" items="${dsSanPhamGioHang}">
+									
 									<tr>
+										<input type="hidden" value="${gioHang.sanPham.maSp}" name="dscthdmaSp"/>
 										<td class="shoping__cart__item"><img
 											src="<c:url value = '${gioHang.sanPham.hinhAnh}' />" alt="">
 											<h5>${gioHang.sanPham.tenSp}</h5></td>
@@ -69,54 +75,22 @@
 										<td class="shoping__cart__quantity">
 											<div class="quantity">
 												<div class="pro-qty">
-													<input type="text" value="${gioHang.soLuong }">
+													<input type="text" value="${gioHang.soLuong }" name="dscthdsoLuong">
 												</div>
 											</div>
 										</td>
 										<td class="shoping__cart__total">${gioHang.sanPham.giaSP * gioHang.soLuong * (100 - gioHang.sanPham.giamGia) / 100}
 										</td>
-										<td class="shoping__cart__item__close"><span
-											class="icon_close"></span></td>
+										<td class="shoping__cart__item__close">
+											<span class="icon_close btn-delete"></span>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
+						</form:form>
 					</div>
 				</div>
-			</div>
-			<div class="row shoping__cart-mobile">
-				<div class="col-lg-12">
-					<p class="shoping__cart-mobile__title">Giỏ hàng</p>
-				</div>
-				<c:forEach var="gioHang" items="${dsSanPhamGioHang}"
-					varStatus="status">
-					<div class="col-lg-12">
-						<div class="shoping__cart-mobile__item">
-							<img src="<c:url value = '${gioHang.sanPham.hinhAnh}' />" alt="">
-							<div class="cart__item__info">
-								<a class="cart__item__name"
-									href="<c:url value = '/san-pham/id=${gioHang.sanPham.maSp}' />">
-									${gioHang.sanPham.tenSp} </a> <span class="shoping__cart__price">${gioHang.sanPham.giaSP}</span>
-								<span class="shoping__cart__unit">/ chiếc</span>
-								<div class="shoping__cart__quantity">
-									<div class="quantity">
-										<div class="pro-qty">
-											<input type="text" value="${gioHang.soLuong }">
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="shoping__cart__right">
-								<div class="shoping__cart__total">${gioHang.sanPham.giaSP * gioHang.soLuong * (100 - gioHang.sanPham.giamGia) / 100}
-								</div>
-								<a class="shoping__cart__btn-delete" href="#">Xóa</a>
-							</div>
-							<c:if test="${status.last}">
-								<hr />
-							</c:if>
-						</div>
-					</div>
-				</c:forEach>
 			</div>
 			<div class="row">
 				<div class="col-lg-12">
@@ -124,10 +98,10 @@
 						<a href="<c:url value = '/san-pham' />" class="primary-btn cart-btn">
 							TIẾP TỤC MUA SẮM
 						</a> 
-						<a href="<c:url value = '/user/gio-hang' />" class="primary-btn cart-btn cart-btn-right"> 
+						<button class="primary-btn cart-btn cart-btn-right" onclick="document.querySelector('#gioHangForm').submit();" style="    border: none;"> 
 							<span class="icon_loading"></span> 
 							CẬP NHẬT GIỎ HÀNG
-						</a>
+						</button>
 					</div>
 				</div>
 				<div class="col-lg-6 offset-lg-6">
@@ -151,6 +125,12 @@
 	<!-- Footer Section End -->
 
 	<jsp:include page="./module/link-js.jsp" />
+	
+	<script>
+		$(".btn-delete").click(function(){
+			$(this).parent().parent().remove();
+		});
+	</script>
 
 </body>
 
