@@ -17,7 +17,5 @@ public interface LoaiSanPhamDAO {
 
 	public void delete(int maLSP);
 
-	public List<LoaiSanPham> getDSLoaiSanPham();
-
 	public boolean addLoaiSanPham(LoaiSanPham loaiSanPham);
 }

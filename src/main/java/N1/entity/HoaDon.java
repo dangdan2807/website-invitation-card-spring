@@ -53,7 +53,7 @@ public class HoaDon implements Serializable {
 	private Date ngayGiaoHang;
 
     @NotBlank(message = "Địa chỉ giao hàng không được để trống")
-    @Column(name = "diaChiGiaoHang", columnDefinition = "TEXT DEFAULT('')")
+    @Column(name = "diaChiGiaoHang", columnDefinition = "NTEXT DEFAULT('')")
     private String diaChiGiaoHang;
     
     @OneToMany(mappedBy = "hoaDon", fetch = FetchType.EAGER)
@@ -64,7 +64,7 @@ public class HoaDon implements Serializable {
     private NguoiDung nguoiDung;
     
     public HoaDon() {
-    	dsCTHoaDon = new ArrayList<ChiTietHoaDon>();
+		dsCTHoaDon = new ArrayList<ChiTietHoaDon>();
     }
 
 	public HoaDon(int maHD, Date ngayLHD, double tongTien, double tongSoLuong, NguoiDung nguoiDung) {

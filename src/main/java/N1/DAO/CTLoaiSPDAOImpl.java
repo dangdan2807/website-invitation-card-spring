@@ -8,10 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import N1.entity.ChiTietLoaiSP;
-import N1.entity.ChiTietLoaiSPPK;
-import N1.entity.LoaiSanPham;
-import N1.entity.SanPham;
+import N1.entity.*;
 
 @Repository
 public class CTLoaiSPDAOImpl implements CTLoaiSPDAO {
@@ -68,8 +65,8 @@ public class CTLoaiSPDAOImpl implements CTLoaiSPDAO {
 	@Override
 	public void updateChiTietLoaiSP(SanPham sanPham) {
 		Session currentSession = sessionFactory.getCurrentSession();
-		sanPham.getDsLoaiSP().forEach(ctlsp -> {
-			currentSession.save(ctlsp);
+		sanPham.getDsLoaiSP().forEach(item -> {
+			currentSession.save(item);
 		});
 	}
 

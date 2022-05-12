@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,7 +60,7 @@ public class TaiKhoanDAOImpl implements TaiKhoanDAO {
 		String query = "insert into TaiKhoan (tenDangNhap, matKhau, tinhTrang, maChucVu)"
 					+" values('"+nguoiDung.getTaiKhoan().getTenDangNhap()+"', "
 					+"'"+nguoiDung.getTaiKhoan().getMatKhau()+"', "
-					+"'1', '2')";
+					+"1, 2)";
 		currentSession.createNativeQuery(query).executeUpdate();
 		nguoiDung.getTaiKhoan().setMaTaiKhoan(getLastId());
 		nguoiDungDAO.addNguoiDung(nguoiDung);

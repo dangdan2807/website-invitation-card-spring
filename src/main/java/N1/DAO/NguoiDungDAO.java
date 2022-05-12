@@ -2,8 +2,7 @@ package N1.DAO;
 
 import java.util.List;
 
-import N1.entity.LoaiSanPham;
-import N1.entity.NguoiDung;
+import N1.entity.*;
 
 public interface NguoiDungDAO {
     public List<NguoiDung> findAll();
