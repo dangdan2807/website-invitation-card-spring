@@ -115,7 +115,7 @@
 							<li>Thành Tiền <span>${tongTien}</span></li>
 							<li>Total <span>${tongTien}</span></li>
 						</ul>
-						<a href="<c:url value = '/user/gio-hang' />" class="primary-btn">TIẾN HÀNH KIỂM TRA</a>
+						<%-- <a href="<c:url value = '/user/gio-hang' />" class="primary-btn">TIẾN HÀNH KIỂM TRA</a> --%>
 						<a href="<c:url value = '/user/thanh-toan' />" class="primary-btn">THANH TOÁN</a>
 					</div>
 				</div>

@@ -36,13 +36,18 @@
 							<security:authorize access="hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')">
 								<div class="account__container">
 									<a class="account_info" href='<c:url value = "/user/profile" />'>
-										<img class="account_avatar rounded-circle" src='<c:url value = "${nguoiDung.hinhAnh}" />' alt="">
+										<c:if test="${nguoiDung.hinhAnh != '' && nguoiDung.hinhAnh != null}">
+											<img class="account_avatar rounded-circle" src='<c:url value = "${nguoiDung.hinhAnh}" />' alt="">
+										</c:if>
+										<c:if test="${!(nguoiDung.hinhAnh != '' && nguoiDung.hinhAnh != null)}">
+											<img class="account_avatar rounded-circle" src='<c:url value = "/resources/admin/img/undraw_profile.svg" />' alt="">
+										</c:if>
+										
 										<span class="account_name">${nguoiDung.tenND}</>
 									</a>
 									<div class="dropdown-menu">
 										<a class="dropdown-item" href='<c:url value = "/user/profile" />'>Tài khoản của tôi</a>
 										<a class="dropdown-item" href='<c:url value = "/user/gio-hang" />'>Giỏ hàng</a>
-										<a class="dropdown-item" href='<c:url value = "/user/danh-sach-mua-hang" />'>Danh sách đơn hàng</a>
 										<a class="dropdown-item" href='<c:url value = "/user/lich-su-mua-hang" />'>Lịch sử mua hàng</a>
 										<div class="dropdown-divider"></div>
 										<a class="dropdown-item" href='<c:url value = "/dang-xuat" />'>Đăng xuất</a>

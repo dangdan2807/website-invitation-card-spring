@@ -58,7 +58,7 @@
 							<div class="categories__item set-bg"
 								data-setbg='<c:url value = "${loaiSp.hinhAnh}" />'>
 								<h5>
-									<a href='<c:url value = "/danh-muc?id=${loaiSp.maLSP}" />'>${loaiSp.tenLSP}</a>
+									<a href='<c:url value = "/danh-muc/id=${loaiSp.maLSP}" />'>${loaiSp.tenLSP}</a>
 								</h5>
 							</div>
 						</div>
