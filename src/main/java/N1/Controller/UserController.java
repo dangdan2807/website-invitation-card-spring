@@ -280,7 +280,7 @@ public class UserController {
 		System.out.println(matKhau);
 		TaiKhoan taiKhoan=nguoiDung.getTaiKhoan();
 		if(!matKhau.equals("")) {
-			 PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 				String encodedPassword = passwordEncoder.encode(matKhau);
 				encodedPassword = "{bcrypt}" + encodedPassword;
 				taiKhoan.setMatKhau(encodedPassword);

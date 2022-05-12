@@ -32,7 +32,7 @@ public class HomeController {
 	@RequestMapping({ "/", "/trang-chu", "/home" })
 	public String showHomePage(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		NguoiDung nguoiDung = null; 
+		NguoiDung nguoiDung = new NguoiDung(); 
 		int soLuongSpGh = 0;
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
 			String email = authentication.getName();
@@ -66,30 +66,6 @@ public class HomeController {
 		return "user/index";
 	}
 
-	@RequestMapping({ "/demo" })
-	public String showDemoPage(Model model) {
-		List<TaiKhoan> taiKhoanList = new ArrayList<>();
-		List<NguoiDung> nguoiDungList = new ArrayList<NguoiDung>();
-		HoaDon hoaDon = hoaDonService.findHoaDonById(1);
-		List<HoaDon> hoaDonList = new ArrayList<HoaDon>();
-		hoaDonList.add(hoaDon);
-		List<ChiTietHoaDon> ctHoaDonList = new ArrayList<>();
-		List<SanPham> sanPhamList = sanPhamService.getRatedTopSanPhams(6);
-		List<ChiTietLoaiSP> ctLoaiSPList = new ArrayList<>();
-		List<LoaiSanPham> loaiSanPhamList = new ArrayList<>();
-		
-		model.addAttribute("chucVuList", null);
-		model.addAttribute("danhGiaList", null);
-		model.addAttribute("taiKhoanList", taiKhoanList);
-		model.addAttribute("nguoiDungList", nguoiDungList);
-		model.addAttribute("hoaDonList", hoaDonList);
-		model.addAttribute("ctHoaDonList", ctHoaDonList);
-		model.addAttribute("sanPhamList", sanPhamList);
-		model.addAttribute("ctLoaiSPList", ctLoaiSPList);
-		model.addAttribute("loaiSanPhamList", loaiSanPhamList);
-		return "user/demo";
-	}
-
 	@GetMapping({ "/lien-he", "/contact" })
 	public String showContractPage(Model model) {
 		List<LoaiSanPham> dsLoaiSanPham = loaiSanPhamService.findAll();
@@ -97,7 +73,7 @@ public class HomeController {
 		model.addAttribute("isCategoryPage", 0);
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		NguoiDung nguoiDung = null; 
+		NguoiDung nguoiDung = new NguoiDung(); 
 		int soLuongSpGh = 0;
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
 			String email = authentication.getName();
@@ -114,6 +90,5 @@ public class HomeController {
 	public String showAccessDenied() {
 		return "user/access-denied";
 	}
-	
 	
 }

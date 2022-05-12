@@ -67,7 +67,7 @@ public class CategoryController {
 		model.addAttribute("maxPrice", maxPrice);
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		NguoiDung nguoiDung = null; 
+		NguoiDung nguoiDung = new NguoiDung(); 
 		int soLuongSpGh = 0;
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
 			String email = authentication.getName();
